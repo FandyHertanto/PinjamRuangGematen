@@ -1,0 +1,61 @@
+
+.main {
+    height: 100vh;
+}
+.sidebar {
+    background: #ffffff;
+    color: #fff;
+    border-right: 1px solid #808080;
+
+}
+.sidebar a{
+    color: #000000;
+    text-decoration: none;
+    display: block;
+    padding: 20px 10px;
+}
+.sidebar a:hover{
+    background: #90EE90
+}
+.active {
+
+    border-right: solid 8px red;
+    background: #90EE90
+
+}
+
+.card-data{
+    border: solid 1px;
+    padding: 30px;
+    color: #fff;
+
+}
+
+.card-data.rooms{
+    border: solid 1px;
+    padding: 15px;
+    background-color: brown;
+}
+
+.card-data.users{
+    border: solid 1px;
+    padding: 15px;
+    background-color: orange;
+}
+
+.card-data i {
+    font-size: 50px;
+}
+
+.card-desc{
+    font-size: 25px;
+}
+
+.card-count{
+    font-size: 25px;
+}
+.svg-icon {
+    width: 24px; /* sesuaikan dengan ukuran yang Anda inginkan */
+    height: 24px; /* sesuaikan dengan ukuran yang Anda inginkan */
+}
+
