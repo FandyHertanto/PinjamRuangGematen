@@ -100,5 +100,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/getChartData/{roomId}', [DashboardController::class, 'getChartData'])->name('getChartData');
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
     
