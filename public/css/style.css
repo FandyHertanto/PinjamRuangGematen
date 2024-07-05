@@ -1,46 +1,79 @@
-
+/* navbar */
 .main {
     height: 100vh;
+    padding-bottom: 5px;
+    
 }
+
 .sidebar {
     background: #ffffff;
     color: #fff;
     border-right: 1px solid #808080;
 
 }
-.sidebar a{
+
+.sidebar a {
     color: #000000;
     text-decoration: none;
     display: block;
     padding: 20px 10px;
 }
-.sidebar a:hover{
+
+.sidebar a:hover {
     background: #90EE90
 }
+
 .active {
 
     border-right: solid 8px red;
     background: #90EE90
-
 }
 
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Bayangan navbar */
+}
+
+.sidebar {
+    box-shadow: none;
+    /* Menghilangkan bayangan default */
+    border-right: none;
+    /* Menghilangkan garis tepi */
+}
+
+.sidebar.card {
+    border: none;
+    border-radius: 0;
+}
+
+.content {
+    background-color: #ececec;
+    
+    /* color: #fff; Warna teks content */
+    padding: 20px;
+    /* Padding konten utama */
+
+    
+}
+.footer {
+    background-color: #90EE90;
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid #dee2e6;
+    
+    bottom: 0;
+}
+
+
+
+
+/* card dashboard */
 .card-data{
     border: solid 1px;
     padding: 30px;
     color: #fff;
 
-}
-
-.card-data.rooms{
-    border: solid 1px;
-    padding: 15px;
-    background-color: brown;
-}
-
-.card-data.users{
-    border: solid 1px;
-    padding: 15px;
-    background-color: orange;
 }
 
 .card-data i {
@@ -54,8 +87,6 @@
 .card-count{
     font-size: 25px;
 }
-.svg-icon {
-    width: 24px; /* sesuaikan dengan ukuran yang Anda inginkan */
-    height: 24px; /* sesuaikan dengan ukuran yang Anda inginkan */
-}
+
+
 

@@ -1,12 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Session; // Import Session facade
 
 class AuthController extends Controller
 {
@@ -24,11 +23,11 @@ class AuthController extends Controller
     {
         $credentials = $request->validate([
             'email' => ['required'],
-            'password' => ['required'],
+            // 'password' => ['required'],
         ]);
 
         // Memeriksa apakah input adalah email
-            $input = $request->input('email');
+        $input = $request->input('email');
         if (filter_var($input, FILTER_VALIDATE_EMAIL)) {
             // Jika input adalah email, otentikasi dengan email
             $credentials['email'] = $input;
@@ -54,44 +53,43 @@ class AuthController extends Controller
 
             if (Auth::user()->role_id == 1) {
                 return redirect('dashboard');
-                }
+            }
             //ini role umat , role romo nanti
             if (Auth::user()->role_id == 2) {
-                return redirect('profile');
-                }
+                return redirect('home');
             }
-                return redirect('/login')
-                    ->withErrors(['Login invalid']); // Menampilkan pesan kesalahan
-            }
-        public function logout(Request $request)
-        {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-            return redirect('login');
         }
 
-    public function registerProses(Request $request)
-{
-    $validated = $request->validate([
-        'username' => 'required|unique:users|max:255',
-        'email' => 'required|unique:users|email|max:255',
-        'password' => 'required|unique:users|max:255',
-        'phone' => 'required|max:255',
-
-    ]);
-
-    $user = User::create([
-        'username' => $request->username,
-        'email' => $request->email,
-        'password' => bcrypt($request->password),
-        'phone' => $request->phone,
-        
-    ]);
-
-    Session::flash('status', 'berhasil');
-    Session::flash('message', 'Daftar Akun Berhasil !! Tunggu Persetujuan Admin');
-    return redirect('register');
+        return redirect('/login')
+            ->withErrors(['Login invalid']); // Menampilkan pesan kesalahan
     }
 
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('login');
+    }
+
+    public function registerProses(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|unique:users|email|max:255',
+            // 'username' => 'required|unique:users|max:255',
+            // 'password' => 'required|max:255',
+            // 'phone' => 'required|max:255',
+        ]);
+
+        $user = User::create([
+            'email' => $request->email,
+            // 'username' => $request->username,
+            // 'password' => bcrypt($request->password),
+            // 'phone' => $request->phone,
+        ]);
+
+        Session::flash('status', 'berhasil');
+        Session::flash('message', 'Daftar Akun Berhasil !! Tunggu Persetujuan Admin');
+        return redirect('register');
+    }
 }

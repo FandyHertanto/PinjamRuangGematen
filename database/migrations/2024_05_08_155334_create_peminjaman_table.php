@@ -20,8 +20,9 @@ return new class extends Migration
             $table->date('TanggalPinjam');
             $table->time('JamMulai');
             $table->time('JamSelesai');
-            $table->boolean('Persetujuan')->nullable();
-            $table->string('StatusPinjam');
+            $table->string('Deskripsi');
+            $table->string('Persetujuan')->default('pending');
+            $table->string('StatusPinjam')->default('pending');
             $table->timestamps();
         });
     }

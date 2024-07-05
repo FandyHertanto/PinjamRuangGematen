@@ -1,4 +1,4 @@
-@extends('layouts.mainlayout')
+    <!-- @extends('layouts.mainlayout')
 
 @section('title', 'Edit Fasilitas')
 
@@ -52,4 +52,4 @@
         </form>
     </div>
 
-@endsection
+@endsection -->
