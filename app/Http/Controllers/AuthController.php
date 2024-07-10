@@ -5,7 +5,9 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session; // Import Session facade
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewUserNotification;
 
 class AuthController extends Controller
 {
@@ -54,9 +56,13 @@ class AuthController extends Controller
             if (Auth::user()->role_id == 1) {
                 return redirect('dashboard');
             }
+            
             //ini role umat , role romo nanti
             if (Auth::user()->role_id == 2) {
                 return redirect('home');
+            }
+            if (Auth::user()->role_id == 3) {
+                return redirect('dashboard');
             }
         }
 
@@ -76,17 +82,25 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             'email' => 'required|unique:users|email|max:255',
-            // 'username' => 'required|unique:users|max:255',
-            // 'password' => 'required|max:255',
-            // 'phone' => 'required|max:255',
+            'password' => 'required|max:255',
         ]);
 
         $user = User::create([
             'email' => $request->email,
-            // 'username' => $request->username,
-            // 'password' => bcrypt($request->password),
-            // 'phone' => $request->phone,
+            'password' => bcrypt($request->password),
+            'status' => 'inactive',
         ]);
+
+        // Kirim email notifikasi ke admin
+        $adminEmails = User::where('role_id', 1)->pluck('email')->toArray();
+        foreach ($adminEmails as $email) {
+            $data = [
+                'subject' => 'Pengguna Baru Terdaftar',
+                'body' => 'Pengguna baru telah mendaftar dengan email: ' . $user->email . '. Silahkan cek dan aktifkan akun tersebut.'
+            ];
+
+            Mail::to($email)->send(new NewUserNotification($data));
+        }
 
         Session::flash('status', 'berhasil');
         Session::flash('message', 'Daftar Akun Berhasil !! Tunggu Persetujuan Admin');

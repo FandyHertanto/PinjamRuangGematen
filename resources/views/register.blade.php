@@ -87,10 +87,10 @@
                     <label for="email" class='form_label'  >Email</label>
                     <input type="email" name="email" id="email" class="form-control" required placeholder="contoh: gereja@gmail.com">
                 </div>
-                {{-- <div>
+                <div>
                     <label for="password" class='form_label'>Kata Sandi</label>
                     <input type="password" name="password" id="password" class="form-control" required>
-                </div> --}}
+                </div>
 
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary btn-block w-100" style="border-radius: 5px; padding: 15px;">Registrasi</button>

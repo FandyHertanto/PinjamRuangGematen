@@ -1,0 +1,4 @@
+
+{{ $data['subject'] }}
+{{ $data['body'] }}
+

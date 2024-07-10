@@ -78,7 +78,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('users', [UserController::class, 'index'])->name('users');
     Route::get('registered-user', [UserController::class, 'registeredUser']);
-    Route::get('user-detail', [UserController::class, 'show']);
+    Route::get('user-detail/{id}', [UserController::class, 'show'])->name('users.show');
     Route::post('/user/approve/{id}', [UserController::class, 'approve'])->name('users.approve');
     Route::delete('/user/reject/{id}', [UserController::class, 'reject'])->name('users.reject');
     Route::put('/user/promote/{id}', [UserController::class, 'promote'])->name('users.promote');

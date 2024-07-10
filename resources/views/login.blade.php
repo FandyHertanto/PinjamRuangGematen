@@ -45,11 +45,8 @@
                 {{-- <div>
                     <label for="email" class='form_label'>Nama Pengguna</label>
                     <input type="text" name="email" id="email" class="form-control">
-                </div>
-                <div>
-                    <label for="password" class='form_label'>Password</label>
-                    <input type="password" name="password" id="password" class="form-control">
-                </div> --}}
+                </div>--}}
+                
                 <h3 class="text-center">Masuk GematenRuang</h3>
                 <div class="text-center">
                     <a href="register" style="text-decoration: none; color:black;">Belum Punya Akun GematenRuang? <span
@@ -59,6 +56,10 @@
                     <label for="email" class='form_label'>email</label>
                     <input type="email" name="email" id="email" class="form-control">
                 </div>
+                <div>
+                    <label for="password" class='form_label'>Password</label>
+                    <input type="password" name="password" id="password" class="form-control">
+                </div> 
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary btn-block w-100" style="border-radius: 5px; padding: 15px;">Masuk</button>
                 </div>

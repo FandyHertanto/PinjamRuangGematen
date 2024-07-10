@@ -1,13 +1,25 @@
 @extends('layouts.mainlayout')
 
-@section('title','Pengguna Baru')
+@section('title','Aktivasi Pengguna')
 
 @section('content')
 
 <div class="card border shadow">
     <div class="card-body">
 
-        <h3 class="card-title text-center">Pengguna Baru</h3>
+        <h3 class="card-title text-center">Aktivasi Pengguna</h3>
+
+         @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
 
         <div class="my-3 d-flex">
             <a href="users" class="btn btn-primary me-3">Data Pengguna</a>

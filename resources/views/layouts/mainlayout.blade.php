@@ -18,7 +18,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
 
-
 </head>
 
 <body>
@@ -35,7 +34,11 @@
         <div class="body-content h-100">
             <div class="row g-0 h-100">
                 <div class="sidebar card shadow col-lg-2 collapse d-lg-block" id="hamburger">
-                    @if (Auth::user()->role_id == 1)
+                    @php
+                        $roleId = Auth::user()->role_id;
+                    @endphp
+
+                    @if ($roleId == 1 || $roleId == 3)
                         <a href="dashboard" @if (request()->route()->uri == 'dashboard') class='active' @endif>Dashboard</a>
                         <a href="rent" @if (request()->route()->uri == 'rent') class='active' @endif>Peminjaman</a>
                         <a href="{{ url('users') }}"
@@ -43,7 +46,7 @@
                         <a href="{{ route('room') }}" @if (request()->route()->uri == 'room' ||
                                 request()->route()->uri == 'room-add' ||
                                 request()->route()->uri == 'room/edit/' ||
-                                request()->route()->uri == 'room-delete') class='active' @endif> Ruang</a>
+                                request()->route()->uri == 'room-delete') class='active' @endif>Ruang</a>
                         <a href="{{ route('item') }}" @if (request()->route()->uri == 'item' ||
                                 request()->route()->uri == 'item-add' ||
                                 request()->route()->uri == 'item-edit' ||

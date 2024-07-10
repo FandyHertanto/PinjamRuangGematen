@@ -42,7 +42,7 @@ class ProfileController extends Controller
     $user->phone = $validatedData['phone'];
     $user->save();
     
-    return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui.');
+    return redirect()->route('profile')->with('success', 'Profile berhasil diperbarui.');
 }
 
     /**

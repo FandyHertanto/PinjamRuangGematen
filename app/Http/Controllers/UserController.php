@@ -6,6 +6,9 @@ use App\Models\Peminjaman;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserApprovedNotification;
+use App\Mail\UserRejectedNotification;
 
 class UserController extends Controller
 {
@@ -23,9 +26,15 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::all()->where('status', 'active');
+        // Ambil semua pengguna dengan role ID 1, 2 (Admin, Umat) yang statusnya 'active'
+        $users = User::whereIn('role_id', [User::ROLE_ADMIN, User::ROLE_UMAT])
+            ->where('status', 'active')
+            ->get();
+
         return view('user', ['users' => $users]);
     }
+
+
     public function registeredUser()
     {
         $registeredUsers = User::where('status', 'inactive')->get();
@@ -34,40 +43,39 @@ class UserController extends Controller
 
     public function approve($id)
     {
-        // Cari pengguna berdasarkan ID
         $user = User::find($id);
 
-        // Periksa apakah pengguna ditemukan
         if ($user) {
-            // Ubah status pengguna menjadi active
             $user->status = 'active';
             $user->save();
 
-            // Redirect kembali dengan pesan sukses
+            // Kirim notifikasi email
+            Mail::to($user->email)->send(new UserApprovedNotification($user));
+
             return redirect()->back()->with('success', 'Pengguna berhasil disetujui dan status diubah menjadi active');
         } else {
-            // Redirect kembali dengan pesan error jika pengguna tidak ditemukan
             return redirect()->back()->with('error', 'Pengguna tidak ditemukan');
         }
     }
 
     public function reject($id)
-    {
-        // Cari pengguna berdasarkan ID
-        $user = User::find($id);
+{
+    $user = User::find($id);
 
-        // Periksa apakah pengguna ditemukan
-        if ($user) {
-            // Lakukan aksi penolakan, misalnya menghapus pengguna atau mengubah status
-            $user->delete();
+    if ($user) {
+        // Tandai pengguna sebagai ditolak
+        $user->rejection_status = 'rejected';
+        $user->save();
 
-            // Redirect kembali dengan pesan sukses
-            return redirect()->back()->with('success', 'Pengguna berhasil ditolak');
-        } else {
-            // Redirect kembali dengan pesan error jika pengguna tidak ditemukan
-            return redirect()->back()->with('error', 'Pengguna tidak ditemukan');
-        }
+        // Kirim notifikasi email
+        Mail::to($user->email)->send(new UserRejectedNotification($user));
+
+        return redirect()->back()->with('success', 'Pengguna telah ditolak');
+    } else {
+        return redirect()->back()->with('error', 'Pengguna tidak ditemukan');
     }
+}
+
     public function promote($id)
     {
         $user = User::find($id);
@@ -95,6 +103,7 @@ class UserController extends Controller
 
         return redirect()->back()->with('success', 'User role updated to Umat');
     }
+
     public function destroy($id)
     {
         $user = User::find($id);
@@ -103,5 +112,20 @@ class UserController extends Controller
             return redirect()->route('users')->with('success', 'Pengguna berhasil dihapus');
         }
         return redirect()->route('users')->with('error', 'Pengguna tidak ditemukan');
+    }
+
+    public function show($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'Pengguna tidak ditemukan');
+        }
+
+        // Ambil data peminjaman yang terkait dengan pengguna saat ini
+        $peminjamans = Peminjaman::where('peminjam_id', $id)->get();
+
+        // Kembalikan view 'user-detail' dengan data pengguna dan peminjaman
+        return view('user-detail', ['user' => $user, 'peminjamans' => $peminjamans]);
     }
 }

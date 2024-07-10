@@ -8,7 +8,19 @@
         <div class="card-body">
             <h3 class="mt-3">Selamat Datang Kembali, {{ Auth::user()->username }}</h3>
             
-            <div class='row mt-5'>
+            @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+            {{-- <div class='row mt-5'>
                 <div class='col-lg-3 mb-4'>
                     <div class="card card-data bg-success">
                         <div class="row">
@@ -52,7 +64,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Room dropdown selector -->
                 <div class="dropdown mb-4">

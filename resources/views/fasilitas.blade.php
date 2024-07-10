@@ -5,6 +5,19 @@
 @section('content')
 
     <h3>Data Fasilitas</h3>
+
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="my-5 d-flex justify-content-end">
         <a href="{{ route('create-fasilitas') }}" class="btn btn-primary">+ Data Fasilitas</a>
     </div>

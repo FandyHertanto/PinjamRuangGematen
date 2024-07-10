@@ -22,7 +22,6 @@ return new class extends Migration
             $table->time('JamSelesai');
             $table->string('Deskripsi');
             $table->string('Persetujuan')->default('pending');
-            $table->string('StatusPinjam')->default('pending');
             $table->timestamps();
         });
     }

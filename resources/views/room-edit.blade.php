@@ -3,102 +3,108 @@
 
 @section('content')
 
-<div class="container-fluid">
+    <div class="container-fluid">
 
-    <div class="row mt-5">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="mb-3">Edit Barang</h2>
+        <div class="row mt-5">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="mb-3">Edit Barang</h2>
 
-                    <div class="d-flex justify-content-end mb-3">
-                        <a class="btn btn-primary" href="{{ route('create-fasilitas', ['ruang_id' => $room->id]) }}" role="button">Tambah Barang</a>
-                    </div>
+                        <div class="d-flex justify-content-end mb-3">
+                            <a class="btn btn-primary" href="{{ route('create-fasilitas', ['ruang_id' => $room->id]) }}"
+                                role="button">Tambah Barang</a>
+                        </div>
 
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Nama Barang</th>
-                                <th scope="col">Deskripsi</th>
-                                <th scope="col">Jumlah</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $reversedFasilitas = $fasilitas->reverse();
-                            @endphp
-                            @foreach ($reversedFasilitas as $fasil)
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>{{ $fasil->Item->NamaBarang }}</td>
-                                    <td>{{ $fasil->Item->Deskripsi }}</td>
-                                    <td>{{ $fasil->JumlahBarang }}</td>
-                                    <td>
-                                        <form action="{{ route('fasilitas-destroy', $fasil->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <input type="text" value="fasil_id" value="{{ $fasil->id }}" hidden>
-
-                                            <a href="{{ route('fasilitas-edit', $fasil->id) }}" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
-                                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash3-fill"></i></button>
-                                        </form>
-                                    </td>
+                                    <th scope="col">Nama Barang</th>
+                                    <th scope="col">Deskripsi</th>
+                                    <th scope="col">Jumlah</th>
+                                    <th scope="col">Aksi</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $reversedFasilitas = $fasilitas->reverse();
+                                @endphp
+                                @foreach ($reversedFasilitas as $fasil)
+                                    <tr>
+                                        <td>{{ $fasil->Item->NamaBarang }}</td>
+                                        <td>{{ $fasil->Item->Deskripsi }}</td>
+                                        <td>{{ $fasil->JumlahBarang }}</td>
+                                        <td>
+                                            <form action="{{ route('fasilitas-destroy', $fasil->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
 
-    <div class="row mt-5">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="mb-3">Edit Ruang</h2>
+                                                <input type="text" value="fasil_id" value="{{ $fasil->id }}" hidden>
 
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <strong>Whoops</strong>
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                                <a href="{{ route('fasilitas-edit', $fasil->id) }}"
+                                                    class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
+                                                <button type="submit" class="btn btn-danger"><i
+                                                        class="bi bi-trash3-fill"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
                                 @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                    <form action="{{ route('room-update', $room->id) }}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-
-                        <div class="mb-3">
-                            <label for="NamaRuang" class='form-label'>Nama Ruang</label>
-                            <input type="text" name="NamaRuang" value='{{ $room->NamaRuang }}' id="NamaRuang" class="form-control"
-                                placeholder="co: Yohanes">
-                        </div>
-                        <div class="mb-3">
-                            <label for="Kapasitas" class='form-label'>Kapasitas</label>
-                            <input type="number" name="Kapasitas" value='{{ $room->Kapasitas }}' id="Kapasitas" class="form-control" placeholder=" Kapasitas ruangan">
-                        </div>
-
-                        <div class="mb-3 my-3">
-                            <label for="Gambar" class='form-label'>Gambar</label>
-                            <input type="file" name="Gambar" id='Gambar' class="form-control">
-                            <img src="/Gambar/{{ $room->Gambar }}" alt="" style="max-width: 200px;" class='mt-3'>
-                        </div>
-
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-success" type="submit">Simpan</button>
-                        </div>
-                    </form>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-</div>
+        <div class="row mt-5">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="mb-3">Edit Ruang</h2>
+
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+
+                        <form action="{{ route('room-update', $room->id) }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+
+                            <div class="mb-3">
+                                <label for="NamaRuang" class='form-label'>Nama Ruang</label>
+                                <input type="text" name="NamaRuang" value='{{ $room->NamaRuang }}' id="NamaRuang"
+                                    class="form-control" placeholder="co: Yohanes">
+                            </div>
+                            <div class="mb-3">
+                                <label for="Kapasitas" class='form-label'>Kapasitas</label>
+                                <input type="number" name="Kapasitas" value='{{ $room->Kapasitas }}' id="Kapasitas"
+                                    class="form-control" placeholder=" Kapasitas ruangan">
+                            </div>
+
+                            <div class="mb-3 my-3">
+                                <label for="Gambar" class='form-label'>Gambar</label>
+                                <input type="file" name="Gambar" id='Gambar' class="form-control">
+                                <img src="/Gambar/{{ $room->Gambar }}" alt="" style="max-width: 200px;"
+                                    class='mt-3'>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-success" type="submit">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 @endsection
