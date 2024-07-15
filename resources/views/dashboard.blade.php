@@ -8,18 +8,7 @@
         <div class="card-body">
             <h3 class="mt-3">Selamat Datang Kembali, {{ Auth::user()->username }}</h3>
             
-            @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
-
+        
             {{-- <div class='row mt-5'>
                 <div class='col-lg-3 mb-4'>
                     <div class="card card-data bg-success">

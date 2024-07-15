@@ -10,11 +10,16 @@ class RentController extends Controller
 
     public function rent()
     {
-        $rents = Peminjaman::latest()->paginate(5);
-        return view('rent', compact('rents'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        // Ambil data peminjaman terbaru dengan pagination
+        $rents = Peminjaman::latest()->simplePaginate(25); // Menampilkan 2 peminjaman per halaman
+        
+        // Kirim data ke view dan menghitung nomor urut
+        return view('rent', [
+            'rents' => $rents,
+            'i' => ($rents->currentPage() - 1) * $rents->perPage() + 1
+        ]);
     }
-
+    
     public function cancel($id)
     {
         $peminjaman = Peminjaman::findOrFail($id);

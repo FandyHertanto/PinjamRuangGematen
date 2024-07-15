@@ -21,11 +21,15 @@ class CalendarController extends Controller
 
     public function getEvents(Request $request)
     {
+        $start = $request->start;
+        $end = $request->end;
+    
         $events = Peminjaman::with(['user', 'room'])
-            
+            ->whereDate('TanggalPinjam', '>=', $start)
+            ->whereDate('TanggalPinjam', '<=', $end)
             ->select('id', 'ruang_id', 'TanggalPinjam', 'JamSelesai', 'JamMulai', 'Deskripsi', 'peminjam_id', 'Persetujuan')
             ->get();
-
+    
         $results = $events->map(function ($event) {
             // Determine status based on Persetujuan field
             if ($event->Persetujuan === 'disetujui') {
@@ -37,7 +41,7 @@ class CalendarController extends Controller
             } else {
                 $statusText = 'Pending';
             }
-
+    
             return [
                 'id' => $event->id,
                 'title' => $event->room->NamaRuang,
@@ -48,12 +52,10 @@ class CalendarController extends Controller
                 'persetujuan' => $statusText
             ];
         });
-
+    
         return response()->json($results);
     }
-
-
-
+    
     public function ajax(Request $request)
     {
         switch ($request->type) {
@@ -72,51 +74,61 @@ class CalendarController extends Controller
     }
 
     public function create()
-    {
-        $ruang = Room::all(); // Ambil semua data ruang dari database
-        return view('pinjam-add', compact('ruang')); // Tampilkan tampilan form dengan data ruang
+{
+    $ruang = Room::all(); // Ambil semua data ruang dari database
+    return view('pinjam-add', compact('ruang')); // Tampilkan tampilan form dengan data ruang
+}
+
+
+public function store(Request $request)
+{
+    $request->validate([
+        'ruang_id' => 'required',
+        'peminjam_id' => 'required',
+        'TanggalPinjam' => 'required|date',
+        'JamMulai' => 'required',
+        'JamSelesai' => 'required',
+        'Deskripsi' => 'required',
+        'TimPelayanan' => 'required',
+        'Jumlah' => 'required|integer|min:1',
+    ]);
+
+    // Format JamMulai dan JamSelesai sesuai dengan format yang diharapkan oleh FullCalendar
+    $jamMulai = date('H:i', strtotime($request->JamMulai));
+    $jamSelesai = date('H:i', strtotime($request->JamSelesai));
+
+    // Cek ketersediaan ruangan pada waktu yang dipilih
+    $existingEvent = Peminjaman::where('ruang_id', $request->ruang_id)
+        ->where('TanggalPinjam', $request->TanggalPinjam)
+        ->where(function ($query) use ($jamMulai, $jamSelesai) {
+            $query->where(function ($q) use ($jamMulai, $jamSelesai) {
+                $q->where('JamMulai', '<', $jamSelesai)
+                    ->where('JamMulai', '>=', $jamMulai);
+            })->orWhere(function ($q) use ($jamMulai, $jamSelesai) {
+                $q->where('JamSelesai', '>', $jamMulai)
+                    ->where('JamSelesai', '<=', $jamSelesai);
+            });
+        })
+        ->exists();
+
+    // Jika jadwal sudah terdaftar, kembalikan dengan pesan error
+    if ($existingEvent) {
+        return redirect()->route('pinjam.create')->with('error', 'Jadwal tidak tersedia, silahkan pilih jadwal lain')->withInput();
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'ruang_id' => 'required',
-            'peminjam_id' => 'required', // Pastikan peminjam_id validasi ada
-            'TanggalPinjam' => 'required|date',
-            'JamMulai' => 'required|date_format:H:i',
-            'JamSelesai' => 'required|date_format:H:i',
-        ]);
+    // Jika jadwal belum terdaftar, simpan peminjaman
+    $peminjaman = new Peminjaman();
+    $peminjaman->ruang_id = $request->ruang_id;
+    $peminjaman->peminjam_id = $request->peminjam_id; // Gunakan Auth::user() untuk mengambil user saat ini
+    $peminjaman->TanggalPinjam = $request->TanggalPinjam;
+    $peminjaman->JamMulai = $jamMulai;
+    $peminjaman->JamSelesai = $jamSelesai;
+    $peminjaman->Deskripsi = $request->Deskripsi;
+    $peminjaman->TimPelayanan = $request->TimPelayanan; // Masukkan TimPelayanan ke dalam model
+    $peminjaman->Jumlah = $request->Jumlah; // Masukkan Jumlah ke dalam model
+    $peminjaman->save();
 
-        // Cek apakah ada jadwal yang sudah terdaftar pada waktu yang sama
-        $existingEvent = Peminjaman::where('ruang_id', $request->ruang_id)
-            ->where('TanggalPinjam', $request->TanggalPinjam)
-            ->where(function ($query) use ($request) {
-                $query->where(function ($q) use ($request) {
-                    $q->where('JamMulai', '>=', $request->JamMulai)
-                        ->where('JamMulai', '<', $request->JamSelesai);
-                })->orWhere(function ($q) use ($request) {
-                    $q->where('JamSelesai', '>', $request->JamMulai)
-                        ->where('JamSelesai', '<=', $request->JamSelesai);
-                });
-            })
-            ->exists();
-
-        // Jika jadwal sudah terdaftar, kembalikan dengan pesan error
-        if ($existingEvent) {
-            return redirect()->route('home')->with('error', 'Jadwal tidak tersedia, silahkan pilih jadwal lain')->withInput();
-        }
-
-        // Jika jadwal belum terdaftar, simpan peminjaman
-        $peminjaman = new Peminjaman();
-        $peminjaman->ruang_id = $request->ruang_id;
-        $peminjaman->peminjam_id = $request->peminjam_id; // Simpan peminjam_id
-        $peminjaman->TanggalPinjam = $request->TanggalPinjam;
-        $peminjaman->JamMulai = $request->JamMulai;
-        $peminjaman->JamSelesai = $request->JamSelesai;
-        $peminjaman->Deskripsi = $request->Deskripsi;
-        $peminjaman->save();
-
-        // Ambil semua email admin yang memiliki role_id = 1 (misalnya)
+    // Ambil semua email admin yang memiliki role_id = 1 (misalnya)
         $adminEmails = User::where('role_id', 1)->pluck('email')->toArray();
 
         // Send email notification to all admin emails
@@ -132,6 +144,8 @@ class CalendarController extends Controller
             Mail::to($email)->send(new MailNotify($data));
         }
 
-        return redirect()->route('home')->with('success', 'Peminjaman Ruang Berhasil Ditambahkan');
-    }
+    // Redirect dengan pesan sukses
+    return redirect()->route('pinjam.create')->with('success', 'Peminjaman Ruang Berhasil Ditambahkan');
+}
+
 }

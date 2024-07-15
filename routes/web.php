@@ -8,6 +8,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RentController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\PinjamRuangController;
+use App\Http\Controllers\PeminjamanController;
 
 // use App\Http\Controllers\RuangController;
 use App\Http\Controllers\UserController;
@@ -16,6 +18,7 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ProfileController;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
     return view('login');
@@ -25,12 +28,11 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'guest'], function () {
 
-    
+
     Route::get('login', [AuthController::class, 'login'])->name('login');
     Route::post('login', [AuthController::class, 'authenticating']);
     Route::get('register', [AuthController::class, 'register'])->name('register');
     Route::post('register', [AuthController::class, 'registerProses']);
-    
 });
 
 Route::get('auth/redirect', [GoogleAuthController::class, 'redirect']); //->name('google-auth'
@@ -40,6 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/getChartData/{year}/{month}', [DashboardController::class, 'getChartData']);
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile-edit');
@@ -49,8 +52,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/get-room-rent-data', [DashboardController::class, 'getRoomRentData'])->name('get-room-rent-data');
 
+    //Menu Umat
     Route::get('home', [HomeController::class, 'index'])->name('home');
+    Route::get('detail-ruang/{id}', [HomeController::class, 'detail'])->name('detail-ruang');
+    Route::get('pinjam-ruang', [PinjamRuangController::class, 'index'])->name('pinjam-ruang');
     Route::get('keranjang', [UserController::class, 'keranjang']);
+
     Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.delete');
 
 
@@ -88,6 +95,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('pinjam-store', [CalendarController::class, 'store'])->name('pinjam.store');
     Route::get('/events', [CalendarController::class, 'getEvents'])->name('events');
 
+    Route::get('/events', [PeminjamanController::class, 'fetchEvents'])->name('events');
+
     //Route Peminjaman Admin
     Route::get('rent', [RentController::class, 'rent'])->name('rent');
     Route::post('/rents/approve/{id}', [RentController::class, 'approve'])->name('rents.approve');
@@ -100,7 +109,4 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/getChartData/{roomId}', [DashboardController::class, 'getChartData'])->name('getChartData');
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-
-    
 });
-    

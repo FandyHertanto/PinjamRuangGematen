@@ -27,7 +27,7 @@
                     @method('PUT')
 
                     <div class="mb-3">
-                        <label for="NamaPengguna" class="form-label">Nama Pengguna</label>
+                        <label for="NamaPengguna" class="form-label">Nama Pengguna/bidang</label>
                         <input type="text" name="username" id="NamaPengguna" class="form-control"
                             value="{{ $user->username }}">
                     </div>

@@ -19,7 +19,7 @@ class MailNotify extends Mailable
 
     public function build()
     {
-        return $this->from('noreply@example.com', 'Peminjaman Ruang Gematen')
+        return $this->from('fandy.hertanto@ti.ukdw.ac.id', 'Peminjaman Ruang Gematen')
                     ->subject($this->data['subject'])
                     ->view('email')
                     ->with('data', $this->data);

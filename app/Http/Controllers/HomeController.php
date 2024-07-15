@@ -9,11 +9,13 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $rooms = Room::all();
+        return view('home', compact('rooms'));
+    }
 
-
-        $rooms = Room::all(); // Retrieve all rooms from the database
-
-        return view('home', ['rooms' => $rooms]); // Pass the $rooms variable to the view
+    public function detail($id)
+    {
+        $room = Room::with('fasilitas.item')->findOrFail($id);
+        return view('detail-ruang', compact('room'));
     }
 }
-

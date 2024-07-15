@@ -33,6 +33,19 @@
                             value="{{ Auth::user()->username }}" placeholder="Nama Peminjam">
                     </div>
 
+                    <div class="mb-3">
+                        <label for="TimPelayanan" class="form-label">Tim Pelayanan</label>
+                        <input type="text" name="TimPelayanan" id="TimPelayanan" class="form-control"
+                            placeholder="Misdinar/komsos" value="{{ old('TimPelayanan') }}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="Jumlah" class="form-label">Jumlah</label>
+                        <input type="number" name="Jumlah" id="Jumlah" class="form-control"
+                            placeholder="Jumlah peserta" value="{{ old('Jumlah') }}">
+                    </div>
+                    
+
                     <input type="hidden" name="peminjam_id" value="{{ Auth::user()->id }}">
 
                     <div class="mb-3">
@@ -113,86 +126,117 @@
     </style>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                themeSystem: 'bootstrap5',
-                locale: 'id',
-                events: '{{ route('events') }}',
-                headerToolbar: {
-                    left: 'prev,next',
-                    center: 'title',
-                    right: 'dayGridMonth'
-                },
-                eventContent: function(info) {
-                    var NamaRuang = info.event.title;
-                    var JamMulai = new Date(info.event.start).toLocaleTimeString('id-ID', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false
-                    });
-                    var JamSelesai = new Date(info.event.end).toLocaleTimeString('id-ID', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false
-                    });
-                    var Persetujuan = info.event.extendedProps.persetujuan;
-                    var Peminjam = info.event.extendedProps.peminjam;
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            themeSystem: 'bootstrap5',
+            locale: 'id',
+            events: function (fetchInfo, successCallback, failureCallback) {
+                var start = fetchInfo.startStr;
+                var end = fetchInfo.endStr;
 
-                    var element = document.createElement('div');
-                    element.classList.add('custom-event-content');
-
-                    element.innerHTML = `
-                    <div>
-                        ${Peminjam}
-                        <span>${JamMulai}-${JamSelesai}</span>
-                    </div>
-                `;
-
-                    return {
-                        domNodes: [element]
-                    };
-                },
-                eventDidMount: function(info) {
-                    var NamaRuang = info.event.title;
-                    var status = info.event.extendedProps.description;
-                    var JamMulai = new Date(info.event.start).toLocaleTimeString('id-ID', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false
-                    });
-                    var JamSelesai = new Date(info.event.end).toLocaleTimeString('id-ID', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false
-                    });
-                    var Persetujuan = info.event.extendedProps.persetujuan;
-                    var Peminjam = info.event.extendedProps.peminjam;
-                    var tooltipContent = `
-                    <div class="custom-event-contents">
-                        Peminjam : ${Peminjam}<br>
-                        Ruangan  : ${NamaRuang}<br>
-                        Keperluan: ${status}<br>
-                        Waktu    : ${JamMulai} - ${JamSelesai}<br>
-                        Status   : ${Persetujuan}
-                    </div>
-                `;
-
-                    info.el.setAttribute('data-bs-toggle', 'tooltip');
-                    info.el.setAttribute('title', tooltipContent);
-                    info.el.setAttribute('data-bs-html', 'true'); // Enable HTML content
-                    var tooltip = new bootstrap.Tooltip(info.el);
-                    info.el._tooltip = tooltip;
-                },
-                eventDestroy: function(info) {
-                    if (info.el._tooltip) {
-                        info.el._tooltip.dispose();
+                // Request events from server
+                $.ajax({
+                    url: '{{ route('events') }}',
+                    dataType: 'json',
+                    data: {
+                        start: start,
+                        end: end
+                    },
+                    success: function (response) {
+                        var events = response.map(function (event) {
+                            return {
+                                id: event.id,
+                                title: event.title,
+                                start: event.start,
+                                end: event.end,
+                                description: event.description,
+                                peminjam: event.peminjam,
+                                persetujuan: event.persetujuan
+                            };
+                        });
+                        successCallback(events);
+                    },
+                    error: function (error) {
+                        failureCallback(error);
                     }
-                }
-            });
+                });
+            },
+            headerToolbar: {
+                left: 'prev,next',
+                center: 'title',
+                right: 'dayGridMonth'
+            },
+            eventContent: function(info) {
+                var NamaRuang = info.event.title;
+                var JamMulai = new Date(info.event.start).toLocaleTimeString('id-ID', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                });
+                var JamSelesai = new Date(info.event.end).toLocaleTimeString('id-ID', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                });
+                var Persetujuan = info.event.extendedProps.persetujuan;
+                var Peminjam = info.event.extendedProps.peminjam;
 
-            calendar.render();
+                var element = document.createElement('div');
+                element.classList.add('custom-event-content');
+
+                element.innerHTML = `
+                <div>
+                    ${Peminjam}
+                    <span>${JamMulai}-${JamSelesai}</span>
+                </div>
+            `;
+
+                return {
+                    domNodes: [element]
+                };
+            },
+            eventDidMount: function(info) {
+                var NamaRuang = info.event.title;
+                var status = info.event.extendedProps.description;
+                var JamMulai = new Date(info.event.start).toLocaleTimeString('id-ID', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                });
+                var JamSelesai = new Date(info.event.end).toLocaleTimeString('id-ID', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                });
+                var Persetujuan = info.event.extendedProps.persetujuan;
+                var Peminjam = info.event.extendedProps.peminjam;
+                var tooltipContent = `
+                <div class="custom-event-contents">
+                    Peminjam : ${Peminjam}<br>
+                    Ruangan  : ${NamaRuang}<br>
+                    Keperluan: ${status}<br>
+                    Waktu    : ${JamMulai} - ${JamSelesai}<br>
+                    Status   : ${Persetujuan}
+                </div>
+            `;
+
+                info.el.setAttribute('data-bs-toggle', 'tooltip');
+                info.el.setAttribute('title', tooltipContent);
+                info.el.setAttribute('data-bs-html', 'true'); // Enable HTML content
+                var tooltip = new bootstrap.Tooltip(info.el);
+                info.el._tooltip = tooltip;
+            },
+            eventDestroy: function(info) {
+                if (info.el._tooltip) {
+                    info.el._tooltip.dispose();
+                }
+            }
         });
-    </script>
+
+        calendar.render();
+    });
+</script>
+
 @endsection

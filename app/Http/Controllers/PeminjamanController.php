@@ -13,4 +13,6 @@ class PeminjamanController extends Controller
         return view('rent', ['rents' => $peminjaman]);
         
     }
+
+    
 }

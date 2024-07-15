@@ -2,6 +2,7 @@
 .main {
     height: 100vh;
     padding-bottom: 5px;
+    background-color: red;
     
 }
 
@@ -13,15 +14,17 @@
 }
 
 .sidebar a {
-    color: #000000;
+    color: #000000; /* Warna teks hitam */
     text-decoration: none;
     display: block;
     padding: 20px 10px;
 }
 
 .sidebar a:hover {
-    background: #90EE90
+    background: #90EE90; /* Warna latar saat hover */
+    color: #000000; /* Tetapkan warna teks hitam saat hover */
 }
+
 
 .active {
 
@@ -88,5 +91,24 @@
     font-size: 25px;
 }
 
+/* halaman */
+.pagination {
+    display: flex;
+    justify-content: center;
+}
 
+.pagination .page-item {
+    margin: 0 5px;
+}
+
+.pagination .page-link {
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination .page-link:hover {
+    background-color: #0056b3;
+}
 

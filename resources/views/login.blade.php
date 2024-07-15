@@ -52,7 +52,7 @@
                     <a href="register" style="text-decoration: none; color:black;">Belum Punya Akun GematenRuang? <span
                             style="color: blue">Daftar</span> </a>
                 </div>
-                <div>
+                {{-- <div>
                     <label for="email" class='form_label'>email</label>
                     <input type="email" name="email" id="email" class="form-control">
                 </div>
@@ -66,7 +66,7 @@
 
                 <div class="text-center">
                     <span>atau</span>
-                </div>
+                </div> --}}
                 
                 <div class="w-3/5 mx-auto mt-4">
                     

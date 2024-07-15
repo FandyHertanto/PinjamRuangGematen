@@ -79,11 +79,11 @@
                 
                 
 
-                <div class="text-center">
+                {{-- <div class="text-center">
                     <span>atau</span>
-                </div>
+                </div> --}}
 
-                <div>
+                {{-- <div>
                     <label for="email" class='form_label'  >Email</label>
                     <input type="email" name="email" id="email" class="form-control" required placeholder="contoh: gereja@gmail.com">
                 </div>
@@ -95,7 +95,7 @@
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary btn-block w-100" style="border-radius: 5px; padding: 15px;">Registrasi</button>
                 </div>
-                
+                 --}}
 
             </form>
         </div>

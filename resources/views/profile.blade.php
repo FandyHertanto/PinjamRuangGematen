@@ -25,7 +25,7 @@
 
 
                         <div class="mb-3">
-                            <label for="NamaPengguna" class="form-label">Nama Pengguna</label>
+                            <label for="NamaPengguna" class="form-label">Nama Pengguna/bidang</label>
                             <input type="text" name="NamaPengguna" id="NamaPengguna" class="form-control"
                                 value="{{ Auth::user()->username }}" readonly>
                         </div>

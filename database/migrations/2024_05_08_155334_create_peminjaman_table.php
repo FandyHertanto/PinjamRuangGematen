@@ -14,13 +14,15 @@ return new class extends Migration
         Schema::create('peminjaman', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('ruang_id');
-            $table->foreign('ruang_id')->references('id')->on('ruang');
+            $table->foreign('ruang_id')->references('id')->on('ruang')->onDelete('cascade');
             $table->unsignedBigInteger('peminjam_id');
-            $table->foreign('peminjam_id')->references('id')->on('users');
+            $table->foreign('peminjam_id')->references('id')->on('users')->onDelete('cascade');
             $table->date('TanggalPinjam');
             $table->time('JamMulai');
             $table->time('JamSelesai');
             $table->string('Deskripsi');
+            $table->string('TimPelayanan');
+            $table->string('Jumlah');
             $table->string('Persetujuan')->default('pending');
             $table->timestamps();
         });

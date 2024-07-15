@@ -14,7 +14,9 @@
                         <tr>
                             <th class="col">No.</th>
                             <th class="col">Peminjam</th>
+                            <th class="col">Tim Pelayanan</th>
                             <th class="col">Ruang</th>
+                            <th class="col">Jumlah</th>
                             <th class="col">Tanggal Pinjam</th>
                             <th class="col">Mulai</th>
                             <th class="col">Selesai</th>
@@ -25,9 +27,11 @@
                     <tbody>
                         @foreach ($rents as $item)
                         <tr>
-                            <td>{{ ++$i }}</td>
+                            <td>{{ $i++ }}</td>
                             <td>{{ $item->user->username }}</td>
+                            <td>{{ $item->TimPelayanan }}</td>
                             <td>{{ $item->room->NamaRuang }}</td>
+                            <td>{{ $item->Jumlah }}</td>
                             <td>{{ $item->TanggalPinjam }}</td>
                             <td>{{ substr($item->JamMulai, 0, 5) }}</td>
                             <td>{{ substr($item->JamSelesai, 0, 5) }}</td>
@@ -42,12 +46,12 @@
                                 @else
                                 <form id="approvalForm{{ $item->id }}" action="{{ route('rents.approve', $item->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
-                                    <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#exampleModal" data-form-id="approvalForm{{ $item->id }}" data-email="{{ $item->user->email }}" data-item-id="{{ $item->id }}">Terima</button>
+                                    <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#exampleModal" data-form-id="approvalForm{{ $item->id }}" data-email="{{ $item->user->email }}" data-item-id="{{ $item->id }}"><i class="bi bi-check-circle"></i></button>
                                 </form>
                                 <form id="rejectForm{{ $item->id }}" action="{{ route('rents.reject', $item->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
                                     @method('POST')
-                                    <button type="button" class="btn btn-danger reject-btn" data-bs-toggle="modal" data-bs-target="#rejectModal" data-form-id="rejectForm{{ $item->id }}" data-email="{{ $item->user->email }}" data-item-id="{{ $item->id }}">Tolak</button>
+                                    <button type="button" class="btn btn-danger reject-btn" data-bs-toggle="modal" data-bs-target="#rejectModal" data-form-id="rejectForm{{ $item->id }}" data-email="{{ $item->user->email }}" data-item-id="{{ $item->id }}"><i class="bi bi-x-circle"></i></button>
                                 </form>
                                 @endif
                             </td>
@@ -55,7 +59,9 @@
                         @endforeach
                     </tbody>
                 </table>
-                {{ $rents->links() }}
+                <div class="mt-4 d-flex justify-content-center">
+                    {{ $rents->links('vendor.pagination.custom') }}
+                </div>  
             </div>
         </div>
     </div>

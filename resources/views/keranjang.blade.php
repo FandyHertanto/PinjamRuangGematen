@@ -1,75 +1,79 @@
 @extends('layouts.mainlayout')
 
-@section('title', 'Keranjang')
+@section('title', 'Keranjang Peminjaman')
 
 @section('content')
+<div class="container">
     <div class="card shadow">
         <div class="card-body">
-            <h3 class="card-title">Peminjaman {{ Auth::user()->username }} </h3>
-
-            @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-            @endif
-
-            <div class="my-5">
+            <div class="table-responsive">
                 <table class="table text-center">
+                    <h3 class="text-left mb-4">Keranjang Peminjaman</h3>
                     <thead>
                         <tr>
-                            <th>No.</th>
-                            <th>Ruang</th>
-                            <th>Tanggal Pinjam</th>
-                            <th>Mulai</th>
-                            <th>Selesai</th>
-                            <th>Keperluan</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
+                            <th class="col">No.</th>
+                            <th class="col">Tim Pelayanan</th>
+                            <th class="col">Ruang</th>
+                            <th class="col">Jumlah</th>
+                            <th class="col">Tanggal Pinjam</th>
+                            <th class="col">Mulai</th>
+                            <th class="col">Selesai</th>
+                            <th class="col">Keperluan</th>
+                            <th class="col">Status</th>
+                            <th class="col">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                            $peminjamans = $peminjamans->reverse(); // Memutar urutan koleksi
-                        @endphp
-                        @foreach ($peminjamans as $peminjaman)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $peminjaman->room->NamaRuang }}</td>
-                                <td>{{ $peminjaman->TanggalPinjam }}</td>
-                                <td>{{ $peminjaman->JamMulai }}</td>
-                                <td>{{ $peminjaman->JamSelesai }}</td>
-                                <td>{{ $peminjaman->Deskripsi }}</td>
-                                <td>{{ $peminjaman->Persetujuan }}</td>
-                                <td>
-                                    @if ($peminjaman->Persetujuan == 'disetujui')
-                                        @if ($peminjaman->StatusPinjam != 'dibatalkan')
-                                            <form action="{{ route('rents.cancel', $peminjaman->id) }}" method="POST"
-                                                style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Batal</button>
-                                            </form>
-                                        @else
-                                            <span>Dibatalkan</span>
-                                        @endif
-                                    @elseif ($peminjaman->Persetujuan == 'ditolak')
-                                        Ditolak
-                                    @elseif ($peminjaman->Persetujuan == 'pending')
-                                        pending
-                                    @endif
-                                </td>
-                            </tr>
+                        @foreach ($peminjamans as $item)
+                        <tr>
+                            <td>{{ $i++ }}</td>  <!-- Menampilkan nomor urut -->
+                            <td>{{ $item->TimPelayanan }}</td>
+                            <td>{{ $item->room->NamaRuang }}</td>
+                            <td>{{ $item->Jumlah }}</td>
+                            <td>{{ $item->TanggalPinjam }}</td>
+                            <td>{{ substr($item->JamMulai, 0, 5) }}</td>
+                            <td>{{ substr($item->JamSelesai, 0, 5) }}</td>
+                            <td>{{ $item->Deskripsi }}</td>
+                            <td>
+                                @if ($item->Persetujuan == 'disetujui')
+                                Disetujui
+                                @elseif ($item->Persetujuan == 'ditolak')
+                                Ditolak
+                                @elseif ($item->Persetujuan == 'dibatalkan')
+                                Dibatalkan
+                                @else
+                                Menunggu
+                                @endif
+                            </td>
+                            <td>
+                                <!-- Aksi sesuai dengan status -->
+                                @if ($item->Persetujuan == 'menunggu')
+                                <a href="{{ route('peminjaman.batal', $item->id) }}" class="btn btn-danger">Batal</a>
+                                @endif
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
-
+                <div class="mt-4 d-flex justify-content-center">
+                    {{ $peminjamans->links('vendor.pagination.custom') }}  <!-- Ganti dengan view pagination Anda jika diperlukan -->
+                </div>  
             </div>
         </div>
     </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style>
 @endsection

@@ -85,7 +85,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="Kapasitas" class='form-label'>Kapasitas</label>
-                                <input type="number" name="Kapasitas" value='{{ $room->Kapasitas }}' id="Kapasitas"
+                                <input type="string" name="Kapasitas" value='{{ $room->Kapasitas }}' id="Kapasitas"
                                     class="form-control" placeholder=" Kapasitas ruangan">
                             </div>
 

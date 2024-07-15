@@ -4,85 +4,86 @@
 
 @section('content')
 
-<div class="card border-0">
-    <div class="card-body">
-        <h3 class="card-title text-left">Detail Pengguna, {{ $user->username }}</h3>
+    <div class="card border-0">
+        <div class="card-body">
+            <h3 class="card-title text-left">Detail Pengguna, {{ $user->username }}</h3>
 
-        <div class="my-3">
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="list-group list-group-flush">
-                        {{-- <li class="list-group-item">Nama: {{ $user->username }}</li> --}}
-                        <li class="list-group-item">No HP: {{ $user->phone }}</li>
-                        <li class="list-group-item">Email: {{ $user->email }}</li>
-                        <li class="list-group-item">Status: {{ $user->status }}</li>
-                        <li class="list-group-item">
-                           Role:
+            <div class="my-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="list-group list-group-flush">
+                            {{-- <li class="list-group-item">Nama: {{ $user->username }}</li> --}}
+                            <li class="list-group-item">No HP: {{ $user->phone }}</li>
+                            <li class="list-group-item">Email: {{ $user->email }}</li>
+                            <li class="list-group-item">Status: {{ $user->status }}</li>
+                            <li class="list-group-item">
+                                Role:
+                                @if ($user->role_id == 1)
+                                    Admin
+                                @elseif ($user->role_id == 2)
+                                    Umat
+                                @endif
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-12 d-flex align-items-center justify-content-end">
+                        <div>
                             @if ($user->role_id == 1)
-                                Admin
+                                <form action="{{ route('users.demote', ['id' => $user->id]) }}" method="POST"
+                                    class="d-inline">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-warning btn-sm">Ubah ke Umat</button>
+                                </form>
                             @elseif ($user->role_id == 2)
-                                Umat
+                                <form action="{{ route('users.promote', ['id' => $user->id]) }}" method="POST"
+                                    class="d-inline">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-info btn-sm">Ubah ke Admin</button>
+                                </form>
                             @endif
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-12 d-flex align-items-center justify-content-end">
-                    <div>
-                        @if ($user->role_id == 1)
-                            <form action="{{ route('users.demote', ['id' => $user->id]) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('PUT')
-                                <button type="submit" class="btn btn-warning btn-sm">Ubah ke Umat</button>
-                            </form>
-                        @elseif ($user->role_id == 2)
-                            <form action="{{ route('users.promote', ['id' => $user->id]) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('PUT')
-                                <button type="submit" class="btn btn-info btn-sm">Ubah ke Admin</button>
-                            </form>
-                        @endif
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="mt-4">
-            <h4 class="text-center">Riwayat Peminjaman</h4>
-            @if ($peminjamans->count() > 0)
-                <div class="my-5">
-                    <table class="table text-center">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>Ruang</th>
-                                <th>Tanggal Pinjam</th>
-                                <th>Mulai</th>
-                                <th>Selesai</th>
-                                <th>Keperluan</th>
-                                <th>Status</th>
-                                
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($peminjamans as $index => $peminjaman)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $peminjaman->room->NamaRuang }}</td>
-                                <td>{{ $peminjaman->TanggalPinjam }}</td>
-                                <td>{{ $peminjaman->JamMulai }}</td>
-                                <td>{{ $peminjaman->JamSelesai }}</td>
-                                <td>{{ $peminjaman->Deskripsi }}</td>
-                                <td>{{ $peminjaman->Persetujuan }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @else
-                <p>Belum ada riwayat peminjaman untuk pengguna ini.</p>
-            @endif
+            <div class="mt-4">
+                <h4 class="text-center">Riwayat Peminjaman</h4>
+                @if ($peminjamans->count() > 0)
+                    <div class="my-5">
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Ruang</th>
+                                    <th>Tanggal Pinjam</th>
+                                    <th>Mulai</th>
+                                    <th>Selesai</th>
+                                    <th>Keperluan</th>
+                                    <th>Status</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($peminjamans as $index => $peminjaman)
+                                    <tr>
+                                        <td>{{ $peminjaman->room->NamaRuang }}</td>
+                                        <td>{{ date('d-m-Y', strtotime($peminjaman->TanggalPinjam)) }}</td>
+                                        <td>{{ date('H:i', strtotime($peminjaman->JamMulai)) }}</td>
+                                        <td>{{ date('H:i', strtotime($peminjaman->JamSelesai)) }}</td>
+                                        <td>{{ $peminjaman->Deskripsi }}</td>
+                                        <td>{{ $peminjaman->Persetujuan }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <p>Belum ada riwayat peminjaman untuk pengguna ini.</p>
+                @endif
+            </div>
         </div>
     </div>
-</div>
 
 @endsection

@@ -13,17 +13,19 @@ use App\Mail\UserRejectedNotification;
 class UserController extends Controller
 {
     public function keranjang()
-    {
-        // Ambil ID pengguna yang sedang masuk
-        $userId = Auth::id();
+{
+    // Ambil ID pengguna yang sedang masuk
+    $userId = Auth::id();
 
-        // Ambil data peminjaman yang terkait dengan pengguna saat ini
-        $peminjamans = Peminjaman::where('peminjam_id', $userId)->get();
+    // Ambil data peminjaman yang terkait dengan pengguna saat ini dengan pagination
+    $peminjamans = Peminjaman::latest()->simplePaginate(25);
 
-        // Kembalikan view 'keranjang' dengan data peminjaman
-        return view('keranjang', ['peminjamans' => $peminjamans]);
-    }
-
+    // Kembalikan view 'keranjang' dengan data peminjaman
+    return view('keranjang', [
+        'peminjamans' => $peminjamans,
+        'i' => ($peminjamans->currentPage() - 1) * $peminjamans->perPage() + 1  // Menghitung nomor urut
+    ]);
+}
     public function index()
     {
         // Ambil semua pengguna dengan role ID 1, 2 (Admin, Umat) yang statusnya 'active'

@@ -36,7 +36,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="Kapasitas" class="form-label">Kapasitas</label>
-                                <input type="number" name="Kapasitas" id="Kapasitas" class="form-control"
+                                <input type="text" name="Kapasitas" id="Kapasitas" class="form-control"
                                     placeholder="Kapasitas ruang">
                             </div>
 
