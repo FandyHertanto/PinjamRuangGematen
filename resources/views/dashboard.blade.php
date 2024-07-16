@@ -105,12 +105,58 @@
                 <div class="col-lg-12">
                     <canvas id="barChart" width="800" height="400"></canvas>
                 </div>
+                
+                <div class="card shadow mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Data Peminjaman Berdasarkan Bulan</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th class="col">Peminjam</th>
+                                        <th class="col">Ruang</th>
+                                        <th class="col">Tanggal Pinjam</th>
+                                        <th class="col">Jam</th> 
+                                        <th class="col">Status</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($rents as $item)
+                                    <tr>  
+                                        <td>{{ $item->user->username }}</td>   
+                                        <td>{{ $item->room->NamaRuang }}</td>
+                                        <td>{{ $item->TanggalPinjam }}</td>
+                                        <td>{{ substr($item->JamMulai, 0, 5) }} - {{ substr($item->JamSelesai, 0, 5) }}</td>
+                                        <td>
+                                            @if ($item->Persetujuan == 'disetujui')
+                                            Disetujui
+                                            @elseif ($item->Persetujuan == 'ditolak')
+                                            Ditolak
+                                            @elseif ($item->Persetujuan == 'dibatalkan')
+                                            Dibatalkan
+                                            @else
+                                            Menunggu
+                                            @endif
+                                        </td>
+                                        
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
 
+    
 <!-- JavaScript Section -->
 <script>
+    
     document.addEventListener('DOMContentLoaded', function() {
         var ctx = document.getElementById('barChart').getContext('2d');
         var myChart = new Chart(ctx, {

@@ -28,4 +28,5 @@ class Room extends Model
     {
         return $this->hasMany(Fasilitas::class, 'ruang_id');
     }
+    
 }
