@@ -51,7 +51,7 @@
     <div class="main">
         <nav class="navbar navbar-dark navbar-expand-lg">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{{ Auth::user()->role_id == 1 || Auth::user()->role_id == 3 ? url('dashboard') : url('home') }}">Gematen</a>
+                <a class="navbar-brand" href="{{ Auth::user()->role_id == 1 || Auth::user()->role_id == 3 ? url('dashboard') : url('home') }}">GEMATEN</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#hamburger"
                     aria-controls="hamburger" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -66,18 +66,37 @@
                     @endphp
                 
                     @if ($roleId == 1 || $roleId == 3)
-                        <a href="{{ url('dashboard') }}" class="{{ request()->route()->uri == 'dashboard' ? 'active' : '' }}">Dashboard</a>
-                        <a href="{{ url('rent') }}" class="{{ request()->route()->uri == 'rent' ? 'active' : '' }}">Peminjaman</a>
-                        <a href="{{ url('users') }}" class="{{ request()->route()->uri == 'users' || request()->route()->uri == 'registered-user' ? 'active' : '' }}">Pengguna</a>
-                        <a href="{{ route('room') }}" class="{{ request()->route()->uri == 'room' || request()->route()->uri == 'room-add' || request()->route()->uri == 'room/edit/' || request()->route()->uri == 'room-delete' ? 'active' : '' }}">Ruang</a>
-                        <a href="{{ route('item') }}" class="{{ request()->route()->uri == 'item' || request()->route()->uri == 'item-add' || request()->route()->uri == 'item-edit' || request()->route()->uri == 'item-delete' ? 'active' : '' }}">Barang</a>
-                        <a href="{{ url('profile') }}" class="{{ request()->route()->uri == 'profile' ? 'active' : '' }}">Profile</a>
+                        <a href="{{ url('dashboard') }}" class="{{ 
+                            request()->route()->uri == 'dashboard' ? 'active' : '' }}">Dashboard</a>
+                        <a href="{{ url('rent') }}" class="{{ 
+                            request()->route()->uri == 'rent' ? 'active' : '' }}">Peminjaman</a>
+                        <a href="{{ url('users') }}" class="{{
+                            request()->route()->uri == 'users' || 
+                            request()->route()->uri == 'registered-user' || 
+                            Str::startsWith(request()->route()->uri, 'user-detail/') ? 'active' : '' }}">Pengguna</a>
+                        <a href="{{ route('room') }}" class="{{ 
+                            request()->route()->uri == 'room' || 
+                            request()->route()->uri == 'room-add' || 
+                            Str::startsWith(request()->route()->uri, 'room/edit/') || request()->route()->uri == 'room-delete' ? 'active' : '' }}">Ruang</a>
+                        <a href="{{ route('item') }}" class="{{ 
+                            request()->route()->uri == 'item' || 
+                            request()->route()->uri == 'item-add' || 
+                            request()->route()->uri == 'item-edit' || 
+                            request()->route()->uri == 'item-delete' || 
+                            Str::startsWith(request()->route()->uri, 'fasilitas-add') ? 'active' : '' }}">
+                            Barang
+                        </a>
+                        
+                        <a href="{{ url('profile') }}" class=" request()->route()->uri == 'profile-edit'|| {{ request()->route()->uri == 'profile' ? 'active' : '' }}">Profile</a>
                         <a href="{{ url('logout') }}" class="{{ request()->route()->uri == 'logout' ? 'active' : '' }}">Keluar</a>
                     @else
-                        <a href="{{ url('home') }}" class="{{ request()->route()->uri == 'home' ? 'active' : '' }}">Home</a>
-                        <a href="{{ url('pinjam-ruang') }}" class="{{ request()->route()->uri == 'pinjam-ruang' ? 'active' : '' }}">Pinjam Ruang</a>
+                    <a href="{{ url('home') }}" class="{{ request()->route()->uri == 'home' ? 'active' : (Str::startsWith(request()->route()->uri, 'detail-ruang/') ? 'active' : '') }}">Home</a>
+
+                    <a href="{{ url('pinjam-ruang') }}" class="{{ request()->route()->uri == 'pinjam-ruang' ? 'active' : (request()->route()->uri == 'pinjam-add' ? 'active' : '') }}">Pinjam Ruang</a>
+
                         <a href="{{ url('keranjang') }}" class="{{ request()->route()->uri == 'keranjang' ? 'active' : '' }}">Keranjang</a>
-                        <a href="{{ url('profile') }}" class="{{ request()->route()->uri == 'profile' ? 'active' : '' }}">Profile</a>
+                        <a href="{{ url('profile') }}" class="{{ request()->route()->uri == 'profile' || Str::startsWith(request()->route()->uri, 'profile-edit') ? 'active' : '' }}">Profile</a>
+
                         <a href="{{ url('logout') }}" class="{{ request()->route()->uri == 'logout' ? 'active' : '' }}">Keluar</a>
                     @endif
                 </div>

@@ -237,6 +237,7 @@
 
         calendar.render();
     });
+    
 </script>
 
 @endsection

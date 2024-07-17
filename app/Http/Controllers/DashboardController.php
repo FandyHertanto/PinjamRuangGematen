@@ -10,60 +10,80 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
-{
-    // Menghitung jumlah semua pengguna
-    $userCount = User::count();
+    public function index(Request $request)
+    {
+        // Menghitung jumlah semua pengguna
+        $userCount = User::count();
 
-    // Menghitung jumlah semua ruangan
-    $roomCount = Room::count();
-    $ruangan = Room::orderBy('NamaRuang')->get(['id', 'NamaRuang']);
+        // Menghitung jumlah semua ruangan
+        $roomCount = Room::count();
+        $ruangan = Room::orderBy('NamaRuang')->get(['id', 'NamaRuang']);
 
-    // Menghitung jumlah pengguna yang belum di-approve (dengan status 'inactive')
-    $unapprovedUserCount = User::where('status', 'inactive')->count();
+        // Menghitung jumlah pengguna yang belum di-approve (dengan status 'inactive')
+        $unapprovedUserCount = User::where('status', 'inactive')->count();
 
-    // Menghitung jumlah pengguna yang sudah aktif (dengan status 'active')
-    $activeUserCount = User::where('status', 'active')->count();
+        // Menghitung jumlah pengguna yang sudah aktif (dengan status 'active')
+        $activeUserCount = User::where('status', 'active')->count();
 
-    // Mengambil data peminjaman yang disetujui
-    $rents = Peminjaman::where('Persetujuan', 'disetujui')
-        ->with('user', 'room') // Ensure relationships are eager loaded
-        ->orderBy('TanggalPinjam', 'desc') // Example ordering
-        ->get();
+        // Mengambil data peminjaman yang disetujui
+        $rents = Peminjaman::where('Persetujuan', 'disetujui')
+            ->with('user', 'room') // Ensure relationships are eager loaded
+            ->orderBy('TanggalPinjam', 'desc') // Example ordering
+            ->get()
+            ->groupBy('user_id')
+            ->map(function ($items) {
+                return [
+                    'user' => $items->first()->user,
+                    'total' => $items->count(),
+                    'items' => $items
+                ];
+            });
 
-    // Mengambil data peminjaman yang disetujui berdasarkan bulan
-    $peminjamanData = Peminjaman::where('Persetujuan', 'disetujui')
-        ->select(
-            DB::raw("COUNT(id) as total_peminjaman"),
-            DB::raw('MONTHNAME(TanggalPinjam) as bulan')
-        )
-        ->groupBy(DB::raw('MONTH(TanggalPinjam)'))
-        ->orderBy(DB::raw('MONTH(TanggalPinjam)'))
-        ->get();
+        // Mengambil data peminjaman yang disetujui berdasarkan bulan
+        $peminjamanData = Peminjaman::where('Persetujuan', 'disetujui')
+            ->select(
+                DB::raw("COUNT(id) as total_peminjaman"),
+                DB::raw('MONTHNAME(TanggalPinjam) as bulan')
+            )
+            ->groupBy(DB::raw('MONTH(TanggalPinjam)'))
+            ->orderBy(DB::raw('MONTH(TanggalPinjam)'))
+            ->get();
 
-    $total_peminjaman = $peminjamanData->pluck('total_peminjaman')->toArray();
-    $bulan = $peminjamanData->pluck('bulan')->toArray();
+        $total_peminjaman = $peminjamanData->pluck('total_peminjaman')->toArray();
+        $bulan = $peminjamanData->pluck('bulan')->toArray();
 
-    // Get available years from approved peminjaman
-    $availableYears = Peminjaman::where('Persetujuan', 'disetujui')
-        ->select(DB::raw('YEAR(TanggalPinjam) as year'))
-        ->distinct()
-        ->orderBy('year', 'asc')
-        ->pluck('year')
-        ->toArray();
+        // Mengambil data bulan-bulan yang tersedia dari data peminjaman yang disetujui
+        $availableMonths = Peminjaman::where('Persetujuan', 'disetujui')
+            ->select(DB::raw('MONTHNAME(TanggalPinjam) as month'))
+            ->distinct()
+            ->orderBy(DB::raw('MONTH(TanggalPinjam)'))
+            ->pluck('month')
+            ->toArray();
 
-    return view('dashboard', [
-        'user_count' => $userCount,
-        'room_count' => $roomCount,
-        'unapproved_user_count' => $unapprovedUserCount,
-        'active_user_count' => $activeUserCount,
-        'ruangan' => $ruangan,
-        'rents' => $rents, // Pass $rents variable to the view
-        'total_peminjaman' => $total_peminjaman,
-        'bulan' => $bulan,
-        'available_years' => $availableYears,
-    ]);
-}
+
+        // Get available years from approved peminjaman
+        $availableYears = Peminjaman::where('Persetujuan', 'disetujui')
+            ->select(DB::raw('YEAR(TanggalPinjam) as year'))
+            ->distinct()
+            ->orderBy('year', 'asc')
+            ->pluck('year')
+            ->toArray();
+
+            return view('dashboard', [
+                'user_count' => $userCount,
+                'room_count' => $roomCount,
+                'unapproved_user_count' => $unapprovedUserCount,
+                'active_user_count' => $activeUserCount,
+                'ruangan' => $ruangan,
+                'rents' => $rents,
+                'total_peminjaman' => $total_peminjaman,
+                'bulan' => $bulan,
+                'available_years' => $availableYears,
+                'available_months' => $availableMonths, // Menyertakan data bulan yang tersedia
+            ]);
+            
+    }
+
 
 
     public function getChartData($roomId, Request $request)

@@ -62,12 +62,12 @@
                                     <th>Selesai</th>
                                     <th>Keperluan</th>
                                     <th>Status</th>
-
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($peminjamans as $index => $peminjaman)
+                                @foreach ($peminjamans as $peminjaman)
                                     <tr>
+                                        <td>{{ $loop->iteration }}</td> <!-- Penomoran otomatis dengan $loop -->
                                         <td>{{ $peminjaman->room->NamaRuang }}</td>
                                         <td>{{ date('d-m-Y', strtotime($peminjaman->TanggalPinjam)) }}</td>
                                         <td>{{ date('H:i', strtotime($peminjaman->JamMulai)) }}</td>
@@ -82,7 +82,7 @@
                 @else
                     <p>Belum ada riwayat peminjaman untuk pengguna ini.</p>
                 @endif
-            </div>
+            </div> 
         </div>
     </div>
 

@@ -18,8 +18,7 @@
                             <th class="col">Ruang</th>
                             <th class="col">Jumlah</th>
                             <th class="col">Tanggal Pinjam</th>
-                            <th class="col">Mulai</th>
-                            <th class="col">Selesai</th>
+                            <th class="col">Jam</th>
                             <th class="col">Keperluan</th>
                             <th class="col">Aksi</th>
                         </tr>
@@ -32,9 +31,8 @@
                             <td>{{ $item->TimPelayanan }}</td>
                             <td>{{ $item->room->NamaRuang }}</td>
                             <td>{{ $item->Jumlah }}</td>
-                            <td>{{ $item->TanggalPinjam }}</td>
-                            <td>{{ substr($item->JamMulai, 0, 5) }}</td>
-                            <td>{{ substr($item->JamSelesai, 0, 5) }}</td>
+                            <td>{{ date('d-m-Y', strtotime($item->TanggalPinjam)) }}</td>
+                            <td>{{ substr($item->JamMulai, 0, 5) }}-{{ substr($item->JamSelesai, 0, 5) }}</td>
                             <td>{{ $item->Deskripsi }}</td>
                             <td id="aksi-cell-{{ $item->id }}">
                                 @if ($item->Persetujuan == 'disetujui')

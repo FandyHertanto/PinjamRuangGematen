@@ -35,8 +35,8 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('register', [AuthController::class, 'registerProses']);
 });
 
-Route::get('auth/redirect', [GoogleAuthController::class, 'redirect']); //->name('google-auth'
-Route::get('auth/google/callback', [GoogleAuthController::class, 'callback']); //->name('google-callback')
+Route::get('auth/redirect', [GoogleAuthController::class, 'redirect']); 
+Route::get('auth/google/callback', [GoogleAuthController::class, 'callback']); 
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -95,8 +95,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('pinjam-store', [CalendarController::class, 'store'])->name('pinjam.store');
     Route::get('/events', [CalendarController::class, 'getEvents'])->name('events');
 
-    Route::get('/events', [PeminjamanController::class, 'fetchEvents'])->name('events');
-
     //Route Peminjaman Admin
     Route::get('rent', [RentController::class, 'rent'])->name('rent');
     Route::post('/rents/approve/{id}', [RentController::class, 'approve'])->name('rents.approve');
@@ -110,3 +108,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/getChartData/{roomId}', [DashboardController::class, 'getChartData'])->name('getChartData');
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
+
+// Route::get('/events', [PeminjamanController::class, 'fetchEvents'])->name('events'); haram
