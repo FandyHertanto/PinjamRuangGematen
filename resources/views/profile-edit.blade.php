@@ -42,7 +42,7 @@
                             value="{{ $user->phone }}">
                     </div>
 
-                    <div class="d-flex justify-content-center my-4">
+                    <div class="d-flex my-4">
                         <button type="submit" class="btn btn-success">Perbarui</button>
                     </div>
                     

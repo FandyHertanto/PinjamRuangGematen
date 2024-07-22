@@ -4,9 +4,9 @@
 
 @section('content')
 
-<div class="card shadow">
+<div class="card shadow-lg border-0 rounded-3">
     <div class="card-body">
-        <h3 class="card-title text-center">Data Pengguna</h3>
+        <h3 class="card-title text-center mb-4">Data Pengguna</h3>
 
         <div class="my-3 d-flex">
             <a href="{{ url('registered-user') }}" class="btn btn-primary me-3">Aktivasi Pengguna</a>
@@ -15,12 +15,12 @@
         <div class="my-3">
             <!-- Search Bar -->
             <div class="mb-3">
-                <input type="text" id="search" class="form-control" placeholder="Cari pengguna">
+                <input type="text" id="search" class="form-control search-input" placeholder="Cari pengguna">
             </div>
 
             <div id="tableContainer">
                 <div class="table-responsive">
-                    <table class="table text-center" id="userTable">
+                    <table class="table text-center table-futuristic" id="userTable">
                         <thead>
                             <tr>
                                 <th class="col">No.</th>
@@ -48,23 +48,24 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('users.show', ['id' => $item->id]) }}" class="btn btn-success btn-sm"><i class="bi bi-info-circle"></i></a>
+                                    <a href="{{ route('users.show', ['id' => $item->id]) }}" class="btn btn-success btn-sm rounded-pill"><i class="bi bi-info-circle"></i></a>
 
                                     <form action="{{ route('users.delete', ['id' => $item->id]) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3-fill"></i></button>
+                                        <button type="submit" class="btn btn-danger btn-sm rounded-pill"><i class="bi bi-trash3-fill"></i></button>
                                     </form>
                                 </td>
                             </tr>
                             @empty
-                            
+                            <tr>
+                                <td colspan="6" class="text-center">No Data Available</td>
+                            </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
             </div>
-            
             
             <div id="noDataMessage" class="text-center d-none">
                 <p>Data tidak ditemukan</p>
@@ -112,4 +113,3 @@
         });
     });
 </script>
-

@@ -23,77 +23,110 @@
         rel="stylesheet">
 </head>
 
-<style>
-    .rubik-font {
-        font-family: 'Rubik', sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 400;
-        font-style: normal;
-    }
-
-    .main {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
-
-    .content {
-        flex: 1;
-    }
-
-    /* Default styling for all screen sizes */
-
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-  .col-s-1 {width: 8.33%;}
-  .col-s-2 {width: 16.66%;}
-  .col-s-3 {width: 25%;}
-  .col-s-4 {width: 33.33%;}
-  .col-s-5 {width: 41.66%;}
-  .col-s-6 {width: 50%;}
-  .col-s-7 {width: 58.33%;}
-  .col-s-8 {width: 66.66%;}
-  .col-s-9 {width: 75%;}
-  .col-s-10 {width: 83.33%;}
-  .col-s-11 {width: 91.66%;}
-  .col-s-12 {width: 100%;}
+<script>
+body {
+    font-family: 'Rubik';
+    background-color: #121212;
+    color: #e0e0e0;
 }
 
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-  .col-1 {width: 8.33%;}
-  .col-2 {width: 16.66%;}
-  .col-3 {width: 25%;}
-  .col-4 {width: 33.33%;}
-  .col-5 {width: 41.66%;}
-  .col-6 {width: 50%;}
-  .col-7 {width: 58.33%;}
-  .col-8 {width: 66.66%;}
-  .col-9 {width: 75%;}
-  .col-10 {width: 83.33%;}
-  .col-11 {width: 91.66%;}
-  .col-12 {width: 100%;}
+.main {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
 
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-  .col-l-1 {width: 8.33%;}
-  .col-l-2 {width: 16.66%;}
-  .col-l-3 {width: 25%;}
-  .col-l-4 {width: 33.33%;}
-  .col-l-5 {width: 41.66%;}
-  .col-l-6 {width: 50%;}
-  .col-l-7 {width: 58.33%;}
-  .col-l-8 {width: 66.66%;}
-  .col-l-9 {width: 75%;}
-  .col-l-10 {width: 83.33%;}
-  .col-l-11 {width: 91.66%;}
-  .col-l-12 {width: 100%;}
+.navbar {
+    background: linear-gradient(90deg, #333, #444);
+    border-bottom: 2px solid #555;
 }
 
+.navbar-brand {
+    font-weight: 600;
+    color: #f5f5f5;
+}
 
-</style>
+.navbar-toggler {
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-toggler-icon {
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%23ffffff"%3E%3Cpath stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /%3E%3C/svg%3E');
+}
+
+/* Sidebar styling */
+.sidebar {
+    background: linear-gradient(135deg, #1c1c1c, #2a2a2a);
+    color: #e0e0e0;
+    height: 100%;
+    border-right: 1px solid #333;
+    transition: all 0.3s ease;
+    border-radius: 12px;
+}
+
+.sidebar a {
+    display: block;
+    color: #e0e0e0;
+    padding: 12px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 5px;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+.sidebar a.active,
+.sidebar a:hover {
+    background: rgba(0, 136, 255, 0.7);
+    color: #fff;
+    
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar i {
+    margin-right: 10px;
+    font-size: 16px;
+    
+}
+
+/* Content styling */
+.content {
+    flex: 1;
+    padding: 20px;
+    background: #1e1e1e;
+    border-radius: 8px;
+}
+
+/* Responsive design adjustments */
+@media only screen and (max-width: 992px) {
+    .sidebar {
+        width: 250px;
+    }
+    
+    .sidebar a {
+        font-size: 16px;
+        padding: 15px 25px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: absolute;
+        top: 56px; /* Adjust according to the height of the navbar */
+        left: 0;
+        z-index: 1000;
+        display: none;
+    }
+    
+    .sidebar.collapse.show {
+        display: block;
+    }
+}
+
+</script>
 
 <body class="rubik-font">
     <div class="main">
@@ -114,19 +147,19 @@
                     @endphp
                 
                     @if ($roleId == 1 || $roleId == 3)
-                        <a href="{{ url('dashboard') }}" class="{{ request()->route()->uri == 'dashboard' ? 'active' : '' }}">Dashboard</a>
-                        <a href="{{ url('rent') }}" class="{{ request()->route()->uri == 'rent' ? 'active' : '' }}">Peminjaman</a>
-                        <a href="{{ url('users') }}" class="{{ request()->route()->uri == 'users' || request()->route()->uri == 'registered-user' || Str::startsWith(request()->route()->uri, 'user-detail/') ? 'active' : '' }}">Pengguna</a>
-                        <a href="{{ route('room') }}" class="{{ request()->route()->uri == 'room' || request()->route()->uri == 'room-add' || Str::startsWith(request()->route()->uri, 'room/edit/') || request()->route()->uri == 'room-delete' ? 'active' : '' }}">Ruang</a>
-                        <a href="{{ route('item') }}" class="{{ request()->route()->uri == 'item' || request()->route()->uri == 'item-add' || request()->route()->uri == 'item-edit' || request()->route()->uri == 'item-delete' || Str::startsWith(request()->route()->uri, 'fasilitas-add') ? 'active' : '' }}">Barang</a>
-                        <a href="{{ url('profile') }}" class="request()->route()->uri == 'profile-edit'|| {{ request()->route()->uri == 'profile' ? 'active' : '' }}">Profile</a>
-                        <a href="{{ url('logout') }}" class="{{ request()->route()->uri == 'logout' ? 'active' : '' }}">Keluar</a>
+                        <a href="{{ url('dashboard') }}" class="{{ request()->route()->uri == 'dashboard' ? 'active' : '' }}"><i class="bi bi-house-door"></i> Dashboard</a>
+                        <a href="{{ url('rent') }}" class="{{ request()->route()->uri == 'rent' ? 'active' : '' }}"><i class="bi bi-calendar"></i> Peminjaman</a>
+                        <a href="{{ url('users') }}" class="{{ request()->route()->uri == 'users' || request()->route()->uri == 'registered-user' || Str::startsWith(request()->route()->uri, 'user-detail/') ? 'active' : '' }}"><i class="bi bi-people"></i> Pengguna</a>
+                        <a href="{{ route('room') }}" class="{{ request()->route()->uri == 'room' || request()->route()->uri == 'room-add' || Str::startsWith(request()->route()->uri, 'room/edit/') || request()->route()->uri == 'room-delete' ? 'active' : '' }}"><i class="bi bi-door-open"></i> Ruang</a>
+                        <a href="{{ route('item') }}" class="{{ request()->route()->uri == 'item' || request()->route()->uri == 'item-add' || request()->route()->uri == 'item-edit' || request()->route()->uri == 'item-delete' || Str::startsWith(request()->route()->uri, 'fasilitas-add') ? 'active' : '' }}"><i class="bi bi-box"></i> Barang</a>
+                        <a href="{{ url('profile') }}" class="{{ request()->route()->uri == 'profile' || request()->route()->uri == 'profile-edit' ? 'active' : '' }}"><i class="bi bi-person"></i> Profile</a>
+                        <a href="{{ url('logout') }}" class="{{ request()->route()->uri == 'logout' ? 'active' : '' }}"><i class="bi bi-box-arrow-right"></i> Keluar</a>
                     @else
-                        <a href="{{ url('home') }}" class="{{ request()->route()->uri == 'home' ? 'active' : (Str::startsWith(request()->route()->uri, 'detail-ruang/') ? 'active' : '') }}">Home</a>
-                        <a href="{{ url('pinjam-ruang') }}" class="{{ request()->route()->uri == 'pinjam-ruang' ? 'active' : (request()->route()->uri == 'pinjam-add' ? 'active' : '') }}">Pinjam Ruang</a>
-                        <a href="{{ url('keranjang') }}" class="{{ request()->route()->uri == 'keranjang' ? 'active' : '' }}">Keranjang</a>
-                        <a href="{{ url('profile') }}" class="{{ request()->route()->uri == 'profile' || Str::startsWith(request()->route()->uri, 'profile-edit') ? 'active' : '' }}">Profile</a>
-                        <a href="{{ url('logout') }}" class="{{ request()->route()->uri == 'logout' ? 'active' : '' }}">Keluar</a>
+                        <a href="{{ url('home') }}" class="{{ request()->route()->uri == 'home' ? 'active' : (Str::startsWith(request()->route()->uri, 'detail-ruang/') ? 'active' : '') }}"><i class="bi bi-house-door"></i> Home</a>
+                        <a href="{{ url('pinjam-ruang') }}" class="{{ request()->route()->uri == 'pinjam-ruang' ? 'active' : (request()->route()->uri == 'pinjam-add' ? 'active' : '') }}"><i class="bi bi-calendar"></i> Pinjam Ruang</a>
+                        <a href="{{ url('keranjang') }}" class="{{ request()->route()->uri == 'keranjang' ? 'active' : '' }}"><i class="bi bi-cart"></i> Keranjang</a>
+                        <a href="{{ url('profile') }}" class="{{ request()->route()->uri == 'profile' || Str::startsWith(request()->route()->uri, 'profile-edit') ? 'active' : '' }}"><i class="bi bi-person"></i> Profile</a>
+                        <a href="{{ url('logout') }}" class="{{ request()->route()->uri == 'logout' ? 'active' : '' }}"><i class="bi bi-box-arrow-right"></i> Keluar</a>
                     @endif
                 </div>
                 

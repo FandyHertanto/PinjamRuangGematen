@@ -108,7 +108,7 @@ class CalendarController extends Controller
     $peminjaman->Jumlah = $request->Jumlah;
     $peminjaman->save();
 
-    $adminEmails = User::where('role_id', 1)->pluck('email')->toArray();
+    $adminEmails = User::whereIn('role_id', [1, 3])->pluck('email')->toArray();
 
     foreach ($adminEmails as $email) {
         $data = [
