@@ -17,7 +17,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
 
-    {{-- link --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap"
@@ -28,7 +27,7 @@
     .rubik-font {
         font-family: 'Rubik', sans-serif;
         font-optical-sizing: auto;
-        font-weight: 400; /* Adjust the weight as needed */
+        font-weight: 400;
         font-style: normal;
     }
 
@@ -42,9 +41,58 @@
         flex: 1;
     }
 
-    .footer {
-        flex-shrink: 0;
-    }
+    /* Default styling for all screen sizes */
+
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .col-s-1 {width: 8.33%;}
+  .col-s-2 {width: 16.66%;}
+  .col-s-3 {width: 25%;}
+  .col-s-4 {width: 33.33%;}
+  .col-s-5 {width: 41.66%;}
+  .col-s-6 {width: 50%;}
+  .col-s-7 {width: 58.33%;}
+  .col-s-8 {width: 66.66%;}
+  .col-s-9 {width: 75%;}
+  .col-s-10 {width: 83.33%;}
+  .col-s-11 {width: 91.66%;}
+  .col-s-12 {width: 100%;}
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .col-1 {width: 8.33%;}
+  .col-2 {width: 16.66%;}
+  .col-3 {width: 25%;}
+  .col-4 {width: 33.33%;}
+  .col-5 {width: 41.66%;}
+  .col-6 {width: 50%;}
+  .col-7 {width: 58.33%;}
+  .col-8 {width: 66.66%;}
+  .col-9 {width: 75%;}
+  .col-10 {width: 83.33%;}
+  .col-11 {width: 91.66%;}
+  .col-12 {width: 100%;}
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .col-l-1 {width: 8.33%;}
+  .col-l-2 {width: 16.66%;}
+  .col-l-3 {width: 25%;}
+  .col-l-4 {width: 33.33%;}
+  .col-l-5 {width: 41.66%;}
+  .col-l-6 {width: 50%;}
+  .col-l-7 {width: 58.33%;}
+  .col-l-8 {width: 66.66%;}
+  .col-l-9 {width: 75%;}
+  .col-l-10 {width: 83.33%;}
+  .col-l-11 {width: 91.66%;}
+  .col-l-12 {width: 100%;}
+}
+
+
 </style>
 
 <body class="rubik-font">
@@ -66,37 +114,18 @@
                     @endphp
                 
                     @if ($roleId == 1 || $roleId == 3)
-                        <a href="{{ url('dashboard') }}" class="{{ 
-                            request()->route()->uri == 'dashboard' ? 'active' : '' }}">Dashboard</a>
-                        <a href="{{ url('rent') }}" class="{{ 
-                            request()->route()->uri == 'rent' ? 'active' : '' }}">Peminjaman</a>
-                        <a href="{{ url('users') }}" class="{{
-                            request()->route()->uri == 'users' || 
-                            request()->route()->uri == 'registered-user' || 
-                            Str::startsWith(request()->route()->uri, 'user-detail/') ? 'active' : '' }}">Pengguna</a>
-                        <a href="{{ route('room') }}" class="{{ 
-                            request()->route()->uri == 'room' || 
-                            request()->route()->uri == 'room-add' || 
-                            Str::startsWith(request()->route()->uri, 'room/edit/') || request()->route()->uri == 'room-delete' ? 'active' : '' }}">Ruang</a>
-                        <a href="{{ route('item') }}" class="{{ 
-                            request()->route()->uri == 'item' || 
-                            request()->route()->uri == 'item-add' || 
-                            request()->route()->uri == 'item-edit' || 
-                            request()->route()->uri == 'item-delete' || 
-                            Str::startsWith(request()->route()->uri, 'fasilitas-add') ? 'active' : '' }}">
-                            Barang
-                        </a>
-                        
-                        <a href="{{ url('profile') }}" class=" request()->route()->uri == 'profile-edit'|| {{ request()->route()->uri == 'profile' ? 'active' : '' }}">Profile</a>
+                        <a href="{{ url('dashboard') }}" class="{{ request()->route()->uri == 'dashboard' ? 'active' : '' }}">Dashboard</a>
+                        <a href="{{ url('rent') }}" class="{{ request()->route()->uri == 'rent' ? 'active' : '' }}">Peminjaman</a>
+                        <a href="{{ url('users') }}" class="{{ request()->route()->uri == 'users' || request()->route()->uri == 'registered-user' || Str::startsWith(request()->route()->uri, 'user-detail/') ? 'active' : '' }}">Pengguna</a>
+                        <a href="{{ route('room') }}" class="{{ request()->route()->uri == 'room' || request()->route()->uri == 'room-add' || Str::startsWith(request()->route()->uri, 'room/edit/') || request()->route()->uri == 'room-delete' ? 'active' : '' }}">Ruang</a>
+                        <a href="{{ route('item') }}" class="{{ request()->route()->uri == 'item' || request()->route()->uri == 'item-add' || request()->route()->uri == 'item-edit' || request()->route()->uri == 'item-delete' || Str::startsWith(request()->route()->uri, 'fasilitas-add') ? 'active' : '' }}">Barang</a>
+                        <a href="{{ url('profile') }}" class="request()->route()->uri == 'profile-edit'|| {{ request()->route()->uri == 'profile' ? 'active' : '' }}">Profile</a>
                         <a href="{{ url('logout') }}" class="{{ request()->route()->uri == 'logout' ? 'active' : '' }}">Keluar</a>
                     @else
-                    <a href="{{ url('home') }}" class="{{ request()->route()->uri == 'home' ? 'active' : (Str::startsWith(request()->route()->uri, 'detail-ruang/') ? 'active' : '') }}">Home</a>
-
-                    <a href="{{ url('pinjam-ruang') }}" class="{{ request()->route()->uri == 'pinjam-ruang' ? 'active' : (request()->route()->uri == 'pinjam-add' ? 'active' : '') }}">Pinjam Ruang</a>
-
+                        <a href="{{ url('home') }}" class="{{ request()->route()->uri == 'home' ? 'active' : (Str::startsWith(request()->route()->uri, 'detail-ruang/') ? 'active' : '') }}">Home</a>
+                        <a href="{{ url('pinjam-ruang') }}" class="{{ request()->route()->uri == 'pinjam-ruang' ? 'active' : (request()->route()->uri == 'pinjam-add' ? 'active' : '') }}">Pinjam Ruang</a>
                         <a href="{{ url('keranjang') }}" class="{{ request()->route()->uri == 'keranjang' ? 'active' : '' }}">Keranjang</a>
                         <a href="{{ url('profile') }}" class="{{ request()->route()->uri == 'profile' || Str::startsWith(request()->route()->uri, 'profile-edit') ? 'active' : '' }}">Profile</a>
-
                         <a href="{{ url('logout') }}" class="{{ request()->route()->uri == 'logout' ? 'active' : '' }}">Keluar</a>
                     @endif
                 </div>
@@ -108,15 +137,8 @@
         </div>
     </div>
 
-    {{-- <footer class="footer bg-light py-3">
-        <div class="container text-center">
-            <p>&copy; 2024 Gematen. All rights reserved.</p>
-        </div>
-    </footer> --}}
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
-        
     </script>
 </body>
 

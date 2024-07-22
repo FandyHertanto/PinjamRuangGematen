@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('fasilitas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('ruang_id');
-            $table->foreign('ruang_id')->references('id')->on('ruang');
+            $table->foreign('ruang_id')->references('id')->on('ruang')->onDelete('cascade');
             $table->unsignedBigInteger('barang_id');
-            $table->foreign('barang_id')->references('id')->on('barang');
+            $table->foreign('barang_id')->references('id')->on('barang')->onDelete('cascade');
             $table->string('JumlahBarang');
             $table->timestamps();
         });

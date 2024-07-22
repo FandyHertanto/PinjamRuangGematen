@@ -12,6 +12,7 @@ class Peminjaman extends Model
 
     protected $fillable = [
         'peminjam_id',
+        'NamaPeminjam',
         'TimPelayanan',
         'Jumlah',
         'Deskripsi',
@@ -19,7 +20,7 @@ class Peminjaman extends Model
         'TanggalPinjam',
         'JamMulai',
         'JamSelesai',
-        
+        'Persetujuan'
     ];
     public function user()
     {

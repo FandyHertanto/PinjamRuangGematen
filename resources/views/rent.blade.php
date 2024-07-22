@@ -7,9 +7,16 @@
 <div class="container">
     <div class="card shadow">
         <div class="card-body">
+
+            <h3 class="text-left mb-4">Daftar Peminjaman</h3>
+            
+            <div class="mb-4">
+                <input type="text" id="globalSearch" class="form-control" placeholder="Cari di sini">
+            </div>
+
             <div class="table-responsive">
                 <table class="table text-center">
-                    <h3 class="text-left mb-4">Daftar Peminjaman</h3>
+                    
                     <thead>
                         <tr>
                             <th class="col">No.</th>
@@ -23,11 +30,12 @@
                             <th class="col">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="rentalTableBody">
+                        @php $i = 1; @endphp
                         @foreach ($rents as $item)
                         <tr>
                             <td>{{ $i++ }}</td>
-                            <td>{{ $item->user->username }}</td>
+                            <td>{{ $item->NamaPeminjam }}</td>
                             <td>{{ $item->TimPelayanan }}</td>
                             <td>{{ $item->room->NamaRuang }}</td>
                             <td>{{ $item->Jumlah }}</td>
@@ -59,7 +67,7 @@
                 </table>
                 <div class="mt-4 d-flex justify-content-center">
                     {{ $rents->links('vendor.pagination.custom') }}
-                </div>  
+                </div>
             </div>
         </div>
     </div>
@@ -80,8 +88,8 @@
                     <div class="mb-3">
                         <label for="message-text" class="col-form-label">Pesan:</label>
                         <textarea class="form-control" id="message-text" name="message" required>
-                                Peminjaman anda telah diterima 
-                                Catatan dari Admin: - (isi bila diperlukan)</textarea>
+Peminjaman anda telah disetujui, mohon untuk ditindaklanjuti
+Catatan dari Admin: - (isi/hapus bila diperlukan)</textarea>
                     </div>
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label"></label>
@@ -113,8 +121,8 @@
                     <div class="mb-3">
                         <label for="reject-message-text" class="col-form-label">Pesan:</label>
                         <textarea class="form-control" id="reject-message-text" name="message" required>
-                                Peminjaman anda telah ditolak
-                                Catatan dari Admin: - (isi bila diperlukan)</textarea>
+Peminjaman anda telah ditolak, mohon untuk ditindaklanjuti
+Catatan dari Admin: - (isi/hapus bila diperlukan)</textarea>
                     </div>
                     <div class="mb-3">
                         <label for="reject-recipient-name" class="col-form-label"></label>
@@ -132,6 +140,17 @@
 <!-- End Modal for Tolak -->
 
 <style>
+    #message-text,
+    #reject-message-text {
+        width: 100%;
+        height: 150px; /* Adjust height as needed */
+        padding: 10px;
+        box-sizing: border-box;
+        font-size: 1rem;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+
     .card {
         border: none;
     }
@@ -194,7 +213,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}', // Add CSRF Token for Laravel
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     },
                     body: JSON.stringify({
                         recipient: recipient,
@@ -218,7 +237,7 @@
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}', // Add CSRF Token for Laravel
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
                             },
                             body: JSON.stringify({
                                 id: itemId
@@ -258,7 +277,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}', // Add CSRF Token for Laravel
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     },
                     body: JSON.stringify({
                         recipient: recipient,
@@ -282,7 +301,7 @@
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}', // Add CSRF Token for Laravel
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
                             },
                             body: JSON.stringify({
                                 id: itemId
@@ -325,6 +344,18 @@
             document.getElementById('reject-recipient-name').value = '';
             document.getElementById('reject-recipient-email').value = '';
             document.getElementById('reject-message-text').value = '';
+        });
+
+        // Global search functionality
+        document.getElementById('globalSearch').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#rentalTableBody tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const isVisible = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(query));
+                row.style.display = isVisible ? '' : 'none';
+            });
         });
     });
 </script>

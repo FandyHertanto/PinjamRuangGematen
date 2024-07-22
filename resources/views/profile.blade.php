@@ -9,7 +9,13 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table text-center">
-                        <h3 class="text-left mb-4">Profile</h3>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="text-left">Profile</h3>
+                            <form action="{{ route('profile-edit') }}" method="GET">
+                                <button type="submit" class="btn btn-primary">Edit Profile</button>
+                            </form>
+                        </div>
+                        
 
                         @if (session('success'))
                             <div class="alert alert-success">
@@ -40,9 +46,7 @@
                                 value="{{ Auth::user()->phone }}" readonly>
                         </div>
 
-                        <form action="{{ route('profile-edit') }}" method="GET">
-                            <button type="submit" class="btn btn-primary">Edit Profile</button>
-                        </form>
+                        
 
 
 

@@ -60,6 +60,6 @@ class ItemController extends Controller
         $item = Item::findOrFail($id);
         $item->delete();
 
-        return redirect()->route('item')->with('status', 'Barang berhasil dihapus');
+        return redirect()->back()->with('status', 'Barang berhasil dihapus');
     }
 }

@@ -26,31 +26,31 @@
                 <!-- Form for room booking -->
                 <form action="{{ route('pinjam.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
-
+                
                     <div class="mb-3">
                         <label for="NamaPeminjam" class="form-label">Nama Peminjam</label>
-                        <input type="text" name="NamaPeminjam" id="NamaPeminjam" class="form-control"
-                            value="{{ Auth::user()->username }}" placeholder="Nama Peminjam">
+                        <input type="text" name="NamaPeminjam" id="NamaPeminjam" class="form-control" 
+                            value="{{ old('NamaPeminjam') }}" placeholder="Nama Peminjam" required>
                     </div>
-
+                    
+                
                     <div class="mb-3">
                         <label for="TimPelayanan" class="form-label">Tim Pelayanan</label>
                         <input type="text" name="TimPelayanan" id="TimPelayanan" class="form-control"
-                            placeholder="Misdinar/komsos" value="{{ old('TimPelayanan') }}">
+                            placeholder="Misdinar/komsos" value="{{ old('TimPelayanan') }}" required>
                     </div>
-                    
+                
                     <div class="mb-3">
                         <label for="Jumlah" class="form-label">Jumlah</label>
                         <input type="number" name="Jumlah" id="Jumlah" class="form-control"
-                            placeholder="Jumlah peserta" value="{{ old('Jumlah') }}">
+                            placeholder="Jumlah peserta" value="{{ old('Jumlah') }}" required min="1">
                     </div>
-                    
-
+                
                     <input type="hidden" name="peminjam_id" value="{{ Auth::user()->id }}">
-
+                
                     <div class="mb-3">
                         <label for="ruang_id" class="form-label">Nama Ruang</label>
-                        <select name="ruang_id" id="ruang_id" class="form-select">
+                        <select name="ruang_id" id="ruang_id" class="form-select" required>
                             <option value="">Pilih Ruang</option>
                             @foreach ($ruang as $r)
                                 <option value="{{ $r->id }}" {{ old('ruang_id') == $r->id ? 'selected' : '' }}>
@@ -58,35 +58,37 @@
                             @endforeach
                         </select>
                     </div>
-
+                
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label for="TanggalPinjam" class="form-label">Tanggal Pinjam</label>
                             <input type="date" name="TanggalPinjam" id="TanggalPinjam" class="form-control"
-                                value="{{ old('TanggalPinjam') }}">
+                                value="{{ old('TanggalPinjam') }}" required min="{{ \Carbon\Carbon::today()->toDateString() }}">
                         </div>
+                        
                         <div class="col-md-4 mb-3">
                             <label for="JamMulai" class="form-label">Jam Mulai</label>
                             <input type="time" name="JamMulai" id="JamMulai" class="form-control"
-                                value="{{ old('JamMulai') }}">
+                                value="{{ old('JamMulai') }}" required>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="JamSelesai" class="form-label">Jam Selesai</label>
                             <input type="time" name="JamSelesai" id="JamSelesai" class="form-control"
-                                value="{{ old('JamSelesai') }}">
+                                value="{{ old('JamSelesai') }}" required>
                         </div>
                     </div>
-
+                
                     <div class="mb-3">
                         <label for="Deskripsi" class="form-label">Keperluan Pinjam</label>
                         <input type="text" name="Deskripsi" id="Deskripsi" class="form-control"
-                            placeholder="contoh: latihan misdinar/rapat/dll" value="{{ old('Deskripsi') }}">
+                            placeholder="contoh: latihan misdinar/rapat/dll" value="{{ old('Deskripsi') }}" required>
                     </div>
-
+                
                     <div class="mt-3 d-flex justify-content-end">
                         <button class="btn btn-success" type="submit">Ajukan Peminjaman</button>
                     </div>
                 </form>
+                
 
                 <hr>
 
@@ -108,23 +110,37 @@
             border: none !important;
             box-shadow: none !important;
         }
-
+    
         .custom-event-content {
             text-align: left;
             background-color: rgba(107, 231, 103, 0.9);
             color: #000000;
             border-radius: 5px;
             transition: background-color 0.3s;
+            padding: 5px;
+            font-size: 14px;
+            white-space: normal; /* Allow text wrapping */
+            word-wrap: break-word; /* Break long words */
         }
-
+    
         .custom-event-contents {
             text-align: left;
             background-color: transparent !important;
             border: none !important;
             box-shadow: none !important;
+            font-size: 14px;
+            white-space: normal; /* Allow text wrapping */
+            word-wrap: break-word; /* Break long words */
+        }
+
+        /* Atur border dan background untuk input fields pada focus */
+        .form-control:focus {
+            border-color: #ced4da; /* Warna border default Bootstrap */
+            box-shadow: none; /* Hapus shadow pada focus */
+            background-color: #ffffff; /* Warna background default */
         }
     </style>
-
+    
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
@@ -188,8 +204,7 @@
 
                 element.innerHTML = `
                 <div>
-                    ${Peminjam}
-                    <span>${JamMulai}-${JamSelesai}</span>
+                    ${JamMulai}-${JamSelesai} ${Peminjam}
                 </div>
             `;
 
@@ -217,7 +232,7 @@
                     Peminjam : ${Peminjam}<br>
                     Ruangan  : ${NamaRuang}<br>
                     Keperluan: ${status}<br>
-                    Waktu    : ${JamMulai} - ${JamSelesai}<br>
+                    Jam    : ${JamMulai} - ${JamSelesai}<br>
                     Status   : ${Persetujuan}
                 </div>
             `;

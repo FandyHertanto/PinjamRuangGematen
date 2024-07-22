@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('ruang_id')->references('id')->on('ruang')->onDelete('cascade');
             $table->unsignedBigInteger('peminjam_id');
             $table->foreign('peminjam_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('NamaPeminjam');
             $table->date('TanggalPinjam');
             $table->time('JamMulai');
             $table->time('JamSelesai');

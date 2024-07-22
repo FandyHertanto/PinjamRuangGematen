@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+
 
 class RentController extends Controller
 {
@@ -20,13 +22,21 @@ class RentController extends Controller
         ]);
     }
     
-    public function cancel($id)
+    public function cancel(Request $request, $id)
     {
         $peminjaman = Peminjaman::findOrFail($id);
+        $now = Carbon::now();
+        $tanggalPinjam = Carbon::parse($peminjaman->TanggalPinjam);
+        $startDateTime = $tanggalPinjam->setTimeFromTimeString($peminjaman->JamMulai);
+
+        if ($now->greaterThanOrEqualTo($startDateTime)) {
+            return redirect()->route('keranjang')->with('error', 'Peminjaman tidak dapat dibatalkan karena sudah berjalan.');
+        }
+
         $peminjaman->Persetujuan = 'dibatalkan';
         $peminjaman->save();
 
-        return redirect()->back()->with('success', 'Peminjaman berhasil dibatalkan');
+        return redirect()->back()->with('success', 'Peminjaman berhasil dibatalkan oleh pengguna.');
     }
 
     public function approve($id)
@@ -75,4 +85,6 @@ class RentController extends Controller
 
         return redirect()->back()->with('success', 'Email notifikasi peminjaman yang disetujui telah dikirim');
     }
+
+    
 }

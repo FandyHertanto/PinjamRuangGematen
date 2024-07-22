@@ -30,23 +30,37 @@
                     <input type="text" name="ruang_id" value="{{ request()->input('ruang_id', old('ruang_id')) }}"
                         hidden>
 
-                    <div class="mb-3">
-                        <label for="NamaRuang" class="form-label">Nama Ruang</label>
-                        <input type="text" name="NamaRuang"
-                            value="{{ old('NamaRuang', isset($room) ? $room->NamaRuang : '') }}" id="NamaRuang"
-                            class="form-control" placeholder="co: Yohanes" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="Item" class="form-label">Item</label>
-                        <select name="barang_id" id="barang_id" class="form-control">
-                            <option value="">Pilih Barang</option>
-                            @foreach ($items as $item)
-                                <option value="{{ $item->id }}" {{ old('barang_id') == $item->id ? 'selected' : '' }}>
-                                    {{ $item->NamaBarang }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                        <div class="mb-3">
+                            <label for="NamaRuang" class="form-label">Nama Ruang</label>
+                            <div id="NamaRuang" class="form-control" style="background-color: #e9ecef; cursor: not-allowed;">
+                                {{ old('NamaRuang', isset($room) ? $room->NamaRuang : 'N/A') }}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 row">
+                            <div class="col-md-6">
+                                <label for="Item" class="form-label">Item</label>
+                                <select name="barang_id" id="barang_id" class="form-control" onchange="updateDescription()">
+                                    <option value="">Pilih Barang</option>
+                                    @foreach ($items as $item)
+                                        <option value="{{ $item->id }}" data-deskripsi="{{ $item->Deskripsi }}" {{ old('barang_id') == $item->id ? 'selected' : '' }}>
+                                            {{ $item->NamaBarang }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Deskripsi" class="form-label">Deskripsi</label>
+                                <div id="Deskripsi" class="form-control" style="background-color: #e9ecef; cursor: not-allowed;">
+                                    @php
+                                        $selectedItem = $items->firstWhere('id', old('barang_id', ''));
+                                    @endphp
+                                    {{ $selectedItem ? $selectedItem->Deskripsi : 'Deskripsi akan ditampilkan di sini' }}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
                     <div class="mb-3">
                         <label for="JumlahBarang" class="form-label">Jumlah Barang</label>
                         <input type="number" name="JumlahBarang" id="JumlahBarang" class="form-control"
@@ -60,5 +74,18 @@
         </div>
 
     </div>
+
+    <script>
+        function updateDescription() {
+            const selectedOption = document.getElementById('barang_id').selectedOptions[0];
+            const description = selectedOption.getAttribute('data-deskripsi');
+            document.getElementById('Deskripsi').innerText = description || 'Muncul setelah barang dipilih';
+        }
+    
+        // Trigger update on page load if there's an old value
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDescription();
+        });
+    </script>
 
 @endsection

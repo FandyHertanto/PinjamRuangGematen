@@ -54,7 +54,7 @@ class UserController extends Controller
             // Kirim notifikasi email
             Mail::to($user->email)->send(new UserApprovedNotification($user));
 
-            return redirect()->back()->with('success', 'Pengguna berhasil disetujui dan status diubah menjadi active');
+            return redirect()->back()->with('success', 'Pengguna berhasil disetujui dan status diubah menjadi aktif');
         } else {
             return redirect()->back()->with('error', 'Pengguna tidak ditemukan');
         }

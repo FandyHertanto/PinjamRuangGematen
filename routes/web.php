@@ -9,16 +9,12 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RentController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\PinjamRuangController;
-use App\Http\Controllers\PeminjamanController;
-
-// use App\Http\Controllers\RuangController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MailController;
-use App\Http\Controllers\ChartController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ProfileController;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+// use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
     return view('login');
@@ -35,23 +31,25 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('register', [AuthController::class, 'registerProses']);
 });
 
-Route::get('auth/redirect', [GoogleAuthController::class, 'redirect']); 
-Route::get('auth/google/callback', [GoogleAuthController::class, 'callback']); 
+Route::get('auth/redirect', [GoogleAuthController::class, 'redirect']);
+Route::get('auth/google/callback', [GoogleAuthController::class, 'callback']);
 
 Route::group(['middleware' => 'auth'], function () {
 
-
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/getChartData/{year}/{month}', [DashboardController::class, 'getChartData']);
+    Route::get('/getChartData/{roomId}', [DashboardController::class, 'getChartData']);
+    Route::get('/getRentData/{year}/{month}', [DashboardController::class, 'getRentData']);
+    // Route::get('/getChartData/{roomId}', [DashboardController::class, 'getChartData'])->name('getChartData');
+
+
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile-edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+   
 
 
-
-    Route::get('/get-room-rent-data', [DashboardController::class, 'getRoomRentData'])->name('get-room-rent-data');
-
+    
     //Menu Umat
     Route::get('home', [HomeController::class, 'index'])->name('home');
     Route::get('detail-ruang/{id}', [HomeController::class, 'detail'])->name('detail-ruang');
@@ -105,8 +103,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/send-email', [MailController::class, 'sendEmail']);
     Route::post('/rents/{id}/approve-email', [RentController::class, 'approveEmail'])->name('rents.approveEmail');
 
-    Route::get('/getChartData/{roomId}', [DashboardController::class, 'getChartData'])->name('getChartData');
+    
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
-
-// Route::get('/events', [PeminjamanController::class, 'fetchEvents'])->name('events'); haram

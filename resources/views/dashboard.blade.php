@@ -56,64 +56,63 @@
                 <canvas id="barChart" width="800" height="400"></canvas>
             </div>
 
-            <div class="dropdown mb-4">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMonth" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    @if (!empty($selected_month))
-                        {{ $selected_month }}
-                    @else
-                        Pilih Bulan
-                    @endif
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMonth">
-                    @foreach ($available_months as $month)
-                        <li>
-                            <a class="dropdown-item" href="#" data-month="{{ $month }}">{{ $month }}</a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-
-            <h5 class="card-title text-center">Data Peminjaman </h5>
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead id="default-head">
-                        <tr>
-                            <th class="col">Peminjam</th>
-                            <th class="col">Total Peminjaman</th>
-                        </tr>
-                    </thead>
-                    <thead id="expanded-head" style="display: none;">
-                        <tr>
-                            <th class="col">Peminjam</th>
-                            <th class="col">Total Peminjaman</th>
-                            <th class="col">Ruang</th>
-                            <th class="col">Tanggal Pinjam</th>
-                            <th class="col">Jam</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body">
-                        @foreach ($rents as $userRent)
-                            @foreach ($userRent['items'] as $item)
-                                <tr>
-                                    @if ($loop->first)
-                                        <td rowspan="{{ $userRent['total'] }}">{{ $userRent['user']->username }}</td>
-                                        <td rowspan="{{ $userRent['total'] }}" class="toggle-details clickable"
-                                            data-user-id="{{ $userRent['user']->id }}">
-                                            {{ $userRent['total'] }}
-                                        </td>
-                                    @endif
-                                    <td class="details details-{{ $userRent['user']->id }}">{{ $item->room->NamaRuang }}</td>
-                                    <td class="details details-{{ $userRent['user']->id }}">{{ $item->TanggalPinjam }}</td>
-                                    <td class="details details-{{ $userRent['user']->id }}">
-                                        {{ substr($item->JamMulai, 0, 5) }} - {{ substr($item->JamSelesai, 0, 5) }}
-                                    </td>
-                                </tr>
+            <div class="card">
+                <div class="card-body">
+                    <div class="dropdown mb-4">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownYearTable"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            @if (!empty($selected_year_table))
+                                {{ $selected_year_table }}
+                            @else
+                                Pilih Tahun
+                            @endif
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownYearTable">
+                            @foreach ($available_years as $year)
+                                <li>
+                                    <a class="dropdown-item" href="#" data-year-table="{{ $year }}">{{ $year }}</a>
+                                </li>
                             @endforeach
-                        @endforeach
-                    </tbody>
-                </table>
+                        </ul>
+                    </div>
+    
+                    <div class="dropdown mb-4">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMonth"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            @if (!empty($selected_month))
+                                {{ $selected_month }}
+                            @else
+                                Pilih Bulan
+                            @endif
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMonth">
+                            @foreach ($available_months as $month)
+                                <li>
+                                    <a class="dropdown-item" href="#" data-month="{{ $month }}">{{ $month }}</a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <h5 class="card-title text-center" id="dataPeminjamanTitle">Data Peminjaman</h5>
+    
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Peminjam</th>
+                                    <th>Total Peminjaman</th>  
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
+        </div>
+    </div>
+
+            
         </div>
     </div>
 
@@ -323,6 +322,95 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
             }
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+    var selectedYearTable = null;
+    var selectedMonth = null;
+
+    var dropdownYearItemsTable = document.querySelectorAll('.dropdown-item[data-year-table]');
+    dropdownYearItemsTable.forEach(function(item) {
+        item.addEventListener('click', function(event) {
+            event.preventDefault();
+            var year = event.target.getAttribute('data-year-table');
+            document.getElementById('dropdownYearTable').textContent = year;
+            document.querySelectorAll('.dropdown-item[data-year-table]').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            selectedYearTable = year;
+            fetchRentData(selectedYearTable, selectedMonth);
+        });
+    });
+
+    var dropdownMonthItems = document.querySelectorAll('.dropdown-item[data-month]');
+    dropdownMonthItems.forEach(function(item) {
+        item.addEventListener('click', function(event) {
+            event.preventDefault();
+            var month = event.target.getAttribute('data-month');
+            document.getElementById('dropdownMonth').textContent = month;
+            document.querySelectorAll('.dropdown-item[data-month]').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            selectedMonth = month;
+            // Update the h5 tag with the selected month
+            document.getElementById('dataPeminjamanTitle').textContent = 'Data Peminjaman - ' + month + ' ' + selectedYearTable;
+            fetchRentData(selectedYearTable, selectedMonth);
+        });
+    });
+
+    function fetchRentData(year, month) {
+        if (!year || !month) {
+            document.getElementById('table-body').innerHTML = '<tr><td colspan="5" class="text-center">Silahkan pilih Tahun dan Bulan</td></tr>';
+            return;
+        }
+
+        $.ajax({
+            url: `/getRentData/${year}/${month}`,
+            method: 'GET',
+            success: function(response) {
+                var tableBody = document.getElementById('table-body');
+                tableBody.innerHTML = '';
+
+                response.forEach(function(row, index) {
+                    var newRow = `
+                        <tr>
+                            <td>${row.name}</td>
+                            <td class="clickable" data-bs-toggle="collapse" data-bs-target="#collapse${index}">
+                                ${row.total_peminjaman}
+                            </td>
+                            <td colspan="3" class="collapse" id="collapse${index}">
+                                <table class="table collapse-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Ruang</th>
+                                            <th>Tanggal Pinjam</th>
+                                            <th>Jam</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${row.details.map(detail => `
+                                            <tr>
+                                                <td>${detail.ruang}</td>
+                                                <td>${detail.tanggal_pinjam}</td>
+                                                <td>${detail.jam}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.insertAdjacentHTML('beforeend', newRow);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching table data:', error);
+            }
+        });
+    }
+});
+
 
     </script>
 
