@@ -22,7 +22,7 @@
         @endif
 
         <div class="my-3">
-            <a href="{{ route('item-add') }}" class="btn btn-primary">+ Data Barang</a>
+            <a href="{{ route('item-add') }}" class="btn btn-primary me-3" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">+ Data Barang</a>
         </div>
 
         <div class="my-3">

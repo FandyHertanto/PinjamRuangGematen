@@ -6,8 +6,8 @@
     <div class="container my-5 mt-4">
         <div class="card shadow">
             <div class="card-body">
-                <div class="mb-3 d-flex justify-content-between align-items-center">
-                    <h3 class="mb-0">Silahkan meminjam ruang</h3>
+                <div class="mb-3 mt-2 d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">Mau pinjam ruang apa hari ini?</h3>
                     @if (session('success'))
                         <div class="alert alert-success mb-3">
                             {{ session('success') }}
@@ -20,16 +20,13 @@
                         </div>
                     @endif
 
-                    <a href="{{ route('pinjam.create') }}" class="btn btn-primary">+ Pinjam Ruang</a>
+                    <a href="{{ route('pinjam.create') }}"class="btn btn-primary me-3" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">+ Pinjam Ruang</a>
                 </div>
 
                 <div id='calendar' class="border rounded p-3"></div>
             </div>
         </div>
     </div>
-
-    <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
-    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet'>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/locales-all.global.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap5@6.1.13/index.global.min.js'></script>
@@ -43,7 +40,7 @@
     
         .custom-event-content {
             text-align: left;
-            background-color: rgba(107, 231, 103, 0.9);
+            background-color: rgb(255, 103, 128);
             color: #000000;
             border-radius: 5px;
             transition: background-color 0.3s;
@@ -126,9 +123,9 @@
                     });
                 },
                 headerToolbar: {
-                    left: 'prev,next',
+                    left: 'prev',
                     center: 'title',
-                    right: 'dayGridMonth'
+                    right: 'next'
                 },
                 eventContent: function(info) {
                     var Peminjam = info.event.extendedProps.peminjam;

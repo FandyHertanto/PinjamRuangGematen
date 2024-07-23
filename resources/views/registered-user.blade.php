@@ -22,7 +22,7 @@
         @endif
 
         <div class="my-3 d-flex">
-            <a href="users" class="btn btn-primary me-3">Data Pengguna</a>
+            <a href="users" class="btn btn-primary me-3" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">Data Pengguna</a>
         </div>
 
         <div class='my-3'>

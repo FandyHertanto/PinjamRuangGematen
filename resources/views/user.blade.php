@@ -8,9 +8,7 @@
     <div class="card-body">
         <h3 class="card-title text-center mb-4">Data Pengguna</h3>
 
-        <div class="my-3 d-flex">
-            <a href="{{ url('registered-user') }}" class="btn btn-primary me-3">Aktivasi Pengguna</a>
-        </div>
+        <a href="{{ url('registered-user') }}" class="btn btn-primary me-3" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">Aktivasi Pengguna</a>
 
         <div class="my-3">
             <!-- Search Bar -->
@@ -48,12 +46,12 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('users.show', ['id' => $item->id]) }}" class="btn btn-success btn-sm rounded-pill"><i class="bi bi-info-circle"></i></a>
+                                    <a href="{{ route('users.show', ['id' => $item->id]) }}" class="btn btn-success"><i class="bi bi-info-circle"></i></a>
 
                                     <form action="{{ route('users.delete', ['id' => $item->id]) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm rounded-pill"><i class="bi bi-trash3-fill"></i></button>
+                                        <button type="submit" class="btn btn-danger "><i class="bi bi-trash3-fill"></i></button>
                                     </form>
                                 </td>
                             </tr>

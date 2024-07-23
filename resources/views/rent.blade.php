@@ -8,7 +8,7 @@
     <div class="card shadow">
         <div class="card-body">
 
-            <h3 class="text-left mb-4">Daftar Peminjaman</h3>
+            <h3 class="text-center mb-4">Daftar Peminjaman</h3>
             
             <div class="mb-4">
                 <input type="text" id="globalSearch" class="form-control" placeholder="Cari di sini">

@@ -32,17 +32,17 @@
                             <div class="mb-3">
                                 <label for="NamaRuang" class="form-label">Nama Ruang</label>
                                 <input type="text" name="NamaRuang" id="NamaRuang" class="form-control"
-                                    placeholder="co: Yohanes">
+                                    placeholder="co: Yohanes" required>
                             </div>
                             <div class="mb-3">
                                 <label for="Kapasitas" class="form-label">Kapasitas</label>
                                 <input type="text" name="Kapasitas" id="Kapasitas" class="form-control"
-                                    placeholder="Kapasitas ruang">
+                                    placeholder="Kapasitas ruang" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="Gambar" class="form-label">Gambar</label>
-                                <input type="file" name="Gambar" id="Gambar" class="form-control">
+                                <input type="file" name="Gambar" id="Gambar" class="form-control" required>
                             </div>
                             <div class="mt-3">
                                 <button class="btn btn-success" type="submit">Simpan</button>

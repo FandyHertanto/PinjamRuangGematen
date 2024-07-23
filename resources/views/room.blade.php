@@ -7,10 +7,11 @@
 <div class="card shadow">
     <div class="card-body">
 
-        <h3 class="card-title text-center">Data Ruang</h3>
+        <h3 class="card-title text-center" style="text-color: #ff0000;">Data Ruang</h3>
+
 
         <div class="my-3">
-            <a href="{{ route('create') }}" class="btn btn-primary">+ Data Ruang</a>
+            <a href="{{ route('create') }}" class="btn btn-primary me-3" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">+ Data Ruang</a>
         </div>
 
         @if (session('success'))

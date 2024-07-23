@@ -12,7 +12,7 @@
                         <h2 class="mb-3">Edit Barang</h2>
 
                         <div class="d-flex justify-content-end mb-3">
-                            <a class="btn btn-primary" href="{{ route('create-fasilitas', ['ruang_id' => $room->id]) }}"
+                            <a class="btn btn-primary me-3" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);" href="{{ route('create-fasilitas', ['ruang_id' => $room->id]) }}"
                                 role="button">Tambah Barang</a>
                         </div>
 

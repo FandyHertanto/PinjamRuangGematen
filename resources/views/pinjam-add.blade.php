@@ -4,11 +4,11 @@
 
 @section('content')
 
-    <div class="container my-5 mt-4">
+    <div class="container my-5 mt-2">
         <div class="card shadow">
             <div class="card-body">
                 <div class="mb-3">
-                    <h3 class="mb-5">Silahkan meminjam ruang</h3>
+                    <h3 class="mb-0">Silahkan meminjam ruang</h3>
                 </div>
 
                 @if (session('success'))
@@ -85,7 +85,7 @@
                     </div>
                 
                     <div class="mt-3 d-flex justify-content-end">
-                        <button class="btn btn-success" type="submit">Ajukan Peminjaman</button>
+                        <button class="btn btn-primary me-3" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);" type="submit">Ajukan Peminjaman</button>
                     </div>
                 </form>
                 
@@ -98,10 +98,9 @@
         </div>
     </div>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/locales-all.global.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap5@6.1.13/index.global.min.js"></script>
 
     <style>
@@ -113,7 +112,7 @@
     
         .custom-event-content {
             text-align: left;
-            background-color: rgba(107, 231, 103, 0.9);
+            background-color: rgb(255, 103, 128);
             color: #000000;
             border-radius: 5px;
             transition: background-color 0.3s;
@@ -131,6 +130,8 @@
             font-size: 14px;
             white-space: normal; /* Allow text wrapping */
             word-wrap: break-word; /* Break long words */
+            padding:  15px 20px;
+            border-radius: 5px; /* Rounded corners for the box */
         }
 
         /* Atur border dan background untuk input fields pada focus */
@@ -180,9 +181,9 @@
                 });
             },
             headerToolbar: {
-                left: 'prev,next',
+                left: 'prev',
                 center: 'title',
-                right: 'dayGridMonth'
+                right: 'next'
             },
             eventContent: function(info) {
                 var NamaRuang = info.event.title;

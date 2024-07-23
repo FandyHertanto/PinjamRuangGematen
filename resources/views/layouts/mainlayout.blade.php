@@ -21,73 +21,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
+
+    
 </head>
 
 <script>
+
 body {
     font-family: 'Rubik';
     background-color: #121212;
     color: #e0e0e0;
-}
-
-.main {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-}
-
-.navbar {
-    background: linear-gradient(90deg, #333, #444);
-    border-bottom: 2px solid #555;
-}
-
-.navbar-brand {
-    font-weight: 600;
-    color: #f5f5f5;
-}
-
-.navbar-toggler {
-    border: none;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.navbar-toggler-icon {
-    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%23ffffff"%3E%3Cpath stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /%3E%3C/svg%3E');
-}
-
-/* Sidebar styling */
-.sidebar {
-    background: linear-gradient(135deg, #1c1c1c, #2a2a2a);
-    color: #e0e0e0;
-    height: 100%;
-    border-right: 1px solid #333;
-    transition: all 0.3s ease;
-    border-radius: 12px;
-}
-
-.sidebar a {
-    display: block;
-    color: #e0e0e0;
-    padding: 12px 20px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-size: 14px;
-    margin-bottom: 5px;
-    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-}
-
-.sidebar a.active,
-.sidebar a:hover {
-    background: rgba(0, 136, 255, 0.7);
-    color: #fff;
-    
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.sidebar i {
-    margin-right: 10px;
-    font-size: 16px;
-    
 }
 
 /* Content styling */
@@ -124,6 +67,7 @@ body {
     .sidebar.collapse.show {
         display: block;
     }
+    
 }
 
 </script>
@@ -132,13 +76,14 @@ body {
     <div class="main">
         <nav class="navbar navbar-dark navbar-expand-lg">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{{ Auth::user()->role_id == 1 || Auth::user()->role_id == 3 ? url('dashboard') : url('home') }}">GEMATEN</a>
+                <a class="navbar-brand" href="{{ Auth::user()->role_id == 1 || Auth::user()->role_id == 3 ? url('dashboard') : url('home') }}">RUANG GEMATEN</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#hamburger"
                     aria-controls="hamburger" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
         </nav>
+        
         <div class="body-content h-100 rubik-font">
             <div class="row g-0 h-100">
                 <div class="sidebar card shadow col-lg-2 collapse d-lg-block" id="hamburger">
@@ -155,11 +100,15 @@ body {
                         <a href="{{ url('profile') }}" class="{{ request()->route()->uri == 'profile' || request()->route()->uri == 'profile-edit' ? 'active' : '' }}"><i class="bi bi-person"></i> Profile</a>
                         <a href="{{ url('logout') }}" class="{{ request()->route()->uri == 'logout' ? 'active' : '' }}"><i class="bi bi-box-arrow-right"></i> Keluar</a>
                     @else
+                    <div class="sidebar-footer">
+                        <img src="{{ asset('images/GMA-white.png') }}" alt="Logo Gematen" class="logo" width="150" height="150">
+                    </div>
                         <a href="{{ url('home') }}" class="{{ request()->route()->uri == 'home' ? 'active' : (Str::startsWith(request()->route()->uri, 'detail-ruang/') ? 'active' : '') }}"><i class="bi bi-house-door"></i> Home</a>
                         <a href="{{ url('pinjam-ruang') }}" class="{{ request()->route()->uri == 'pinjam-ruang' ? 'active' : (request()->route()->uri == 'pinjam-add' ? 'active' : '') }}"><i class="bi bi-calendar"></i> Pinjam Ruang</a>
                         <a href="{{ url('keranjang') }}" class="{{ request()->route()->uri == 'keranjang' ? 'active' : '' }}"><i class="bi bi-cart"></i> Keranjang</a>
                         <a href="{{ url('profile') }}" class="{{ request()->route()->uri == 'profile' || Str::startsWith(request()->route()->uri, 'profile-edit') ? 'active' : '' }}"><i class="bi bi-person"></i> Profile</a>
-                        <a href="{{ url('logout') }}" class="{{ request()->route()->uri == 'logout' ? 'active' : '' }}"><i class="bi bi-box-arrow-right"></i> Keluar</a>
+                        <a href="{{ url('logout') }}" class="{{ request()->route()->uri == 'logout' ? 'active' : '' }}"><i class="bi bi-box-arrow-right"></i> Keluar</a> 
+                        
                     @endif
                 </div>
                 

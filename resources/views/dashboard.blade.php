@@ -53,7 +53,7 @@
             @endif
 
             <div class="col-lg-12">
-                <canvas id="barChart" width="800" height="400"></canvas>
+                <canvas id="barChart" width="1000" height="400"></canvas>
             </div>
 
            
