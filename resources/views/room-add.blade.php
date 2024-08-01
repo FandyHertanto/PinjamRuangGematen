@@ -21,11 +21,15 @@
                     </div>
                 @endif
 
-                <div class="card shadow">
+                <div class="card shadow-lg border-0 rounded-3">
+                    <div class="card-header text-center" style="background-color: rgb(105, 0, 0); color: white;">
+                        <h3>Tambah Ruang</h3>
+                    </div>
+                    
 
                     <div class="card-body">
                         <div class="mb-3">
-                            <h3 class="mb-3">Tambah ruang</h3>
+                           
                         </div>
                         <form action="{{ route('room-store') }}" method="post" enctype="multipart/form-data">
                             @csrf
@@ -44,7 +48,7 @@
                                 <label for="Gambar" class="form-label">Gambar</label>
                                 <input type="file" name="Gambar" id="Gambar" class="form-control" required>
                             </div>
-                            <div class="mt-3">
+                            <div class="mt-3 text-center">
                                 <button class="btn btn-success" type="submit">Simpan</button>
                             </div>
                         </form>

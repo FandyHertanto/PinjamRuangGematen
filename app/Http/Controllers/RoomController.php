@@ -91,25 +91,24 @@ class RoomController extends Controller
     }
 
     public function destroy($id)
-{
-    $room = Room::findOrFail($id); // Find the room by ID
+    {
+        $room = Room::findOrFail($id); // Find the room by ID
 
-    // Check if the room has related facilities and delete them
-    if ($room->Fasilitas->count()) {
-        $room->Fasilitas()->delete(); // Delete all related facilities
+        // Check if the room has related facilities and delete them
+        if ($room->Fasilitas->count()) {
+            $room->Fasilitas()->delete(); // Delete all related facilities
+        }
+
+        // Check if the image exists and delete it
+        $gambarPath = public_path('Gambar/' . $room->Gambar);
+        if (file_exists($gambarPath)) {
+            unlink($gambarPath); // Delete the image file
+        }
+
+        // Delete the room
+        $room->delete();
+
+        // Redirect back with success message
+        return redirect()->route('room')->with('success', 'Ruang berhasil dihapus');
     }
-
-    // Check if the image exists and delete it
-    $gambarPath = public_path('Gambar/' . $room->Gambar);
-    if (file_exists($gambarPath)) {
-        unlink($gambarPath); // Delete the image file
-    }
-
-    // Delete the room
-    $room->delete();
-
-    // Redirect back with success message
-    return redirect()->route('room')->with('success', 'Ruang berhasil dihapus');
-}
-
 }

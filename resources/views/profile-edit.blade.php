@@ -7,9 +7,12 @@
 
 
     <div class="container">
-        <div class="card shadow">
+        <div class="card shadow-lg border-0 rounded-3">
+            <div class="card-header text-center" style="background-color: rgb(105, 0, 0); color: white;">
+                <h3>Perbarui Data Profile</h3>
+            </div>
             <div class="card-body">
-                <h3 class="text-left mb-4">Perbarui Data Profile</h3>
+                
 
                 @if (session('success'))
                     <div class="alert alert-success">
@@ -42,7 +45,7 @@
                             value="{{ $user->phone }}">
                     </div>
 
-                    <div class="d-flex my-4">
+                    <div class="mt-3 text-center">
                         <button type="submit" class="btn btn-success">Perbarui</button>
                     </div>
                     

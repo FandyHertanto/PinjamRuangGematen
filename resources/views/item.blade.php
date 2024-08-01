@@ -4,10 +4,13 @@
 
 @section('content')
 
-<div class="card shadow">
+<div class="card shadow-lg border-0 rounded-3">
+    <div class="card-header text-center" style="background-color: rgb(105, 0, 0); color: white;">
+        <h3>Data Barang</h3>
+    </div>
     <div class="card-body">
 
-        <h3 class="card-title text-center">Data Barang</h3>
+       
 
         @if (session('success'))
             <div class="alert alert-success">

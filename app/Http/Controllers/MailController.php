@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MailNotify;
 use App\Models\Peminjaman;
-use App\Models\Rent; // Pastikan model Rent diimport
+use App\Mail\FeedbackNotification;
+
 
 class MailController extends Controller
 {
@@ -47,6 +48,7 @@ class MailController extends Controller
     }
 }
 
+
 public function sendEmail(Request $request)
 {
     $recipient = $request->input('recipient');
@@ -58,11 +60,14 @@ public function sendEmail(Request $request)
     ];
 
     try {
-        Mail::to($recipient)->send(new MailNotify($data));
+        Mail::to($recipient)->send(new FeedbackNotification($data));
         return response()->json(['message' => 'Email notifikasi berhasil dikirim'], 200);
     } catch (\Exception $e) {
         return response()->json(['message' => 'Gagal mengirim email notifikasi: ' . $e->getMessage()], 500);
     }
 }
+
+
+
 
 }

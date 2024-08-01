@@ -20,7 +20,8 @@ class Peminjaman extends Model
         'TanggalPinjam',
         'JamMulai',
         'JamSelesai',
-        'Persetujuan'
+        'Persetujuan',
+        'Pengaduan',
     ];
     public function user()
     {

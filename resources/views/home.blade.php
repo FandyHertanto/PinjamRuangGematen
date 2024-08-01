@@ -5,9 +5,12 @@
 @section('content')
 
     <div class="container my-5 mt-4">
-        <div class="card shadow">
+        <div class="card shadow-lg border-0 rounded-3">
+            <div class="card-header text-center" style="background-color: rgb(105, 0, 0); color: white;">
+                <h3>Data Ruang</h3>
+            </div>
             <div class="card-body" >
-                <h3 class="card-title text-center mt-3 mb-3">Data Ruang</h3>
+                
 
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success">
@@ -21,16 +24,21 @@
                             $reversedRooms = $rooms->reverse();
                         @endphp
                         @foreach ($reversedRooms as $room)
-                            <div class="col d-flex justify-content-center mb-4">
-                                <a href="{{ route('detail-ruang', ['id' => $room->id]) }}" class="text-decoration-none">
-                                    <div class="card h-100">
-                                        <img src="{{ asset('Gambar/' . $room->Gambar) }}" class="card-img-top" alt="{{ $room->NamaRuang }}">
-                                        <div class="card-body">
-                                            <h5 class="card-title text-center">{{ $room->NamaRuang }}</h5>    
-                                        </div>
+                        <div class="col d-flex justify-content-center mb-4">
+                            <a href="{{ route('detail-ruang', ['id' => $room->id]) }}" class="text-decoration-none">
+                                <div class="card h-100">
+                                    <img src="{{ asset('Gambar/' . $room->Gambar) }}" class="card-img-top" alt="{{ $room->NamaRuang }}">
+                                    <div class="">
+                                        <div class="card shadow-lg border-0 rounded-0">
+                                            <div class="card text-center" style="background-color: rgb(163, 1, 1); color: white;">
+                                                <h5>{{$room->NamaRuang}}</h5>
+                                            </div>   
+                                        </div>   
                                     </div>
-                                </a>
-                            </div>
+                                </div>
+                            </a>
+                        </div>
+                        
                         @endforeach
                     </div>
                 </div>

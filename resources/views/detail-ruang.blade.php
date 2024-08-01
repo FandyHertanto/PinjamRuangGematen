@@ -4,11 +4,14 @@
 
 @section('content')
     <div class="container my-5">
-        <div class="card shadow">
+        <div class="card shadow-lg border-0 rounded-3">
+            <div class="card-header text-center" style="background-color: rgb(105, 0, 0); color: white;">
+                <h3>{{$room->NamaRuang}}</h3>
+            </div>
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-5">
                     <a href="{{ route('home') }}" class="btn btn-danger">Kembali</a>
-                    <h3 class="card-title text-center flex-grow-1 mb-0">{{ $room->NamaRuang }}</h3>
+                    
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -23,7 +26,7 @@
                             @foreach ($room->fasilitas as $fasil)
                                 @if($fasil->item)
                                     <li>
-                                        {{ $fasil->item->Deskripsi }} {{ $fasil->JumlahBarang }}
+                                        {{ $fasil->item->NamaBarang }} {{ $fasil->item->Deskripsi }} {{ $fasil->JumlahBarang }}
                                     </li>
                                 @else
                                     <li>Item not found</li>

@@ -51,8 +51,8 @@ class GoogleAuthController extends Controller
             }
 
             Session::flash('status', 'berhasil');
-            Session::flash('message', 'Daftar Akun Berhasil !! Tunggu Persetujuan Admin');
-            return redirect()->route('register');
+            
+            return redirect()->route('register')->withErrors(['Daftar Akun Berhasil !! Tunggu Persetujuan Admin']);
         }
 
         // Jika user sudah ada, periksa statusnya

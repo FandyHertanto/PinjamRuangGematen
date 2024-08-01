@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('TimPelayanan');
             $table->string('Jumlah');
             $table->string('Persetujuan')->default('pending');
+            $table->string('Pengaduan');
             $table->timestamps();
         });
     }

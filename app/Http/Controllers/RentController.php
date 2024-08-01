@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Peminjaman;
+use Illuminate\Support\Facades\Mail;
+use App\Models\User; 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Mail\FeedbackNotification;
+use App\Mail\MailNotify;
+use App\Mail\FeedbackMail;
 
 
 class RentController extends Controller
@@ -77,14 +82,26 @@ class RentController extends Controller
     return response()->json(['message' => 'Peminjaman tidak ditemukan'], 404);
 }
 
+public function sendFeedbackEmail(Request $request)
+{
+    $request->validate([
+        'current-item-id' => 'required',
+        'message' => 'required',
+    ]);
 
-    public function approveEmail($id)
-    {
-        $mailController = new MailController();
-        $mailController->sendEmailNotification($id, 'Disetujui');
+    $users = User::whereIn('role_id', [1, 3])->pluck('email')->toArray();
 
-        return redirect()->back()->with('success', 'Email notifikasi peminjaman yang disetujui telah dikirim');
+    foreach ($users as $user) {
+        $data = [
+            'subject' => 'Layanan Aduan',
+            'body' => $request->input('message')
+        ];
+        Mail::to($user)->send(new FeedbackNotification($data));
     }
 
-    
+    return back()->with('success', 'Pesan telah berhasil dikirim!');
 }
+}
+
+    
+

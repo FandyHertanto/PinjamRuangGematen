@@ -122,7 +122,7 @@ class CalendarController extends Controller
         Mail::to($email)->send(new MailNotify($data));
     }
 
-    return redirect()->route('pinjam.create')->with('success', 'Peminjaman Ruang Berhasil Ditambahkan');
+    return redirect()->route('pinjam-ruang')->with('success', 'Peminjaman Ruang Berhasil Ditambahkan');
 }
 
 }

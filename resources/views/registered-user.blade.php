@@ -4,10 +4,13 @@
 
 @section('content')
 
-<div class="card border shadow">
+<div class="card shadow-lg border-0 rounded-3">
+    <div class="card-header text-center" style="background-color: rgb(105, 0, 0); color: white;">
+        <h3>Aktivasi Pengguna</h3>
+    </div>
     <div class="card-body">
 
-        <h3 class="card-title text-center">Aktivasi Pengguna</h3>
+        
 
          @if(session('success'))
             <div class="alert alert-success">
@@ -22,7 +25,7 @@
         @endif
 
         <div class="my-3 d-flex">
-            <a href="users" class="btn btn-primary me-3" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">Data Pengguna</a>
+            <a href="users" class="btn btn-primary me-3" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">Kembali ke Data Pengguna</a>
         </div>
 
         <div class='my-3'>

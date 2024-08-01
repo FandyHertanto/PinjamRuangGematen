@@ -5,12 +5,15 @@
 @section('content')
 
     <div class="container">
-        <div class="card shadow">
+        <div class="card shadow-lg border-0 rounded-3">
+            <div class="card-header text-center" style="background-color: rgb(105, 0, 0); color: white;">
+                <h3>Profile</h3>
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table text-center">
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h3 class="text-left">Profile</h3>
+                            
                             <form action="{{ route('profile-edit') }}" method="GET">
                                 <button type="submit" class="btn btn-primary me-3" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">Edit Profile</button>
                             </form>

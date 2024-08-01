@@ -7,9 +7,12 @@
 
         <div class="row mt-5">
             <div class="col-lg-12">
-                <div class="card">
+                <div class="card shadow-lg border-0 rounded-3">
+                    <div class="card-header text-center" style="background-color: rgb(105, 0, 0); color: white;">
+                        <h3>Edit Barang</h3>
+                    </div>
                     <div class="card-body">
-                        <h2 class="mb-3">Edit Barang</h2>
+                        
 
                         <div class="d-flex justify-content-end mb-3">
                             <a class="btn btn-primary me-3" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);" href="{{ route('create-fasilitas', ['ruang_id' => $room->id]) }}"
@@ -58,10 +61,12 @@
 
         <div class="row mt-5">
             <div class="col-lg-12">
-                <div class="card">
+                <div class="card shadow-lg border-0 rounded-3">
+                    <div class="card-header text-center" style="background-color: rgb(105, 0, 0); color: white;">
+                        <h3>Edit Ruang</h3>
+                    </div>
                     <div class="card-body">
-                        <h2 class="mb-3">Edit Ruang</h2>
-
+                        
                         @if (session('success'))
                             <div class="alert alert-success">
                                 {{ session('success') }}
@@ -96,7 +101,7 @@
                                     class='mt-3'>
                             </div>
 
-                            <div class="d-flex justify-content-end">
+                            <div class="mt-3 text-center">
                                 <button class="btn btn-success" type="submit">Simpan</button>
                             </div>
                         </form>

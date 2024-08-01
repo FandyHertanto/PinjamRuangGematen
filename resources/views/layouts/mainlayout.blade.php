@@ -95,16 +95,23 @@ body {
                         <a href="{{ url('dashboard') }}" class="{{ request()->route()->uri == 'dashboard' ? 'active' : '' }}"><i class="bi bi-house-door"></i> Dashboard</a>
                         <a href="{{ url('rent') }}" class="{{ request()->route()->uri == 'rent' ? 'active' : '' }}"><i class="bi bi-calendar"></i> Peminjaman</a>
                         <a href="{{ url('users') }}" class="{{ request()->route()->uri == 'users' || request()->route()->uri == 'registered-user' || Str::startsWith(request()->route()->uri, 'user-detail/') ? 'active' : '' }}"><i class="bi bi-people"></i> Pengguna</a>
-                        <a href="{{ route('room') }}" class="{{ request()->route()->uri == 'room' || request()->route()->uri == 'room-add' || Str::startsWith(request()->route()->uri, 'room/edit/') || request()->route()->uri == 'room-delete' ? 'active' : '' }}"><i class="bi bi-door-open"></i> Ruang</a>
-                        <a href="{{ route('item') }}" class="{{ request()->route()->uri == 'item' || request()->route()->uri == 'item-add' || request()->route()->uri == 'item-edit' || request()->route()->uri == 'item-delete' || Str::startsWith(request()->route()->uri, 'fasilitas-add') ? 'active' : '' }}"><i class="bi bi-box"></i> Barang</a>
-                        <a href="{{ url('profile') }}" class="{{ request()->route()->uri == 'profile' || request()->route()->uri == 'profile-edit' ? 'active' : '' }}"><i class="bi bi-person"></i> Profile</a>
+                        <a href="{{ route('room') }}" class="{{ (request()->route()->uri == 'room' || request()->route()->uri == 'room-add' || Str::startsWith(request()->route()->uri, 'room/edit/') || request()->route()->uri == 'room-delete' || request()->route()->uri == 'fasilitas/edit/{id}') ? 'active' : '' }}">
+                            <i class="bi bi-door-open"></i> Ruang
+                        </a>
+                        
+                        <a href="{{ route('item') }}" class="{{ request()->is('item', 'item-add', 'item-edit', 'item-delete', 'fasilitas-add*', 'item/edit/*') ? 'active' : '' }}">
+                            <i class="bi bi-box"></i> Barang
+                        </a>
+                        
+                        <a href="{{ url('profile') }}" class="{{ request()->route()->uri == 'profile' || request()->route()->uri == 'profile/edit' ? 'active' : '' }}"><i class="bi bi-person"></i> Profile</a>
+                       
                         <a href="{{ url('logout') }}" class="{{ request()->route()->uri == 'logout' ? 'active' : '' }}"><i class="bi bi-box-arrow-right"></i> Keluar</a>
                     @else
                     <div class="sidebar-footer">
                         <img src="{{ asset('images/GMA-white.png') }}" alt="Logo Gematen" class="logo" width="150" height="150">
                     </div>
-                        <a href="{{ url('home') }}" class="{{ request()->route()->uri == 'home' ? 'active' : (Str::startsWith(request()->route()->uri, 'detail-ruang/') ? 'active' : '') }}"><i class="bi bi-house-door"></i> Home</a>
-                        <a href="{{ url('pinjam-ruang') }}" class="{{ request()->route()->uri == 'pinjam-ruang' ? 'active' : (request()->route()->uri == 'pinjam-add' ? 'active' : '') }}"><i class="bi bi-calendar"></i> Pinjam Ruang</a>
+                    <a href="{{ url('pinjam-ruang') }}" class="{{ request()->route()->uri == 'pinjam-ruang' ? 'active' : (request()->route()->uri == 'pinjam-add' ? 'active' : '') }}"><i class="bi bi-calendar"></i> Pinjam Ruang</a>
+                        <a href="{{ url('home') }}" class="{{ request()->route()->uri == 'home' ? 'active' : (Str::startsWith(request()->route()->uri, 'detail-ruang/') ? 'active' : '') }}"><i class="bi bi-house-door"></i> Display Ruang</a>                     
                         <a href="{{ url('keranjang') }}" class="{{ request()->route()->uri == 'keranjang' ? 'active' : '' }}"><i class="bi bi-cart"></i> Keranjang</a>
                         <a href="{{ url('profile') }}" class="{{ request()->route()->uri == 'profile' || Str::startsWith(request()->route()->uri, 'profile-edit') ? 'active' : '' }}"><i class="bi bi-person"></i> Profile</a>
                         <a href="{{ url('logout') }}" class="{{ request()->route()->uri == 'logout' ? 'active' : '' }}"><i class="bi bi-box-arrow-right"></i> Keluar</a> 
