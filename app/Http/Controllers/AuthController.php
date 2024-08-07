@@ -75,7 +75,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('ruang-gematen');
+        return redirect('ruang/gematen');
     }
 
     public function registerProses(Request $request)

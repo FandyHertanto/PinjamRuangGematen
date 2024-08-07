@@ -4,13 +4,12 @@
 
 @section('content')
     <div class="container">
-        <div class="card shadow-lg border-0 rounded-3">
+        <div class="card shadow-lg border-0 rounded-3" style="font-family: 'Rubik';">
             <div class="card-header text-center" style="background-color: rgb(105, 0, 0); color: white;">
-                <h3>Keranjang Peminjaman</h3>
+                <h3>Histori Peminjaman</h3>
             </div>
             <div class="card-body">
                 
-
                 <!-- Search Bar for Global Search -->
                 <div class="mb-4">
                     <input type="text" id="searchInput" class="form-control" placeholder="Cari di sini">
@@ -46,17 +45,15 @@
                         </thead>
                         <tbody>
                             @php
-                                $now = \Carbon\Carbon::now();
+                                $now = \Carbon\Carbon::now()->startOfDay(); // Get the start of the current day
                             @endphp
                             @foreach ($peminjamans as $item)
+                                
                                 @php
-                                    $tanggalPinjam = \Carbon\Carbon::parse($item->TanggalPinjam)->format('Y-m-d'); // Format date for comparison
-                                    $startDateTime = \Carbon\Carbon::parse($item->TanggalPinjam)->setTimeFromTimeString(
-                                        $item->JamMulai,
-                                    );
-                                    $endDateTime = \Carbon\Carbon::parse($item->TanggalPinjam)->setTimeFromTimeString(
-                                        $item->JamSelesai,
-                                    );
+                                    $tanggalPinjam = \Carbon\Carbon::parse($item->TanggalPinjam)->startOfDay(); // Get the start of the rental day
+                                    $startDateTime = \Carbon\Carbon::parse($item->TanggalPinjam)->setTimeFromTimeString($item->JamMulai);
+                                    $endDateTime = \Carbon\Carbon::parse($item->TanggalPinjam)->setTimeFromTimeString($item->JamSelesai);
+                                    $oneDayBefore = $startDateTime->copy()->subDay()->startOfDay(); // Start of the day before the rental day
                                 @endphp
                                 <tr data-date="{{ $tanggalPinjam }}"> <!-- Add data attribute for filtering -->
                                     <td>{{ $loop->iteration }}</td>
@@ -69,8 +66,14 @@
                                     <td>{{ $item->Deskripsi }}</td>
                                     <td>
                                         @if ($item->Persetujuan == 'disetujui')
-                                            @if (Carbon\Carbon::parse($item->TanggalPinjam)->isPast())
-                                                Selesai
+                                            @if ($now->isToday())
+                                                Disetujui
+                                            @elseif ($now->isPast())
+                                                @if (session('aduan_submitted') && session('aduan_submitted') == $item->id)
+                                                    Selesai
+                                                @else
+                                                    Disetujui
+                                                @endif
                                             @else
                                                 Disetujui
                                             @endif
@@ -81,32 +84,38 @@
                                         @elseif ($item->Persetujuan == 'dibatalkan')
                                             Dibatalkan
                                         @else
-                                            Menunggu
+                                            Selesai
                                         @endif
                                     </td>
+                                    
                                     <td>
                                         @if ($item->Persetujuan == 'disetujui')
                                             @if ($item->StatusPinjam == 'dibatalkan')
                                                 Dibatalkan
                                             @else
-                                                @if ($now->lessThan($startDateTime))
-                                                    <form action="{{ route('rents.cancel', $item->id) }}" method="POST"
-                                                        style="display:inline-block;">
+                                                @if ($now->isSameDay($oneDayBefore) || $now->isBefore($oneDayBefore))
+                                                    <form action="{{ route('rents.cancel', $item->id) }}" method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger">Batal</button>
                                                     </form>
-                                                @else
-                                                    <button type="button" class="btn btn-success selesai-btn"
-                                                        data-bs-toggle="modal" data-bs-target="#feedbackModal"
-                                                        data-item-id="{{ $item->id }}"
-                                                        id="sendMessageButton">Aduan</button>
+                                                @endif
+
+                                                @if ($now->isSameDay($tanggalPinjam) || $now->isAfter($tanggalPinjam))
+                                                    @if (session('aduan_submitted') && session('aduan_submitted') == $item->id)
+                                                        Selesai
+                                                    @else
+                                                        <form action="{{ route('aduan.get') }}" style="display:inline-block;">
+                                                            @csrf
+                                                            <input type="hidden" name="peminjaman_id" value="{{ $item->id }}">
+                                                            <button type="submit" class="btn btn-primary">Aduan</button>
+                                                        </form>
+                                                    @endif
                                                 @endif
                                             @endif
-                                        @else
-                                            <!-- No action buttons for other statuses -->
                                         @endif
                                     </td>
+                                    
                                 </tr>
                             @endforeach
                         </tbody>
@@ -115,32 +124,6 @@
                         {{ $peminjamans->links('vendor.pagination.custom') }}
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form method="POST" action="{{ route('send.feedback.email') }}">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="feedbackModalLabel">Kirim Pesan</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <input type="hidden" id="current-item-id" name="current-item-id">
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Pesan</label>
-                            <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary">Kirim Pesan</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -191,62 +174,6 @@
                     tableContainer.style.display = 'none';
                     noDataMessage.style.display = '';
                 }
-            });
-
-            const selesaiButtons = document.querySelectorAll('.selesai-btn');
-            selesaiButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const itemId = this.getAttribute('data-item-id');
-                    document.getElementById('current-item-id').value = itemId;
-                });
-            });
-
-            const sendMessageBtn = document.getElementById('sendMessageBtn');
-            const messageForm = document.getElementById('messageForm');
-            const loading = document.getElementById('loading');
-
-            sendMessageBtn.addEventListener('click', function() {
-                messageForm.style.display = 'none';
-                loading.style.display = 'block';
-
-                setTimeout(() => {
-                    messageForm.submit();
-                }, 1000);
-            });
-
-            document.getElementById('sendMessageBtn').addEventListener('click', function() {
-                const recipient = document.getElementById('recipient-email').value;
-                const message = document.getElementById('message-text').value;
-                const itemId = document.getElementById('current-item-id').value;
-
-                fetch('/send-email', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        },
-                        body: JSON.stringify({
-                            recipient: recipient,
-                            message: message,
-                        }),
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Success:', data);
-
-                        // Hide modal after sending the message
-                        modal.hide();
-
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Gagal mengirim pesan. Silakan coba lagi.');
-                    });
             });
         });
     </script>

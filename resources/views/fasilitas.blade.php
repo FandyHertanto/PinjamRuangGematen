@@ -18,7 +18,7 @@
         </div>
     @endif
 
-    <div class="my-5 d-flex justify-content-end">
+    <div class="my-5 d-flex justify-content-end" style="font-family: 'Rubik';">
         <a href="{{ route('create-fasilitas') }}" class="btn btn-primary">+ Data Fasilitas</a>
     </div>
     <div class='my-5'>

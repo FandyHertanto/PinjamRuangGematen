@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="card shadow">
+    <div class="card shadow" style="font-family: 'Rubik';">
         <div class="card-body">
             <h3 class="mt-3">Selamat Datang Kembali, {{ Auth::user()->username }}</h3>
 

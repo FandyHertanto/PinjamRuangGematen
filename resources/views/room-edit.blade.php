@@ -7,8 +7,8 @@
 
         <div class="row mt-5">
             <div class="col-lg-12">
-                <div class="card shadow-lg border-0 rounded-3">
-                    <div class="card-header text-center" style="background-color: rgb(105, 0, 0); color: white;">
+                <div class="card shadow-lg border-0 rounded-3" style="font-family: 'Rubik';">
+                    <div class="card-header text-center" style= "background-color: rgb(105, 0, 0); color: white;">
                         <h3>Edit Barang</h3>
                     </div>
                     <div class="card-body">

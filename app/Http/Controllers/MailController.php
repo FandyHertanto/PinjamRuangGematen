@@ -25,15 +25,15 @@ class MailController extends Controller
     $subject = 'Peminjaman Ruang';
     $body = "Halo $username,\n";
 
-    if ($status == 'disetujui') {
-        $body .= "Peminjaman ruang untuk ruangan $ruang telah disetujui.\n";
-    } elseif ($status == 'ditolak') {
-        $body .= "Peminjaman ruang untuk ruangan $ruang telah ditolak.\n";
-    } elseif ($status == 'dibatalkan') {
-        $body .= "Peminjaman ruang untuk ruangan $ruang telah dibatalkan.\n";
-    } else {
-        return redirect()->back()->with('error', 'Status peminjaman tidak valid');
-    }
+    // if ($status == 'disetujui') {
+    //     $body .= "Peminjaman ruang untuk ruangan $ruang telah disetujui.\n";
+    // } elseif ($status == 'ditolak') {
+    //     $body .= "Peminjaman ruang untuk ruangan $ruang telah ditolak.\n";
+    // } elseif ($status == 'dibatalkan') {
+    //     $body .= "Peminjaman ruang untuk ruangan $ruang telah dibatalkan.\n";
+    // } else {
+    //     return redirect()->back()->with('error', 'Status peminjaman tidak valid');
+    // }
 
     $data = [
         'subject' => $subject,

@@ -5,7 +5,7 @@
 @section('content')
 
     <div class="container">
-        <div class="card shadow-lg border-0 rounded-3">
+        <div class="card shadow-lg border-0 rounded-3" style="font-family: 'Rubik';">
             <div class="card-header text-center" style="background-color: rgb(105, 0, 0); color: white;">
                 <h3>Profile</h3>
             </div>
@@ -44,20 +44,13 @@
                                 value="{{ Auth::user()->email }}" readonly>
                         </div>
                         <div class="mb-3">
-                            <label for="phone" class="form-label">No Telepon</label>
+                            <label for="phone" class="form-label">No Telepon (+62)</label>
                             <input type="text" name="phone" id="phone" class="form-control"
-                                value="{{ Auth::user()->phone }}" readonly>
+                                value="{{ Auth::user()->phone }}" readonly placeholder="+628212345678">
                         </div>
-
-                        
-
-
-
                 </div>
             </div>
         </div>
     </div>
-
-
 
 @endsection

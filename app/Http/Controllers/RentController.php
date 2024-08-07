@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Peminjaman;
 use Illuminate\Support\Facades\Mail;
-use App\Models\User; 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Mail\FeedbackNotification;
@@ -19,14 +19,14 @@ class RentController extends Controller
     {
         // Ambil data peminjaman terbaru dengan pagination
         $rents = Peminjaman::latest()->simplePaginate(25); // Menampilkan 2 peminjaman per halaman
-        
+
         // Kirim data ke view dan menghitung nomor urut
         return view('rent', [
             'rents' => $rents,
             'i' => ($rents->currentPage() - 1) * $rents->perPage() + 1
         ]);
     }
-    
+
     public function cancel(Request $request, $id)
     {
         $peminjaman = Peminjaman::findOrFail($id);
@@ -65,43 +65,56 @@ class RentController extends Controller
     }
 
     public function reject($id)
-{
-    $rent = Peminjaman::find($id);
+    {
+        $rent = Peminjaman::find($id);
 
-    if ($rent) {
-        $rent->Persetujuan = 'ditolak';
-        $rent->save();
+        if ($rent) {
+            $rent->Persetujuan = 'ditolak';
+            $rent->save();
 
-        // Send email notification
-        $mailController = new MailController();
-        $mailController->sendEmailNotification($id, 'Ditolak');
+            // Send email notification
+            $mailController = new MailController();
+            $mailController->sendEmailNotification($id, 'Ditolak');
 
-        return response()->json(['message' => 'Peminjaman telah ditolak', 'status' => 'ditolak']);
+            return response()->json(['message' => 'Peminjaman telah ditolak', 'status' => 'ditolak']);
+        }
+
+        return response()->json(['message' => 'Peminjaman tidak ditemukan'], 404);
+    }
+    public function aduan(Request $request)
+    {
+        $peminjamanId = $request->input('peminjaman_id');
+        $peminjaman = Peminjaman::with('room')->find($peminjamanId);
+
+        if (!$peminjaman) {
+            return redirect()->back()->with('error', 'Peminjaman not found.');
+        }
+
+        return view('aduan', ['peminjaman' => $peminjaman]);
     }
 
-    return response()->json(['message' => 'Peminjaman tidak ditemukan'], 404);
-}
+    public function postAduan(Request $request)
+    {
+        // Validate input
+        $validatedData = $request->validate([
+            'peminjaman_id' => 'required|exists:peminjaman,id',
+            'Aduan1' => 'required|boolean',
+            'Aduan2' => 'required|boolean',
+            'Aduan3' => 'required|string',
+        ]);
 
-public function sendFeedbackEmail(Request $request)
-{
-    $request->validate([
-        'current-item-id' => 'required',
-        'message' => 'required',
-    ]);
+        // Find the Peminjaman record
+        $peminjaman = Peminjaman::findOrFail($validatedData['peminjaman_id']);
+        $peminjaman->update(['Persetujuan' => 'selesai']);
 
-    $users = User::whereIn('role_id', [1, 3])->pluck('email')->toArray();
+        // Update the aduan fields
+        $peminjaman->Aduan1 = $validatedData['Aduan1'];
+        $peminjaman->Aduan2 = $validatedData['Aduan2'];
+        $peminjaman->Aduan3 = $validatedData['Aduan3'];
+        $peminjaman->save();
 
-    foreach ($users as $user) {
-        $data = [
-            'subject' => 'Layanan Aduan',
-            'body' => $request->input('message')
-        ];
-        Mail::to($user)->send(new FeedbackNotification($data));
+        // Redirect with success message to 'keranjang' route
+        return redirect()->route('keranjang')->with('success', 'Aduan berhasil dikirim.');
     }
 
-    return back()->with('success', 'Pesan telah berhasil dikirim!');
 }
-}
-
-    
-

@@ -8,7 +8,7 @@
 
 
 
-        <div class="card shadow">
+        <div class="card shadow" style="font-family: 'Rubik';">
             <div class="card-body">
                 <div class="mb-3">
                     <h3 class="mb-3">Tambah barang</h3>

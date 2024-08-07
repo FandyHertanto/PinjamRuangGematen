@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="container my-5 mt-2">
+    <div class="container my-5 mt-2" style="font-family: 'Rubik';">
         <div class="card shadow">
             <div class="card-body">
                 <div class="mb-3">
@@ -140,6 +140,21 @@
             box-shadow: none; /* Hapus shadow pada focus */
             background-color: #ffffff; /* Warna background default */
         }
+        .approved {
+        background-color: rgb(87, 168, 255); /* Biru */
+        }
+
+        .pending {
+            background-color: rgb(255, 193, 7); /* Kuning */
+        }
+
+        .rejected {
+            background-color: rgb(255, 103, 128); /* Merah */
+        }
+        .canceled{
+            background-color: rgb(139, 139, 139)
+        }
+
     </style>
     
     <script>
@@ -186,33 +201,41 @@
                 right: 'next'
             },
             eventContent: function(info) {
-                var NamaRuang = info.event.title;
-                var JamMulai = new Date(info.event.start).toLocaleTimeString('id-ID', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                });
-                var JamSelesai = new Date(info.event.end).toLocaleTimeString('id-ID', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                });
-                var Persetujuan = info.event.extendedProps.persetujuan;
-                var Peminjam = info.event.extendedProps.peminjam;
+            var Peminjam = info.event.extendedProps.peminjam;
+            var JamMulai = new Date(info.event.start).toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+            var JamSelesai = new Date(info.event.end).toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
 
-                var element = document.createElement('div');
-                element.classList.add('custom-event-content');
+            var status = info.event.extendedProps.persetujuan;
+            var statusClass;
 
-                element.innerHTML = `
-                <div>
-                    ${JamMulai}-${JamSelesai} ${Peminjam}
-                </div>
+            // Determine the class based on persetujuan status
+            if (status === 'Disetujui') {
+                statusClass = 'approved';
+            } else if (status === 'Pending') {
+                statusClass = 'pending';
+            } else if (status === 'Ditolak') {
+                statusClass = 'rejected';
+            }  else if (status === 'Dibatalkan') {
+                statusClass = 'canceled';
+            }else {
+                statusClass = ''; // Default class if no matching status
+            }
+
+            var element = document.createElement('div');
+            element.className = 'custom-event-content ' + statusClass;
+            element.innerHTML = `
+                ${JamMulai}-${JamSelesai} ${Peminjam} 
             `;
-
-                return {
-                    domNodes: [element]
-                };
-            },
+            return { domNodes: [element] };
+        },
             eventDidMount: function(info) {
                 var NamaRuang = info.event.title;
                 var status = info.event.extendedProps.description;

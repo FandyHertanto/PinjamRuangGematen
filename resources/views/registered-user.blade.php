@@ -24,7 +24,7 @@
             </div>
         @endif
 
-        <div class="my-3 d-flex">
+        <div class="my-3 d-flex" style="font-family: 'Rubik';">
             <a href="users" class="btn btn-primary me-3" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">Kembali ke Data Pengguna</a>
         </div>
 

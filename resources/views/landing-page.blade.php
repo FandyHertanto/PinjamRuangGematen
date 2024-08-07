@@ -12,9 +12,11 @@
         body {
             background-color: #343a40; /* Dark background color */
             color: #ffffff; /* White text color for contrast */
+            padding-bottom: 60px; /* Space for the fixed footer */
         }
         .card {
             background-color: #ffffff; /* White background for card */
+            
         }
         .header-container {
             display: flex;
@@ -47,16 +49,36 @@
         }
         .container {
             text-align: center;
+            
+            padding-top: 15px;
+            padding-bottom: 30px; Add space to the bottom of the container
         }
         .table-responsive {
             margin-top: 1rem; /* Add space above table */
+            margin-bottom: 1rem;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: rgb(105, 0, 0);
+            color: #ffffff;
+            display: flex;
+            padding: 1rem;
+        }
+        .footer .logo {
+            width: 75px;
+            height: 75px;
+        }
+        .footer div {
+            margin-left: 1rem;
         }
     </style>
 </head>
 <body>
-    <div class="container mt-5">
+    <div class="container mt-3 mb-5" >
         <!-- Main Content Card -->
-        <div class="card shadow-lg border-0 rounded-3">
+        <div class="card shadow-lg border-0 rounded-3 rubik-font" >
             <div class="card-body">
                 <div class="header-container">
                     <div class="header-content">
@@ -64,15 +86,13 @@
                         <div>
                             <h3 style="color:rgb(163, 1, 1);">Agenda Kegiatan Paroki Santa Maria Assumpta Klaten</h3>
                             <div class="month-selector">
-                                
                                 <h4 id="month-year" style="color:rgb(163, 1, 1);"></h4>
-                                
                             </div>
                         </div>
                     </div>
                     <div class="header-buttons">
-                        <a href="/login" class="btn btn-primary btn-sm" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">Masuk</a>
-                        <a href="/register" class="btn btn-secondary btn-sm" style="color: rgb(163, 1, 1); border-color: rgb(163, 1, 1); background-color: rgb(255, 255, 255);">Daftar</a>
+                        <a href="/login" class="btn btn-primary btn-sm" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">+ Pinjam Ruang</a>
+                        
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -103,8 +123,10 @@
                                             Disetujui
                                         @elseif ($item->Persetujuan == 'ditolak')
                                             Ditolak
-                                        @else
+                                        @elseif ($item->Persetujuan == 'dibatalkan')
                                             Dibatalkan
+                                        @else
+                                        Menunggu Persetujuan
                                         @endif
                                     </td>
                                 </tr>
@@ -112,8 +134,8 @@
                         </tbody>
                     </table>
                     <div class="container">
-                    <a href="{{ route('ruang-gematen', ['month' => $currentMonth - 1, 'year' => $currentYear]) }}" class="btn btn-nav btn-sm">&lt; Bulan Sebelumnya</a>
-                    <a href="{{ route('ruang-gematen', ['month' => $currentMonth + 1, 'year' => $currentYear]) }}" class="btn btn-nav btn-sm">Bulan Berikutnya &gt;</a>
+                    <a href="{{ route('ruang/gematen', ['month' => $currentMonth - 1, 'year' => $currentYear]) }}" class="btn btn-nav btn-sm">&lt; Bulan Sebelumnya</a>
+                    <a href="{{ route('ruang/gematen', ['month' => $currentMonth + 1, 'year' => $currentYear]) }}" class="btn btn-nav btn-sm">Bulan Berikutnya &gt;</a>
                     </div>
                 </div>
             </div>
@@ -139,5 +161,14 @@
             document.getElementById('month-year').textContent = `Bulan: ${monthNames[currentMonth - 1]} ${currentYear}`;
         });
     </script>
+    <footer class="footer" >
+        <img src="{{ asset('images/GMA-white.png') }}" alt="Logo Gematen" class="logo mx-3">
+        <div>
+            Jl. Andalas No.24, Sikenong, <br>
+            Kec. Klaten Tengah, Kabupaten Klaten, <br>
+            Jawa Tengah 57413 <br>
+            (0272) 321866
+        </div>
+    </footer>
 </body>
 </html>

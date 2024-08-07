@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="card border-0">
+    <div class="card border-0" style="font-family: 'Rubik';">
         <div class="card-body">
             <h3 class="card-title text-left">Detail Pengguna, {{ $user->username }}</h3>
 

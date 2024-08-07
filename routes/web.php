@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AduanAdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DashboardController;
@@ -13,20 +14,19 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\GoogleAuthController;
-use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\LandingPageController;
 
 
 Route::get('/', function () {
-    return view('ruang-gematen');});
-// })->middleware('auth');
+    return view('ruang/gematen');
+})->middleware('auth');
 
 
 
 Route::group(['middleware' => 'guest'], function () {
-    Route::get('ruang-gematen', [LandingPageController::class, 'index'])->name('ruang-gematen');
+    Route::get('ruang/gematen', [LandingPageController::class, 'index'])->name('ruang/gematen');
     Route::get('login', [AuthController::class, 'login'])->name('login');
     Route::post('login', [AuthController::class, 'authenticating']);
     Route::get('register', [AuthController::class, 'register'])->name('register');
@@ -38,6 +38,7 @@ Route::get('auth/google/callback', [GoogleAuthController::class, 'callback']);
 
 Route::group(['middleware' => 'auth'], function () {
     // admin
+    Route::get('/aduan/admin', [AduanAdminController::class, 'index'])->name('aduan/admin');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/getChartData/{roomId}', [DashboardController::class, 'getChartData']);
     Route::get('/getRentData/{year}/{month}', [DashboardController::class, 'getRentData']);
@@ -81,7 +82,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('rent', [RentController::class, 'rent'])->name('rent');
     Route::post('/rents/approve/{id}', [RentController::class, 'approve'])->name('rents.approve');
     Route::post('/rents/reject/{id}', [RentController::class, 'reject'])->name('rents.reject');
-    Route::post('/send-feedback-email', [RentController::class, 'sendFeedbackEmail'])->name('send.feedback.email');
+    Route::get('/aduan', [RentController::class, 'aduan'])->name('aduan.get');
+    Route::post('/kirimaduan', [RentController::class, 'postAduan'])->name('kirimaduan.post');
 
     Route::get('/send-email', [MailController::class, 'email']);
     Route::post('/send-email', [MailController::class, 'sendEmail']);
@@ -92,7 +94,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('home', [HomeController::class, 'index'])->name('home');
     Route::get('detail-ruang/{id}', [HomeController::class, 'detail'])->name('detail-ruang');
     Route::get('pinjam-ruang', [PinjamRuangController::class, 'index'])->name('pinjam-ruang');
-    Route::get('keranjang', [UserController::class, 'keranjang']);
+    Route::get('keranjang', [UserController::class, 'keranjang'])->name('keranjang');
+
 
     Route::get('pinjam-add', [CalendarController::class, 'create'])->name('pinjam.create');
     Route::post('pinjam-store', [CalendarController::class, 'store'])->name('pinjam.store');

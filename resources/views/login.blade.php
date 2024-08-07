@@ -9,14 +9,19 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 
-<body class="login">
+
+<body class="login" >
     <div class="login-box">
         <img src="{{ asset('images/GMA.png') }}" alt="Logo Gematen" class="logo" width="150" height="150">
-        @if ($errors->any())
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
+
+        @if (session('error'))
         <div class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-                {{ $error }} <br>
-            @endforeach
+            {{ session('error') }}
         </div>
         @endif
         <h3 class="text-center">Masuk <br> Ruang Gematen</h3>

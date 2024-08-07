@@ -21,7 +21,7 @@
                     </div>
                 @endif
 
-                <div class="card shadow-lg border-0 rounded-3">
+                <div class="card shadow-lg border-0 rounded-3" style="font-family: 'Rubik';">
                     <div class="card-header text-center" style="background-color: rgb(105, 0, 0); color: white;">
                         <h3>Tambah Ruang</h3>
                     </div>

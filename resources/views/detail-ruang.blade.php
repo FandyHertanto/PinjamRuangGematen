@@ -26,7 +26,7 @@
                             @foreach ($room->fasilitas as $fasil)
                                 @if($fasil->item)
                                     <li>
-                                        {{ $fasil->item->NamaBarang }} {{ $fasil->item->Deskripsi }} {{ $fasil->JumlahBarang }}
+                                        {{ $fasil->item->NamaBarang }} {{ $fasil->item->Deskripsi }} ({{ $fasil->JumlahBarang }})
                                     </li>
                                 @else
                                     <li>Item not found</li>

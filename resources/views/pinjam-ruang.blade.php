@@ -3,7 +3,7 @@
 @section('title', 'Data Ruang')
 
 @section('content')
-    <div class="container my-5 mt-4">
+    <div class="container my-5 mt-4" style="font-family: 'Rubik';" >
         <div class="card shadow">
             <div class="card-body">
                 <div class="mb-3 mt-2 d-flex justify-content-between align-items-center">

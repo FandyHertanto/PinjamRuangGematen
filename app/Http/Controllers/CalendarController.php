@@ -74,6 +74,7 @@ class CalendarController extends Controller
         'Deskripsi' => 'required',
         'TimPelayanan' => 'required',
         'Jumlah' => 'required|integer|min:1',
+        
     ]);
 
     $jamMulai = date('H:i', strtotime($request->JamMulai));
