@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\LandingPageController;
 
 

@@ -31,7 +31,7 @@
                             </tr>
                         </thead>
                         <tbody id="rentalTableBody">
-                            @php $i = 1; @endphp
+                           
                             @foreach ($rents as $item)
                                 <tr>
                                     <td>{{ $i++ }}</td>

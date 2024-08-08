@@ -9,7 +9,7 @@
         "arielmejiadev/larapex-charts": "^2.1",
         "consoletvs/charts": "6.*",
         "illuminate/support": "*",
-        "laravel/framework": "^9.0",
+        "laravel/framework": "^11.0",
         "laravel/socialite": "^5.15",
         "laravel/tinker": "^2.9",
         "marineusde/larapex-charts": "*"

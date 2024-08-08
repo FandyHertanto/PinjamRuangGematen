@@ -13,7 +13,8 @@ class AduanAdminController extends Controller
 
         // Pass the data to the view
         return view('admin-aduan', [
-            'rents' => $rents
+            'rents' => $rents,
+            'i' => ($rents->currentPage() - 1) * $rents->perPage() + 1
         ]);
     }
 }

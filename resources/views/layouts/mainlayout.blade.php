@@ -106,8 +106,10 @@ body {
                         
                         <a href="{{ url('profile') }}" class="{{ request()->route()->uri == 'profile' || request()->route()->uri == 'profile/edit' ? 'active' : '' }}"><i class="bi bi-person"></i> Profile</a>
                         <a href="{{ url('aduan/admin') }}" class="{{ request()->route()->uri == 'aduan/admin' ? 'active' : '' }}">
-                            Aduan
+                            <i class="bi bi-bell"></i> Aduan
                         </a>
+                                              
+                        
                         
                         <a href="{{ url('logout') }}" class="{{ request()->route()->uri == 'logout' ? 'active' : '' }}"><i class="bi bi-box-arrow-right"></i> Keluar</a>
                     @else
@@ -116,7 +118,7 @@ body {
                     </div>
                     <a href="{{ url('pinjam-ruang') }}" class="{{ request()->route()->uri == 'pinjam-ruang' ? 'active' : (request()->route()->uri == 'pinjam-add' ? 'active' : '') }}"><i class="bi bi-calendar"></i> Pinjam Ruang</a>
                         <a href="{{ url('home') }}" class="{{ request()->route()->uri == 'home' ? 'active' : (Str::startsWith(request()->route()->uri, 'detail-ruang/') ? 'active' : '') }}"><i class="bi bi-house-door"></i> Display Ruang</a>                     
-                        <a href="{{ url('keranjang') }}" class="{{ request()->route()->uri == 'keranjang' ? 'active' : '' }}"><i class="bi bi-cart"></i> Histori Peminjaman</a>
+                        <a href="{{ url('keranjang') }}" class="{{ request()->route()->uri == 'keranjang' ? 'active' : '' }}"><i class="bi bi-book"></i> Histori Peminjaman</a>
                         <a href="{{ url('profile') }}" class="{{ request()->is('profile') || request()->is('profile-edit') ? 'active' : '' }}">
                             <i class="bi bi-person"></i> Profile
                         </a>

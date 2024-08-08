@@ -25,15 +25,15 @@ class MailController extends Controller
     $subject = 'Peminjaman Ruang';
     $body = "Halo $username,\n";
 
-    // if ($status == 'disetujui') {
-    //     $body .= "Peminjaman ruang untuk ruangan $ruang telah disetujui.\n";
-    // } elseif ($status == 'ditolak') {
-    //     $body .= "Peminjaman ruang untuk ruangan $ruang telah ditolak.\n";
-    // } elseif ($status == 'dibatalkan') {
-    //     $body .= "Peminjaman ruang untuk ruangan $ruang telah dibatalkan.\n";
-    // } else {
-    //     return redirect()->back()->with('error', 'Status peminjaman tidak valid');
-    // }
+    if ($status == 'disetujui') {
+        $body .= "Peminjaman ruang untuk ruangan $ruang telah disetujui.\n";
+    } elseif ($status == 'ditolak') {
+        $body .= "Peminjaman ruang untuk ruangan $ruang telah ditolak.\n";
+    } elseif ($status == 'dibatalkan') {
+        $body .= "Peminjaman ruang untuk ruangan $ruang telah dibatalkan.\n";
+    } else {
+        return redirect()->back()->with('error', 'Status peminjaman tidak valid');
+    }
 
     $data = [
         'subject' => $subject,
@@ -50,24 +50,23 @@ class MailController extends Controller
 
 
 public function sendEmail(Request $request)
-{
-    $recipient = $request->input('recipient');
-    $message = $request->input('message');
+    {
+        $data = [
+            'subject' => 'Pemberitahuan Peminjaman',
+            'body' => $request->message
+        ];
 
-    $data = [
-        'subject' => 'Peminjaman Ruang',
-        'body' => $message
-    ];
+        Mail::raw($data['body'], function($message) use ($data, $request) {
+            $message->to($request->recipient)
+                    ->subject($data['subject'])
+                    ->from('gematendeveloper@gmail.com', 'Peminjaman Ruang Gematen');
+        });
 
-    try {
-        Mail::to($recipient)->send(new FeedbackNotification($data));
-        return response()->json(['message' => 'Email notifikasi berhasil dikirim'], 200);
-    } catch (\Exception $e) {
-        return response()->json(['message' => 'Gagal mengirim email notifikasi: ' . $e->getMessage()], 500);
+        return response()->json(['status' => 'success']);
     }
 }
 
 
 
 
-}
+
