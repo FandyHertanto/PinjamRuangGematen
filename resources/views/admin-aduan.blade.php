@@ -7,36 +7,37 @@
         <div class="card shadow">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table text-center">
+                    <table class="table text-center ">
                         <thead>
                             <tr>
-                                <th class="col">No.</th>
-                                <th class="col">Peminjam</th>
-                                <th class="col">Ruang</th>
-                                <th class="col">Tanggal Pinjam</th>
-                                <th class="col">Jam</th>
-                                <th class="col">Keperluan</th>
-                                <th class="col">Barang</th>
-                                <th class="col">Listrik</th>
-                                <th class="col">Aduan</th>
+                                <th class="col text-center align-middle">No.</th>
+                                <th class="col text-center align-middle">Peminjam</th>
+                                <th class="col text-center align-middle">Ruang</th>
+                                <th class="col text-center align-middle">Tanggal</th>
+                                <th class="col text-center align-middle">Jam</th>
+                                <th class="col text-center align-middle">Keperluan</th>
+                                <th class="col text-center align-middle" style="width: 10%;">Barang dikembalikan</th>
+                                <th class="col text-center align-middle" style="width: 10%;">AC & Listrik dimatikan</th>
+                                <th class="col text-center align-middle">Aduan</th>
                             </tr>
                         </thead>
+                        
                         <tbody id="rentalTableBody">
                             @foreach ($rents as $item)
                                 <tr>
-                                    <td>{{ $i++ }}</td>
-                                    <td>{{ $item->NamaPeminjam }} ({{ $item->TimPelayanan }})</td>
-                                    <td>{{ $item->room->NamaRuang }}</td>
-                                    <td>{{ date('d-m-Y', strtotime($item->TanggalPinjam)) }}</td>
-                                    <td>{{ substr($item->JamMulai, 0, 5) }} - {{ substr($item->JamSelesai, 0, 5) }}</td>
-                                    <td>{{ $item->Deskripsi }}</td>
-                                    <td>
-                                        {{ is_null($item->Aduan1) ? '' : ($item->Aduan1 == 1 ? 'Sudah' : 'Belum') }}
+                                    <td class="align-middle">{{ $i++ }}</td>
+                                    <td class="align-middle text-wrap">{{ $item->NamaPeminjam }} ({{ $item->TimPelayanan }})</td>
+                                    <td class="align-middle text-wrap">{{ $item->room->NamaRuang }}</td>
+                                    <td class="align-middle">{{ date('d-m-Y', strtotime($item->TanggalPinjam)) }}</td>
+                                    <td class="align-middle">{{ substr($item->JamMulai, 0, 5) }} - {{ substr($item->JamSelesai, 0, 5) }}</td>
+                                    <td class="align-middle text-wrap">{{ $item->Deskripsi }}</td>
+                                    <td class="align-middle">
+                                        {!! is_null($item->Aduan1) ? '' : ($item->Aduan1 == 1 ? '<i class="bi bi-check-circle text-success fs-4"></i>' : '<i class="bi bi-x-circle text-danger fs-4"></i>') !!}
                                     </td>
-                                    <td>
-                                        {{ is_null($item->Aduan2) ? '' : ($item->Aduan2 == 1 ? 'Sudah' : 'Belum') }}
+                                    <td class="align-middle">
+                                        {!! is_null($item->Aduan2) ? '' : ($item->Aduan2 == 1 ? '<i class="bi bi-check-circle text-success fs-4"></i>' : '<i class="bi bi-x-circle text-danger fs-4"></i>') !!}
                                     </td>
-                                    <td>{{ $item->Aduan3 }}</td>
+                                    <td class="align-middle text-wrap">{{ $item->Aduan3 }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
