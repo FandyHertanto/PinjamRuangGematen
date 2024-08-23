@@ -9,17 +9,8 @@
             <h3>Data Pengguna</h3>
         </div>
         <div class="card-body">
-            @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
+        
+       
 
             <div style="my-3 d-flex">
                 <a href="{{ url('registered-user') }}" class="btn btn-primary me-3"

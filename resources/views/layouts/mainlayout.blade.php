@@ -116,8 +116,8 @@ body {
                     <div class="sidebar-footer">
                         <img src="{{ asset('images/GMA-white.png') }}" alt="Logo Gematen" class="logo" width="150" height="150">
                     </div>
-                    <a href="{{ url('pinjam-ruang') }}" class="{{ request()->route()->uri == 'pinjam-ruang' ? 'active' : (request()->route()->uri == 'pinjam-add' ? 'active' : '') }}"><i class="bi bi-calendar"></i> Pinjam Ruang</a>
-                        <a href="{{ url('home') }}" class="{{ request()->route()->uri == 'home' ? 'active' : (Str::startsWith(request()->route()->uri, 'detail-ruang/') ? 'active' : '') }}"><i class="bi bi-house-door"></i> Display Ruang</a>                     
+                    <a href="{{ url('pinjam-ruang') }}" class="{{ request()->route()->uri == 'pinjam-ruang' ? 'active' : (request()->route()->uri == 'pinjam-add' ? 'active' : '') }}"><i class="bi bi-calendar"></i> Kalender Peminjaman</a>
+                        <a href="{{ url('home') }}" class="{{ request()->route()->uri == 'home' ? 'active' : (Str::startsWith(request()->route()->uri, 'detail-ruang/') ? 'active' : '') }}"><i class="bi bi-house-door"></i> Data Ruang</a>                     
                         <a href="{{ url('keranjang') }}" class="{{ request()->route()->uri == 'keranjang' ? 'active' : '' }}"><i class="bi bi-book"></i> Histori Peminjaman</a>
                         <a href="{{ url('profile') }}" class="{{ request()->is('profile') || request()->is('profile-edit') ? 'active' : '' }}">
                             <i class="bi bi-person"></i> Profile

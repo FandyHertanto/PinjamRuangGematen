@@ -25,16 +25,18 @@
                 <form action="{{ route('kirimaduan.post') }}" method="post">
                     @csrf
                     <input type="hidden" name="peminjaman_id" value="{{ $peminjaman->id ?? '' }}">
-                    <div class="mb-3">
+                    <div class="row">
+                    <div class="col-md-6 mb-3">
                         <label for="NamaPeminjam" class="form-label">Nama Peminjam</label>
                         <input type="text" name="NamaPeminjam" id="NamaPeminjam" class="form-control" 
                             value="{{ old('NamaPeminjam', $peminjaman->NamaPeminjam ?? '') }}" placeholder="Nama Peminjam" readonly style="cursor: not-allowed;">
                     </div>
                     
-                    <div class="mb-3">
+                    <div class="col-md-6 mb-3">
                         <label for="TimPelayanan" class="form-label">Tim Pelayanan</label>
                         <input type="text" name="TimPelayanan" id="TimPelayanan" class="form-control"
                             placeholder="Misdinar/komsos" value="{{ old('TimPelayanan', $peminjaman->TimPelayanan ?? '') }}" readonly style="cursor: not-allowed;">
+                    </div>
                     </div>
                 
                     <div class="mb-3">

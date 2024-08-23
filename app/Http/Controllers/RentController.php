@@ -116,5 +116,47 @@ class RentController extends Controller
         // Redirect with success message to 'keranjang' route
         return redirect()->route('keranjang')->with('success', 'Aduan berhasil dikirim.');
     }
+    public function store(Request $request)
+    {
+        // Validasi input
+        $validatedData = $request->validate([
+            'NamaPeminjam' => 'required|string|max:255',
+            'TimPelayanan' => 'required|string|max:255',
+            'Jumlah' => 'required|integer|min:1',
+            'ruang_id' => 'required|exists:ruang,id',
+            'TanggalPinjam' => 'required|date|after_or_equal:today',
+            'JamMulai' => 'required|date_format:H:i',
+            'JamSelesai' => 'required|date_format:H:i|after:JamMulai',
+            'Deskripsi' => 'required|string|max:255',
+            'peminjam_id' => 'required|exists:users,id'
+        ]);
 
+        $tanggalPinjam = Carbon::parse($validatedData['TanggalPinjam']);
+        $jamMulai = Carbon::parse($validatedData['JamMulai']);
+        $jamSelesai = Carbon::parse($validatedData['JamSelesai']);
+
+        // Cek jika ada peminjaman yang berbenturan
+        $conflictingRentals = Peminjaman::where('ruang_id', $validatedData['ruang_id'])
+            ->whereDate('TanggalPinjam', $tanggalPinjam)
+            ->where(function ($query) use ($jamMulai, $jamSelesai) {
+                $query->whereBetween('JamMulai', [$jamMulai, $jamSelesai])
+                      ->orWhereBetween('JamSelesai', [$jamMulai, $jamSelesai])
+                      ->orWhere(function ($query) use ($jamMulai, $jamSelesai) {
+                          $query->where('JamMulai', '<=', $jamMulai)
+                                ->where('JamSelesai', '>=', $jamSelesai);
+                      });
+            })
+            ->whereIn('Persetujuan', ['pending', 'disetujui'])
+            ->exists();
+
+        if ($conflictingRentals) {
+            return redirect()->back()->with('error', 'Ruangan sudah terdaftar untuk waktu yang dipilih.');
+        }
+
+        // Simpan peminjaman baru
+        Peminjaman::create($validatedData);
+
+        return redirect()->route('keranjang')->with('success', 'Peminjaman berhasil dibuat.');
+    }
 }
+

@@ -22,8 +22,6 @@ Route::get('/', function () {
     return view('ruang/gematen');
 })->middleware('auth');
 
-
-
 Route::group(['middleware' => 'guest'], function () {
     Route::get('ruang/gematen', [LandingPageController::class, 'index'])->name('ruang/gematen');
     Route::get('login', [AuthController::class, 'login'])->name('login');
@@ -88,13 +86,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/send-email', [MailController::class, 'sendEmail']);
 
     //Menu Umat
-
-
     Route::get('home', [HomeController::class, 'index'])->name('home');
     Route::get('detail-ruang/{id}', [HomeController::class, 'detail'])->name('detail-ruang');
     Route::get('pinjam-ruang', [PinjamRuangController::class, 'index'])->name('pinjam-ruang');
     Route::get('keranjang', [UserController::class, 'keranjang'])->name('keranjang');
-
 
     Route::get('pinjam-add', [CalendarController::class, 'create'])->name('pinjam.create');
     Route::post('pinjam-store', [CalendarController::class, 'store'])->name('pinjam.store');
@@ -104,6 +99,3 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
-
-
- // Route::post('/rents/{id}/approve-email', [RentController::class, 'approveEmail'])->name('rents.approveEmail');

@@ -23,6 +23,10 @@ class LandingPageController extends Controller
             $year++;
         }
 
+         // Default month and year
+         $defaultMonth = Carbon::now()->month;
+         $defaultYear = Carbon::now()->year;
+
         // Ambil data peminjaman untuk bulan dan tahun tertentu
         $rents = Peminjaman::with('room', 'user')
             ->whereYear('TanggalPinjam', $year)
@@ -42,7 +46,9 @@ class LandingPageController extends Controller
         return view('landing-page', [
             'rents' => $rents,
             'currentMonth' => $month,
-            'currentYear' => $year
+            'currentYear' => $year,
+            'defaultMonth' => $defaultMonth,
+            'defaultYear' => $defaultYear,
         ]);
     }
 }

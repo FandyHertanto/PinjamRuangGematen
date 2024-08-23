@@ -38,7 +38,7 @@
                     <div class="mb-3">
                         <label for="Deskripsi" class="form-label">Deskripsi</label>
                         <input type="text" name="Deskripsi" id="Deskripsi" class="form-control"
-                            placeholder="contoh: meja kayu" >
+                            placeholder="contoh: meja kayu"  >
                     </div>
                     <div class="mt-3 text-center">
                         <button class="btn btn-success" type="submit">Simpan</button>

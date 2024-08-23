@@ -39,9 +39,9 @@
                         
                         <div class="mb-3 row">
                             <div class="col-md-6">
-                                <label for="Item" class="form-label">Item</label>
-                                <select name="barang_id" id="barang_id" class="form-control" onchange="updateDescription()">
-                                    <option value="">Pilih Barang</option>
+                                <label for="Item" class="form-label">Pilih Barang</label>
+                                <select name="barang_id" id="barang_id" class="form-control" onchange="updateDescription()" required>
+                                    <option value="" >Pilih Barang</option>
                                     @foreach ($items as $item)
                                         <option value="{{ $item->id }}" data-deskripsi="{{ $item->Deskripsi }}" {{ old('barang_id') == $item->id ? 'selected' : '' }}>
                                             {{ $item->NamaBarang }}
@@ -64,9 +64,9 @@
                     <div class="mb-3">
                         <label for="JumlahBarang" class="form-label">Jumlah Barang</label>
                         <input type="number" name="JumlahBarang" id="JumlahBarang" class="form-control"
-                            placeholder="Masukkan jumlah barang" value="{{ old('JumlahBarang') }}">
+                            placeholder="Masukkan jumlah barang" value="{{ old('JumlahBarang') }}" required>
                     </div>
-                    <div class="mt-3">
+                    <div class="mt-3 text-center">
                         <button class="btn btn-success" type="submit">Simpan</button>
                     </div>
                 </form>

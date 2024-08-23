@@ -12,13 +12,18 @@ class OnlyUmat
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check() || Auth::user()->role_id != 2) {
-            return redirect('ruang');
+        // Memeriksa apakah pengguna sudah login dan memiliki peran 'umat'
+        if (Auth::check() && Auth::user()->role === 'umat') {
+            return $next($request); // Melanjutkan permintaan jika pengguna adalah umat
         }
-        return $next($request);
+
+        // Jika pengguna bukan umat, arahkan mereka ke halaman lain atau berikan respons yang sesuai
+        return redirect('/')->with('error', 'Anda tidak memiliki akses.');
     }
 }

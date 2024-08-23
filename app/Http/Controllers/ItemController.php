@@ -21,7 +21,7 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'NamaBarang' => 'required|unique:items|max:100',
+            'NamaBarang' => 'required|max:100',
             'Deskripsi' => 'nullable|string'
         ]);
 

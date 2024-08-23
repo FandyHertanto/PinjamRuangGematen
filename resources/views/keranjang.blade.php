@@ -48,7 +48,6 @@
                                 $now = \Carbon\Carbon::now()->startOfDay(); // Get the start of the current day
                             @endphp
                             @foreach ($peminjamans as $item)
-                                
                                 @php
                                     $tanggalPinjam = \Carbon\Carbon::parse($item->TanggalPinjam)->startOfDay(); // Get the start of the rental day
                                     $startDateTime = \Carbon\Carbon::parse($item->TanggalPinjam)->setTimeFromTimeString($item->JamMulai);
@@ -127,20 +126,6 @@
             </div>
         </div>
     </div>
-
-    <style>
-        .card {
-            border: none;
-        }
-
-        .card-body {
-            padding: 1.25rem;
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-        }
-    </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

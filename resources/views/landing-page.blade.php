@@ -134,9 +134,11 @@
                         </tbody>
                     </table>
                     <div class="container">
-                    <a href="{{ route('ruang/gematen', ['month' => $currentMonth - 1, 'year' => $currentYear]) }}" class="btn btn-nav btn-sm">&lt; Bulan Sebelumnya</a>
-                    <a href="{{ route('ruang/gematen', ['month' => $currentMonth + 1, 'year' => $currentYear]) }}" class="btn btn-nav btn-sm">Bulan Berikutnya &gt;</a>
+                        <a href="{{ route('ruang/gematen', ['month' => $currentMonth - 1, 'year' => $currentYear]) }}" class="btn btn-nav btn-sm">&lt; Bulan Sebelumnya</a>
+                        <a href="{{ route('ruang/gematen', ['month' => $currentMonth + 1, 'year' => $currentYear]) }}" class="btn btn-nav btn-sm">Bulan Berikutnya &gt;</a> <br> <br>
+                        <a href="{{ route('ruang/gematen', ['month' => $defaultMonth, 'year' => $defaultYear]) }}" class="btn btn-nav btn-sm">Bulan Sekarang</a>
                     </div>
+                    
                 </div>
             </div>
         </div>

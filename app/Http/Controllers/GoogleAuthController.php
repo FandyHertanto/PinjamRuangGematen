@@ -67,7 +67,7 @@ class GoogleAuthController extends Controller
         if ($user->role_id == 1) {
             return redirect()->route('dashboard');
         } elseif ($user->role_id == 2) {
-            return redirect()->route('home');
+            return redirect()->route('pinjam-ruang');
         } elseif ($user->role_id == 3) {
                 return redirect()->route('dashboard');
         } else {

@@ -18,14 +18,15 @@ class UserController extends Controller
     $userId = Auth::id();
 
     // Ambil data peminjaman yang terkait dengan pengguna saat ini dengan pagination
-    $peminjamans = Peminjaman::latest()->simplePaginate(25);
-
+    $peminjamans = Peminjaman::where('peminjam_id', $userId)->latest()->simplePaginate(25);
+    
     // Kembalikan view 'keranjang' dengan data peminjaman
     return view('keranjang', [
         'peminjamans' => $peminjamans,
         'i' => ($peminjamans->currentPage() - 1) * $peminjamans->perPage() + 1  // Menghitung nomor urut
     ]);
 }
+
     public function index()
     {
         // Ambil semua pengguna dengan role ID 1, 2 (Admin, Umat) yang statusnya 'active'
