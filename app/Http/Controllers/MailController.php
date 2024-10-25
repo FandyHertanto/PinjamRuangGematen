@@ -32,7 +32,7 @@ class MailController extends Controller
     } elseif ($status == 'dibatalkan') {
         $body .= "Peminjaman ruang untuk ruangan $ruang telah dibatalkan.\n";
     } else {
-        return redirect()->back()->with('error', 'Status peminjaman tidak valid');
+        return redirect()->back()->with('error', '');
     }
 
     $data = [

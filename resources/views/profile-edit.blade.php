@@ -37,12 +37,16 @@
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" name="email" id="email" class="form-control"
-                            value="{{ $user->email }}">
+                            value="{{ old('email', $user->email) }}">
+                        @error('email')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
+                    
                     <div class="mb-3">
                         <label for="phone" class="form-label">No Telepon (+62)</label>
                         <input type="text" name="phone" id="phone" class="form-control"
-                            value="{{ $user->phone }}" placeholder="+628212345678">
+                            value="{{ $user->phone }}" placeholder="contoh: +628212345678">
                     </div>
 
                     <div class="mt-3 text-center">

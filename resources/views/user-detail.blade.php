@@ -14,7 +14,7 @@
                         <ul class="list-group list-group-flush">
                             {{-- <li class="list-group-item">Nama: {{ $user->username }}</li> --}}
                             <li class="list-group-item">No HP: {{ $user->phone }}</li>
-                            <li class="list-group-item">Email: {{ $user->email }}</li>
+                            {{-- <li class="list-group-item">Email: {{ $user->email }}</li> --}}
                             <li class="list-group-item">Status: {{ $user->status }}</li>
                             <li class="list-group-item">
                                 Role:
@@ -26,7 +26,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="col-md-12 d-flex align-items-center justify-content-end">
+                    <div class="col-md-12 d-flex align-items-center justify-content-start">
                         <div>
                             @if ($user->role_id == 1)
                                 <form action="{{ route('users.demote', ['id' => $user->id]) }}" method="POST"
@@ -49,7 +49,9 @@
             </div>
 
             <div class="mt-4">
-                <h4 class="text-center">Riwayat Peminjaman</h4>
+                <div class="card-header text-center" style="background-color: rgb(105, 0, 0); color: white;">
+                    <h3>Riwayat Peminjaman</h3>
+                </div>
                 @if ($peminjamans->count() > 0)
                     <div class="my-5">
                         <table class="table text-center">

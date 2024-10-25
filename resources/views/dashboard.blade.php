@@ -6,17 +6,17 @@
 
     <div class="card shadow" style="font-family: 'Rubik';">
         <div class="card-body">
-            <h3 class="mt-3">Selamat Datang Kembali, {{ Auth::user()->username }}</h3>
-
+            {{-- <h3 class="mt-3">Selamat Datang Kembali, {{ Auth::user()->username }}</h3> --}}
+            <h3 class="mt-3 text-center">Grafik Peminjaman Ruang Bulanan</h3>
             <div class="dropdown mb-4">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownRoom" data-bs-toggle="dropdown"
-                    aria-expanded="false">
+                <button class="btn btn-primary dropdown-toggle dropdown-btn" type="button" id="dropdownRoom" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">
                     @if (!empty($selected_room_name))
                         {{ $selected_room_name }}
                     @else
                         Pilih Ruangan
                     @endif
                 </button>
+                
                 <ul class="dropdown-menu" aria-labelledby="dropdownRoom">
                     <li>
                         <a class="dropdown-item" href="#" data-room-id="all">Semua Ruangan</a>
@@ -32,8 +32,8 @@
 
             @if (!empty($available_years))
                 <div class="dropdown mb-4">
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownYear"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-primary dropdown-toggle dropdown-btn" type="button" id="dropdownYear"
+                        data-bs-toggle="dropdown" aria-expanded="false" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">
                         @if (!empty($selected_year))
                             {{ $selected_year }}
                         @else
@@ -58,8 +58,8 @@
 
            
                     <div class="dropdown mb-4">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownYearTable"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-primary dropdown-toggle dropdown-btn" type="button" id="dropdownYearTable"
+                            data-bs-toggle="dropdown" aria-expanded="false" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">
                             @if (!empty($selected_year_table))
                                 {{ $selected_year_table }}
                             @else
@@ -76,15 +76,14 @@
                     </div>
     
                     <div class="dropdown mb-4">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMonth"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-primary dropdown-toggle dropdown-btn" type="button" id="dropdownMonth" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">
                             @if (!empty($selected_month))
                                 {{ $selected_month }}
                             @else
                                 Pilih Bulan
                             @endif
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMonth">
+                        <ul class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMonth">
                             @foreach ($available_months as $month)
                                 <li>
                                     <a class="dropdown-item" href="#" data-month="{{ $month }}">{{ $month }}</a>
@@ -92,6 +91,7 @@
                             @endforeach
                         </ul>
                     </div>
+                    
                     <h5 class="card-title text-center" id="dataPeminjamanTitle">Data Peminjaman</h5>
     
                     <div class="table-responsive">
@@ -109,9 +109,7 @@
                     </div>
                 </div>
             </div>
-
-
-            
+ 
         </div>
     </div>
 
@@ -123,6 +121,22 @@
         .clickable:hover {
             background-color: #f1f1f1;
         }
+        /* Ensure all dropdown buttons have the same width */
+.dropdown-btn {
+    width: 17%; 
+    text-align: left; 
+}
+
+/* Ensure dropdown menus match button width */
+.dropdown-menu-custom {
+    width:17% !important; 
+}
+/* Additional styling for dropdown menu to ensure it aligns well with the button */
+.dropdown-menu {
+    margin-top: 0; 
+    padding: 0; 
+}
+
     </style>
 
     
@@ -349,7 +363,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <td class='text-center align-middle'>${row.name}</td>
                             <td class='text-center align-middle'>${row.team}</td>
                             <td class="clickable text-center align-middle" data-bs-toggle="collapse" data-bs-target="#collapse${index}">
-                                ${row.total_peminjaman}
+                                ${row.total_peminjaman} <span style="color: blue; cursor: pointer;">...selengkapnya</span>
                             </td>
                             <td colspan="3" class="collapse" id="collapse${index}">
                                 <table class="table collapse-table">
@@ -386,8 +400,5 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchRentData(selectedYearTable, selectedMonth);
 });
 </script>
-
-
-
 
 @endsection

@@ -9,9 +9,6 @@
         <h3>Data Barang</h3>
     </div>
     <div class="card-body">
-
-       
-
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -61,18 +58,20 @@
                                 <td>{{ $item->Deskripsi }}</td>
                                 <td>
                                     <form action="{{ route('item-destroy', $item->id) }}" method="POST">
-                                        <a href="{{ route('item-edit', $item->id) }}" class="btn btn-warning"><i
-                                                class="bi bi-pencil-square"></i></a>
+                                        <a href="{{ route('item-edit', $item->id) }}" class="btn btn-warning">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger"><i
-                                                class="bi bi-trash3-fill"></i></button>
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-form-action="{{ route('item-destroy', $item->id) }}">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="text-center">Data tidak ditemukan</td>
+                                <td colspan="3" class="text-center">Belum ada data barang</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -82,16 +81,36 @@
 
         <!-- No Data Message -->
         <div id="noDataMessage" class="text-center d-none">
-            <p>Data tidak ditemukan</p>
+            <p>Belum ada data barang</p>
         </div>
 
     </div>
 </div>
 
+<!-- Modal Konfirmasi Hapus -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Penghapusan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Anda yakin ingin menghapus data ini?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <form id="deleteForm" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
-
-
-
 
 
 <script>
@@ -103,6 +122,19 @@
         const table = document.getElementById('itemTable');
         const rows = table.querySelectorAll('tbody tr');
 
+        // Initialize the delete modal and form
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        const deleteForm = document.getElementById('deleteForm');
+
+        // Add event listeners to all delete buttons
+        document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#deleteModal"]').forEach(button => {
+            button.addEventListener('click', function() {
+                const formAction = this.getAttribute('data-form-action');
+                deleteForm.action = formAction;
+            });
+        });
+
+        // Add event listener for search input
         searchInput.addEventListener('input', function() {
             const searchValue = searchInput.value.toLowerCase();
             let hasVisibleRows = false;
@@ -130,6 +162,4 @@
         });
     });
 </script>
-
-
 

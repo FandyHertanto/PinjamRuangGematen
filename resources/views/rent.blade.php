@@ -136,7 +136,7 @@
         }
     </style>
 
-    <!-- Modal for Terima -->
+<!-- Modal for Terima -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -155,6 +155,12 @@ Peminjaman anda telah disetujui, mohon untuk ditindaklanjuti
 Catatan dari Admin: - (isi/hapus bila diperlukan)</textarea>
                     </div>
                 </form>
+                <div id="loading-message" class="text-center d-none">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Memuat...</span>
+                    </div>
+                    <p>Mengirim pesan...</p>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -165,8 +171,7 @@ Catatan dari Admin: - (isi/hapus bila diperlukan)</textarea>
 </div>
 <!-- End Modal for Terima -->
 
-
-    <!-- Modal for Tolak -->
+<!-- Modal for Tolak -->
 <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -185,6 +190,12 @@ Peminjaman anda telah ditolak, mohon untuk ditindaklanjuti
 Catatan dari Admin: - (isi/hapus bila diperlukan)</textarea>
                     </div>
                 </form>
+                <div id="loading-reject-message" class="text-center d-none">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Memuat...</span>
+                    </div>
+                    <p>Mengirim Pesan...</p>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -195,10 +206,8 @@ Catatan dari Admin: - (isi/hapus bila diperlukan)</textarea>
 </div>
 <!-- End Modal for Tolak -->
 
-
-    
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
     const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
     const rejectModal = new bootstrap.Modal(document.getElementById('rejectModal'));
 
@@ -240,6 +249,9 @@ Catatan dari Admin: - (isi/hapus bila diperlukan)</textarea>
         const message = document.getElementById('message-text').value;
         const itemId = document.getElementById('current-item-id').value;
 
+        // Show loading indicator
+        document.getElementById('loading-message').classList.remove('d-none');
+
         fetch('/send-email', {
                 method: 'POST',
                 headers: {
@@ -255,7 +267,8 @@ Catatan dari Admin: - (isi/hapus bila diperlukan)</textarea>
             .then(data => {
                 console.log('Success:', data);
 
-                // Hide modal after sending the message
+                // Hide loading indicator and modal after sending the message
+                document.getElementById('loading-message').classList.add('d-none');
                 modal.hide();
 
                 // Change the column "Aksi" text to "Disetujui" and update the database
@@ -275,7 +288,7 @@ Catatan dari Admin: - (isi/hapus bila diperlukan)</textarea>
                         aksiCell.innerHTML = 'Disetujui';
 
                         // Show success message
-                        alert('Pesan berhasil dikirim ');
+                        alert('Pesan berhasil dikirim');
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -285,6 +298,7 @@ Catatan dari Admin: - (isi/hapus bila diperlukan)</textarea>
             .catch(error => {
                 console.error('Error:', error);
                 alert('Gagal mengirim pesan. Silakan coba lagi.');
+                document.getElementById('loading-message').classList.add('d-none');
             });
     });
 
@@ -293,6 +307,9 @@ Catatan dari Admin: - (isi/hapus bila diperlukan)</textarea>
         const recipient = document.getElementById('reject-recipient-email').value;
         const message = document.getElementById('reject-message-text').value;
         const itemId = document.getElementById('reject-current-item-id').value;
+
+        // Show loading indicator
+        document.getElementById('loading-reject-message').classList.remove('d-none');
 
         fetch('/send-email', {
                 method: 'POST',
@@ -309,7 +326,8 @@ Catatan dari Admin: - (isi/hapus bila diperlukan)</textarea>
             .then(data => {
                 console.log('Success:', data);
 
-                // Hide modal after sending the message
+                // Hide loading indicator and modal after sending the message
+                document.getElementById('loading-reject-message').classList.add('d-none');
                 rejectModal.hide();
 
                 // Change the column "Aksi" text to "Ditolak" and update the database
@@ -339,6 +357,7 @@ Catatan dari Admin: - (isi/hapus bila diperlukan)</textarea>
             .catch(error => {
                 console.error('Error:', error);
                 alert('Gagal mengirim pesan. Silakan coba lagi.');
+                document.getElementById('loading-reject-message').classList.add('d-none');
             });
     });
 

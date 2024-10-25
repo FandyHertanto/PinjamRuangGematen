@@ -27,22 +27,25 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
 {
-    $user = Auth::user(); // Mengambil user yang sedang login
-    
-    // Validasi data input jika diperlukan
-    $validatedData = $request->validate([
+    // Validasi data
+    $request->validate([
         'username' => 'required|string|max:255',
-        'email' => 'required|email|max:255',
-        'phone' => 'nullable|string|max:20',
+        'email' => 'required|email|unique:users,email,' . auth()->id(),
+        'phone' => 'nullable|regex:/^(\+62)[0-9]{9,13}$/'
     ]);
-    
-    // Update data user
-    $user->username = $validatedData['username'];
-    $user->email = $validatedData['email'];
-    $user->phone = $validatedData['phone'];
-    $user->save();
-    
-    return redirect()->route('profile')->with('success', 'Profile berhasil diperbarui.');
+
+    try {
+        // Update profil pengguna
+        $user = auth()->user();
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->save();
+
+        return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui profil.');
+    }
 }
 
     /**

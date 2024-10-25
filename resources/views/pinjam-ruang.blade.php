@@ -7,10 +7,12 @@
         <div class="card shadow">
             <div class="card-body">
                 <div class="mb-3 mt-2 d-flex justify-content-between align-items-center">
-                    <h3 class="mb-0">Mau pinjam ruang apa hari ini?</h3>
-
-                    <a href="{{ route('pinjam.create') }}" class="btn btn-primary me-3" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">+ Pinjam Ruang</a>
+                    <h3 class="mb-0">Mau pinjam ruang apa hari ini?</h3>  
                 </div>
+                <div class="mb-4">
+                    <a href="{{ route('pinjam.create') }}" class="btn btn-primary me-3" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">+ Pinjam Ruang</a> <br>
+                </div>
+                
                 @if (session('success'))
                     <div class="alert alert-success mb-3">
                         {{ session('success') }}

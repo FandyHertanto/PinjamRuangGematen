@@ -22,12 +22,12 @@ class ItemController extends Controller
     {
         $validated = $request->validate([
             'NamaBarang' => 'required|max:100',
-            'Deskripsi' => 'nullable|string'
+            'Deskripsi' => 'nullable'
         ]);
 
         Item::create([
             'NamaBarang' => $request->NamaBarang,
-            'Deskripsi' => $request->Deskripsi
+            'Deskripsi' => $request->Deskripsi ?? '',
         ]);
 
         return redirect()->route('item')->with('status', 'Barang berhasil ditambah');

@@ -94,28 +94,33 @@ class RentController extends Controller
     }
 
     public function postAduan(Request $request)
-    {
-        // Validate input
-        $validatedData = $request->validate([
-            'peminjaman_id' => 'required|exists:peminjaman,id',
-            'Aduan1' => 'required|boolean',
-            'Aduan2' => 'required|boolean',
-            'Aduan3' => 'required|string',
-        ]);
+{
+    // Validate input
+    $validatedData = $request->validate([
+        'peminjaman_id' => 'required|exists:peminjaman,id',
+        'Aduan1' => 'required|boolean',
+        'Aduan2' => 'required|boolean',
+        'Aduan3' => 'required|string',
+    ]);
 
-        // Find the Peminjaman record
-        $peminjaman = Peminjaman::findOrFail($validatedData['peminjaman_id']);
-        $peminjaman->update(['Persetujuan' => 'selesai']);
+    // Find the Peminjaman record
+    $peminjaman = Peminjaman::findOrFail($validatedData['peminjaman_id']);
+    
+    // Update the aduan fields
+    $peminjaman->Aduan1 = $validatedData['Aduan1'];
+    $peminjaman->Aduan2 = $validatedData['Aduan2'];
+    $peminjaman->Aduan3 = $validatedData['Aduan3'];
+    $peminjaman->Persetujuan = 'disetujui'; // Ensure Persetujuan is 'disetujui'
+    $peminjaman->save();
 
-        // Update the aduan fields
-        $peminjaman->Aduan1 = $validatedData['Aduan1'];
-        $peminjaman->Aduan2 = $validatedData['Aduan2'];
-        $peminjaman->Aduan3 = $validatedData['Aduan3'];
-        $peminjaman->save();
+    // Set session flash for aduan submitted
+    session()->flash('aduan_submitted', $peminjaman->id);
 
-        // Redirect with success message to 'keranjang' route
-        return redirect()->route('keranjang')->with('success', 'Aduan berhasil dikirim.');
-    }
+    // Redirect with success message to 'keranjang' route
+    return redirect()->route('keranjang')->with('success', 'Aduan berhasil dikirim.');
+}
+
+
     public function store(Request $request)
     {
         // Validasi input

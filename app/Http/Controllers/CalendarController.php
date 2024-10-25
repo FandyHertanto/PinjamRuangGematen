@@ -94,7 +94,7 @@ class CalendarController extends Controller
             ->exists();
     
         if ($existingEvent) {
-            return redirect()->route('pinjam.create')->with('error', 'Jadwal tidak tersedia, silahkan pilih jadwal lain')->withInput();
+            return redirect()->route('pinjam.create')->with('error', 'Ruang sudah dipilih, silahkan pilih ruang lain')->withInput();
         }
     
         $peminjaman = new Peminjaman();

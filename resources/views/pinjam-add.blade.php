@@ -4,34 +4,35 @@
 
 @section('content')
 
-    <div class="container my-5 mt-2" style="font-family: 'Rubik';">
-        <div class="card shadow">
-            <div class="card-body">
-                <div class="mb-3">
-                    <h3 class="mb-0">Silahkan meminjam ruang</h3>
+<div class="container my-5 mt-2" style="font-family: 'Rubik';">
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="mb-3">
+                <h3 class="mb-0">Silahkan meminjam ruang</h3>
+            </div>
+
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
                 </div>
+            @endif
 
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
 
-                @if (session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif
-
+            <!-- Wrapper for the form and spinner -->
+            <div class="position-relative">
                 <!-- Form for room booking -->
-                <form action="{{ route('pinjam.store') }}" method="post" enctype="multipart/form-data">
+                <form id="bookingForm" action="{{ route('pinjam.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-3">
                         <label for="NamaPeminjam" class="form-label">Nama Peminjam</label>
-                        <input type="text" name="NamaPeminjam" id="NamaPeminjam" class="form-control" required>
+                        <input type="text" name="NamaPeminjam" id="NamaPeminjam" class="form-control" value="{{ old('NamaPeminjam') }}" required>
                     </div>
-
 
                     <div class="mb-3">
                         <label for="TimPelayanan" class="form-label">Tim Pelayanan</label>
@@ -85,20 +86,27 @@
                     </div>
 
                     <div class="mt-3 d-flex justify-content-end">
-                        <button class="btn btn-primary me-3"
+                        <button class="btn btn-primary me-3" id="submitButton"
                             style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);" type="submit">Ajukan
                             Peminjaman</button>
                     </div>
                 </form>
 
-
-                <hr>
-
-                <!-- Calendar display -->
-                <div id="calendar" class="border rounded p-3"></div>
+                <!-- Loading Spinner -->
+                <div id="loadingSpinner" class="d-none position-absolute top-50 start-50 translate-middle">
+                    <div class="spinner-border custom-spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
             </div>
+
+            <hr>
+
+            <!-- Calendar display -->
+            <div id="calendar" class="border rounded p-3"></div>
         </div>
     </div>
+</div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js"></script>
@@ -121,9 +129,7 @@
             padding: 5px;
             font-size: 14px;
             white-space: normal;
-            /* Allow text wrapping */
             word-wrap: break-word;
-            /* Break long words */
         }
 
         .custom-event-contents {
@@ -133,42 +139,65 @@
             box-shadow: none !important;
             font-size: 14px;
             white-space: normal;
-            /* Allow text wrapping */
             word-wrap: break-word;
-            /* Break long words */
             padding: 15px 20px;
             border-radius: 5px;
-            /* Rounded corners for the box */
         }
 
-        /* Atur border dan background untuk input fields pada focus */
         .form-control:focus {
             border-color: #ced4da;
-            /* Warna border default Bootstrap */
             box-shadow: none;
-            /* Hapus shadow pada focus */
             background-color: #ffffff;
-            /* Warna background default */
         }
 
         .approved {
             background-color: rgb(87, 168, 255);
-            /* Biru */
         }
 
         .pending {
             background-color: rgb(255, 193, 7);
-            /* Kuning */
         }
 
         .rejected {
             background-color: rgb(255, 103, 128);
-            /* Merah */
         }
 
         .canceled {
-            background-color: rgb(139, 139, 139)
+            background-color: rgb(139, 139, 139);
         }
+
+        #loadingSpinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+        /* Custom spinner border */
+.custom-spinner-border {
+    border: 0.5em solid rgba(0, 0, 0, 0.1); 
+    border-top: 0.5em solid  rgb(163, 1, 1); 
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    animation: spinner-border 0.75s linear infinite;
+}
+
+/* Keyframes for spinner animation */
+@keyframes spinner-border {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Spinner container */
+#loadingSpinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
     </style>
 
     <script>
@@ -230,7 +259,6 @@
                     var status = info.event.extendedProps.persetujuan;
                     var statusClass;
 
-                    // Determine the class based on persetujuan status
                     if (status === 'Disetujui') {
                         statusClass = 'approved';
                     } else if (status === 'Pending') {
@@ -240,7 +268,7 @@
                     } else if (status === 'Dibatalkan') {
                         statusClass = 'canceled';
                     } else {
-                        statusClass = ''; // Default class if no matching status
+                        statusClass = '';
                     }
 
                     var element = document.createElement('div');
@@ -279,7 +307,7 @@
 
                     info.el.setAttribute('data-bs-toggle', 'tooltip');
                     info.el.setAttribute('title', tooltipContent);
-                    info.el.setAttribute('data-bs-html', 'true'); // Enable HTML content
+                    info.el.setAttribute('data-bs-html', 'true');
                     var tooltip = new bootstrap.Tooltip(info.el);
                     info.el._tooltip = tooltip;
                 },
@@ -291,6 +319,10 @@
             });
 
             calendar.render();
+        });
+
+        document.getElementById('bookingForm').addEventListener('submit', function() {
+            document.getElementById('loadingSpinner').classList.remove('d-none');
         });
     </script>
 

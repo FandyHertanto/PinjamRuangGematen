@@ -10,24 +10,23 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         body {
-            background-color: #343a40; /* Dark background color */
-            color: #ffffff; /* White text color for contrast */
-            padding-bottom: 60px; /* Space for the fixed footer */
+            background-color: #343a40;
+            color: #ffffff;
+            padding-bottom: 60px;
         }
         .card {
-            background-color: #ffffff; /* White background for card */
-            
+            background-color: #ffffff;
         }
         .header-container {
             display: flex;
-            align-items: center; /* Align items vertically centered */
+            align-items: center;
             justify-content: space-between;
-            margin-bottom: 1rem; /* Add margin for spacing */
+            margin-bottom: 1rem;
         }
         .header-content {
             display: flex;
-            align-items: center; /* Align items vertically centered */
-            gap: 1rem; /* Space between logo and text */
+            align-items: center;
+            gap: 1rem;
         }
         .logo {
             width: 100px;
@@ -49,12 +48,11 @@
         }
         .container {
             text-align: center;
-            
             padding-top: 15px;
-            padding-bottom: 30px; Add space to the bottom of the container
+            padding-bottom: 30px; /* Add space to the bottom of the container */
         }
         .table-responsive {
-            margin-top: 1rem; /* Add space above table */
+            margin-top: 1rem;
             margin-bottom: 1rem;
         }
         .footer {
@@ -73,12 +71,17 @@
         .footer div {
             margin-left: 1rem;
         }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: table-row-group;
+        }
     </style>
 </head>
 <body>
-    <div class="container mt-3 mb-5" >
-        <!-- Main Content Card -->
-        <div class="card shadow-lg border-0 rounded-3 rubik-font" >
+    <div class="container mt-3 mb-5">
+        <div class="card shadow-lg border-0 rounded-3 rubik-font">
             <div class="card-body">
                 <div class="header-container">
                     <div class="header-content">
@@ -92,84 +95,101 @@
                     </div>
                     <div class="header-buttons">
                         <a href="/login" class="btn btn-primary btn-sm" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">+ Pinjam Ruang</a>
-                        
                     </div>
                 </div>
                 <div class="table-responsive">
                     <table class="table text-center">
                         <thead>
                             <tr>
-                                <th class="col">No.</th>
-                                <th class="col">Hari, Tanggal</th>
-                                <th class="col">Pukul (WIB)</th>
-                                <th class="col">Acara</th>
-                                <th class="col">Tempat (Jumlah)</th>
-                                <th class="col">Penyelenggara</th>
-                                <th class="col">Status</th>
+                                <th>No.</th>
+                                <th>Hari, Tanggal</th>
+                                <th>Pukul (WIB)</th>
+                                <th>Acara</th>
+                                <th>Tempat (Jumlah)</th>
+                                <th>Penyelenggara</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody id="rentalTableBody">
-                            @php $i = 1; @endphp
-                            @foreach ($rents as $item)
-                                <tr>
-                                    <td>{{ $i++ }}</td>
-                                    <td>{{ $item->formattedDate }}</td>
-                                    <td>{{ substr($item->JamMulai, 0, 5) }}-{{ substr($item->JamSelesai, 0, 5) }}</td>
-                                    <td>{{ $item->Deskripsi }}</td>
-                                    <td>{{ $item->room->NamaRuang }} ({{ $item->Jumlah }})</td>
-                                    <td>{{ $item->NamaPeminjam }} ({{ $item->TimPelayanan }})</td>
-                                    <td id="aksi-cell-{{ $item->id }}">
-                                        @if ($item->Persetujuan == 'disetujui')
-                                            Disetujui
-                                        @elseif ($item->Persetujuan == 'ditolak')
-                                            Ditolak
-                                        @elseif ($item->Persetujuan == 'dibatalkan')
-                                            Dibatalkan
-                                        @else
+                        @php
+                            $i = 1;
+                            $pageCount = 0;
+                        @endphp
+                        @foreach ($rents as $index => $item)
+                            @if ($index % 5 == 0)
+                                <tbody class="page {{ $pageCount === 0 ? 'active' : '' }}" id="page-{{ $pageCount }}">
+                                @php $pageCount++; @endphp
+                            @endif
+                            <tr>
+                                <td>{{ $i++ }}</td>
+                                <td>{{ $item->formattedDate }}</td>
+                                <td>{{ substr($item->JamMulai, 0, 5) }}-{{ substr($item->JamSelesai, 0, 5) }}</td>
+                                <td>{{ $item->Deskripsi }}</td>
+                                <td>{{ $item->room->NamaRuang }} ({{ $item->Jumlah }})</td>
+                                <td>{{ $item->NamaPeminjam }} ({{ $item->TimPelayanan }})</td>
+                                <td>
+                                    @if ($item->Persetujuan == 'disetujui')
+                                        Disetujui
+                                    @elseif ($item->Persetujuan == 'ditolak')
+                                        Ditolak
+                                    @elseif ($item->Persetujuan == 'dibatalkan')
+                                        Dibatalkan
+                                    @else
                                         Menunggu Persetujuan
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                                    @endif
+                                </td>
+                            </tr>
+                            @if ($index % 5 == 9 || $index === count($rents) - 1)
+                                </tbody>
+                            @endif
+                        @endforeach
                     </table>
                     <div class="container">
                         <a href="{{ route('ruang/gematen', ['month' => $currentMonth - 1, 'year' => $currentYear]) }}" class="btn btn-nav btn-sm">&lt; Bulan Sebelumnya</a>
-                        <a href="{{ route('ruang/gematen', ['month' => $currentMonth + 1, 'year' => $currentYear]) }}" class="btn btn-nav btn-sm">Bulan Berikutnya &gt;</a> <br> <br>
+                        <a href="{{ route('ruang/gematen', ['month' => $currentMonth + 1, 'year' => $currentYear]) }}" class="btn btn-nav btn-sm">Bulan Berikutnya &gt;</a> <br><br>
                         <a href="{{ route('ruang/gematen', ['month' => $defaultMonth, 'year' => $defaultYear]) }}" class="btn btn-nav btn-sm">Bulan Sekarang</a>
                     </div>
-                    
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9C38Q1s3Ohv1O1jWjJf5+6bXbtoU32Vf1jblf8F0nA0xSgC2Q4T" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-9o+K7vlZl5n6KZ5u21Kz7d5m39Q6ck8H9r9k1ZW74A5A0V9+bD9xXjZfJ13dxgF8g" crossorigin="anonymous"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Get the current month and year from server-side variables
+            const pages = document.querySelectorAll('.page');
+            let currentPage = 0;
+            const totalPages = pages.length;
+
+            function showPage(index) {
+                pages.forEach((page, i) => {
+                    page.classList.toggle('active', i === index);
+                });
+            }
+
+            function nextPage() {
+                currentPage = (currentPage + 1) % totalPages;
+                showPage(currentPage);
+            }
+
+            setInterval(nextPage, 15000);
+            showPage(currentPage);
+
             const currentMonth = {{ $currentMonth }};
             const currentYear = {{ $currentYear }};
-
-            // Define month names
             const monthNames = [
                 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
                 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
             ];
-
-            // Set the month and year in the HTML
             document.getElementById('month-year').textContent = `Bulan: ${monthNames[currentMonth - 1]} ${currentYear}`;
         });
     </script>
-    <footer class="footer" >
+    <footer class="footer">
         <img src="{{ asset('images/GMA-white.png') }}" alt="Logo Gematen" class="logo mx-3">
         <div>
-            Jl. Andalas No.24, Sikenong, <br>
-            Kec. Klaten Tengah, Kabupaten Klaten, <br>
-            Jawa Tengah 57413 <br>
-            (0272) 321866
+            <h4 style="margin: 0">Gematen Klaten</h4>
+            <p style="margin: 0">Paroki Santa Maria Assumpta Klaten</p>
         </div>
     </footer>
 </body>

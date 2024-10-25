@@ -69,7 +69,7 @@
                                                 Disetujui
                                             @elseif ($now->isPast())
                                                 @if (session('aduan_submitted') && session('aduan_submitted') == $item->id)
-                                                    Selesai
+                                                    Disetujui
                                                 @else
                                                     Disetujui
                                                 @endif
@@ -83,7 +83,7 @@
                                         @elseif ($item->Persetujuan == 'dibatalkan')
                                             Dibatalkan
                                         @else
-                                            Selesai
+                                            Disetujui
                                         @endif
                                     </td>
                                     
@@ -93,16 +93,16 @@
                                                 Dibatalkan
                                             @else
                                                 @if ($now->isSameDay($oneDayBefore) || $now->isBefore($oneDayBefore))
-                                                    <form action="{{ route('rents.cancel', $item->id) }}" method="POST" style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">Batal</button>
-                                                    </form>
+                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#cancelModal"
+                                                        data-form-action="{{ route('rents.cancel', $item->id) }}">
+                                                        Batal
+                                                    </button>
                                                 @endif
-
+                                    
                                                 @if ($now->isSameDay($tanggalPinjam) || $now->isAfter($tanggalPinjam))
                                                     @if (session('aduan_submitted') && session('aduan_submitted') == $item->id)
-                                                        Selesai
+                                                        <span>Selesai</span>
                                                     @else
                                                         <form action="{{ route('aduan.get') }}" style="display:inline-block;">
                                                             @csrf
@@ -113,8 +113,7 @@
                                                 @endif
                                             @endif
                                         @endif
-                                    </td>
-                                    
+                                    </td>  
                                 </tr>
                             @endforeach
                         </tbody>
@@ -122,6 +121,29 @@
                     <div class="mt-4 d-flex justify-content-center">
                         {{ $peminjamans->links('vendor.pagination.custom') }}
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelModalLabel">Konfirmasi Pembatalan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Anda yakin ingin membatalkan peminjaman ini?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                    <form id="cancelForm" method="POST" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Ya, Batal</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -135,14 +157,25 @@
             const tableContainer = document.querySelector('.table-responsive');
             const noDataMessage = document.getElementById('noDataMessage');
 
+            // Initialize the cancel modal and form
+            const cancelModal = new bootstrap.Modal(document.getElementById('cancelModal'));
+            const cancelForm = document.getElementById('cancelForm');
+
+            // Add event listeners to all cancel buttons
+            document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#cancelModal"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const formAction = this.getAttribute('data-form-action');
+                    cancelForm.action = formAction;
+                });
+            });
+
             searchInput.addEventListener('input', function() {
                 const searchValue = searchInput.value.toLowerCase();
                 let hasVisibleRows = false;
 
                 rows.forEach(row => {
                     const cells = row.querySelectorAll('td');
-                    const matches = Array.from(cells).some(cell => cell.textContent.toLowerCase()
-                        .includes(searchValue));
+                    const matches = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(searchValue));
 
                     if (matches) {
                         row.style.display = '';

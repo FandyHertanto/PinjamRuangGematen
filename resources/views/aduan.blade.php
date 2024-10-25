@@ -88,13 +88,12 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label for="Aduan3" class="form-label">Apakah ada yang perlu dilaporkan?</label>
-                        <textarea name="Aduan3" id="Aduan3" class="form-control" rows="4" placeholder="Deskripsi aduan" required>{{ old('Aduan3', $peminjaman->Aduan3 ?? '') }}</textarea>
+                        <label for="Aduan3" class="form-label">Apakah ada yang perlu dilaporkan? </label>
+                        <textarea name="Aduan3" id="Aduan3" class="form-control" rows="4" placeholder="Deskripsi aduan, jika tidak ada isi dengan -" required>{{ old('Aduan3', $peminjaman->Aduan3 ?? '') }}</textarea>
                     </div>
 
                     <div class="mt-3 d-flex">
                         <button class="btn btn-primary me-3" type="submit" style="background-color: rgb(163, 1, 1); border-color: rgb(163, 1, 1);">Kirim Aduan</button>
-                        
                     </div>
                 </form>
             </div>
