@@ -189,7 +189,9 @@
         <img src="{{ asset('images/GMA-white.png') }}" alt="Logo Gematen" class="logo mx-3">
         <div>
             <h4 style="margin: 0">Gematen Klaten</h4>
-            <p style="margin: 0">Paroki Santa Maria Assumpta Klaten</p>
+            <p style="margin: 0">Paroki Santa Maria Assumpta Klaten
+               <p>Jl. Andalas No.24, Sikenong, Kabupaten Klaten, Jawa Tengah 57413</p> 
+            </p>
         </div>
     </footer>
 </body>
